@@ -96,7 +96,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                       size="lg"
                       className="gap-1.5"
                     >
-                      Live Demo
+                      {project.demoLabel || 'Live Demo'}
                       <ExternalLink className="size-4" />
                     </Button>
                   )}
@@ -109,7 +109,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                       className="gap-1.5"
                     >
                       <GithubIcon className="size-4" />
-                      View Code
+                      {project.repoLabel || 'View Code'}
                     </Button>
                   )}
                 </div>

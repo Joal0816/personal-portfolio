@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Image from 'next/image'
 import { Menu, X } from 'lucide-react'
 import { navLinks, profile } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -59,14 +58,8 @@ export function Navbar() {
           href="#top"
           className="group flex items-center gap-2.5 font-mono text-sm font-medium tracking-tight text-foreground"
         >
-          <span className="relative size-8 overflow-hidden rounded-lg border border-border">
-            <Image
-              src="/profile.jpg"
-              alt="Joseph Vergara"
-              width={32}
-              height={32}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
+          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-all duration-300 group-hover:rotate-6 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-primary/20">
+            JV
           </span>
           <span className="hidden sm:inline">{profile.name}</span>
         </a>

@@ -53,13 +53,13 @@ export const experiences = [
   {
     role: 'Co-Author & Full-Stack / Embedded Developer',
     organization: 'PhD Dissertation Research Collaboration',
-    period: '2024 – Present',
+    period: 'In Progress',
     description: 'Designed a specialized full-stack Learning Management System (React.js, Node.js, Supabase/PostgreSQL) to capture live microcontroller telemetry and automate laboratory scoring logic. Benchmarked standard web server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller.',
   },
   {
     role: 'Co-Author & Mobile / Edge AI Developer',
     organization: 'Master\'s & Undergraduate Research Collaboration',
-    period: '2024 – Present',
+    period: 'In Progress',
     description: 'Deployed an optimized YOLOv8n edge AI model into a cross-platform mobile app for zero-latency, on-device particle quantification. Configured Android SDK build environments to generate release APKs and established deployment bundles for iOS targets.',
   },
 ]
@@ -142,7 +142,9 @@ export type Project = {
   image: string
   tags: string[]
   demo: string
+  demoLabel?: string
   repo: string
+  repoLabel?: string
 }
 
 /** Your work. Reorder or trim this list — the grid + filters adapt. */
@@ -183,7 +185,8 @@ export const projects: Project[] = [
     image: '/projects/mp-detect.jpg',
     tags: ['YOLOv8n', 'Edge AI', 'TFLite', 'Android SDK', 'Computer Vision'],
     demo: 'https://drive.google.com/drive/folders/1GOxtqUJavVIl_n6gHRzwyTU0WCLO-tB?usp=sharing',
-    repo: 'https://github.com/Joal0816/Microplastic-Detection',
+    demoLabel: 'View Documentation',
+    repo: 'https://github.com/MP-DETECT-CODE/Mp-Detect',
   },
   {
     title: 'Barangay Connect Web App',
@@ -240,7 +243,8 @@ export const projects: Project[] = [
     image: '/projects/industrial-oven.png',
     tags: ['CODESYS V3', 'PLC', 'Ladder Logic', 'HMI', 'Industrial Automation'],
     demo: 'https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing',
-    repo: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
+    demoLabel: 'View Documentation',
+    repo: '#',
   },
   {
     title: 'Snake OS: Embedded Interactive HMI Game',
@@ -278,6 +282,7 @@ export const projects: Project[] = [
     image: '/projects/vermicomposting.png',
     tags: ['ESP32', 'MQTT', 'IoT', 'Sensors', 'Environmental Monitoring'],
     demo: 'https://canva.link/k5sngerg431bggp',
+    demoLabel: 'View Documentation',
     repo: '#',
   },
   {
@@ -316,6 +321,7 @@ export const projects: Project[] = [
     image: '/projects/k-bin.png',
     tags: ['Qt C++', 'CMake', 'SQLite', 'Sensors', 'Desktop GUI'],
     demo: 'https://drive.google.com/drive/folders/1OVPIXr5QFTa3_Uin5QVysLJvsKLshUdQ?usp=sharing',
+    demoLabel: 'View Documentation',
     repo: '#',
   },
   {
