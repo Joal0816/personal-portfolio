@@ -184,7 +184,7 @@ export const projects: Project[] = [
     ],
     image: '/projects/mp-detect.jpg',
     tags: ['YOLOv8n', 'Edge AI', 'TFLite', 'Android SDK', 'Computer Vision'],
-    demo: 'https://drive.google.com/drive/folders/1GOxtqUJavVIl_n6gHRzwyTU0WCLO-tB?usp=sharing',
+    demo: 'https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing',
     demoLabel: 'View Documentation',
     repo: 'https://github.com/MP-DETECT-CODE/Mp-Detect',
   },
