@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
-import { GithubIcon } from '@/components/brand-icons'
+import { ArrowUpRight, User } from 'lucide-react'
 import { Reveal } from '@/components/reveal'
 import { ProjectModal } from '@/components/project-modal'
 import {
@@ -41,9 +40,13 @@ export function Projects() {
           <h2 className="max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">
             Selected work I&apos;m proud of.
           </h2>
+          <p className="mt-4 max-w-xl text-pretty text-muted-foreground">
+            A collection of projects spanning embedded systems, full-stack development,
+            and edge AI — each solving real problems.
+          </p>
         </Reveal>
 
-        {/* Category filter pills */}
+        {/* Filter pills */}
         <Reveal delay={80}>
           <div className="mt-8 flex flex-wrap gap-2" role="tablist" aria-label="Filter projects by category">
             {filters.map((f) => {
@@ -56,9 +59,9 @@ export function Projects() {
                   aria-selected={isActive}
                   onClick={() => setFilter(f)}
                   className={cn(
-                    'rounded-full border px-3.5 py-1.5 font-mono text-xs transition-all duration-200',
+                    'rounded-full border px-4 py-1.5 font-mono text-xs transition-all duration-200',
                     isActive
-                      ? 'border-primary bg-primary text-primary-foreground'
+                      ? 'border-primary bg-primary text-primary-foreground shadow-sm shadow-primary/20'
                       : 'border-border bg-transparent text-muted-foreground hover:border-primary/40 hover:text-foreground',
                   )}
                 >
@@ -69,18 +72,20 @@ export function Projects() {
           </div>
         </Reveal>
 
+        {/* Project grid */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           {visible.map((project, i) => (
             <Reveal as="article" key={project.title} delay={i * 60}>
               <button
                 type="button"
                 onClick={() => openProject(project)}
-                className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                className="group flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-card text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
+                {/* Image */}
                 <div className="relative aspect-[16/10] overflow-hidden border-b border-border bg-muted">
                   <Image
                     src={project.image || '/placeholder.svg'}
-                    alt={`${project.title} interface preview`}
+                    alt={`${project.title} preview`}
                     fill
                     sizes="(max-width: 640px) 100vw, 50vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -90,26 +95,42 @@ export function Projects() {
                   </span>
                 </div>
 
+                {/* Content */}
                 <div className="flex flex-1 flex-col p-6">
                   <h3 className="text-xl font-semibold tracking-tight transition-colors group-hover:text-primary">
                     {project.title}
                   </h3>
-                  <p className="mt-2 flex-1 text-pretty leading-relaxed text-muted-foreground">
+                  <p className="mt-2 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">
                     {project.description}
                   </p>
 
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
+                  {/* Role */}
+                  {project.role && (
+                    <p className="mt-3 flex items-center gap-1.5 font-mono text-xs text-primary/80">
+                      <User className="size-3" />
+                      {project.role}
+                    </p>
+                  )}
+
+                  {/* Tags */}
+                  <ul className="mt-4 flex flex-wrap gap-1.5">
+                    {project.tags.slice(0, 4).map((tag) => (
                       <li
                         key={tag}
-                        className="rounded-full border border-border px-2.5 py-0.5 font-mono text-xs text-muted-foreground"
+                        className="rounded-md border border-border px-2 py-0.5 font-mono text-[0.7rem] text-muted-foreground"
                       >
                         {tag}
                       </li>
                     ))}
+                    {project.tags.length > 4 && (
+                      <li className="rounded-md border border-border px-2 py-0.5 font-mono text-[0.7rem] text-muted-foreground">
+                        +{project.tags.length - 4}
+                      </li>
+                    )}
                   </ul>
 
-                  <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                  {/* View details link */}
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
                     View details
                     <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
@@ -120,9 +141,11 @@ export function Projects() {
         </div>
 
         {visible.length === 0 && (
-          <p className="mt-10 text-center font-mono text-sm text-muted-foreground">
-            No projects in this category yet.
-          </p>
+          <div className="mt-10 rounded-xl border border-border bg-card p-12 text-center">
+            <p className="font-mono text-sm text-muted-foreground">
+              No projects in this category yet.
+            </p>
+          </div>
         )}
       </div>
 

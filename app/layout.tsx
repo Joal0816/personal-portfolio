@@ -16,10 +16,36 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Joseph Vergara — Software & Embedded Systems Enthusiast',
+  title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
   description:
-    'Portfolio of Joseph Vergara, a software engineer and embedded systems enthusiast building fast, accessible, and thoughtful web experiences.',
-  generator: 'v0.app',
+    'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions. Based in Iligan City, Philippines.',
+  keywords: [
+    'embedded systems',
+    'full-stack developer',
+    'edge AI',
+    'IoT',
+    'ESP32',
+    'microcontroller',
+    'React',
+    'Next.js',
+    'Joseph Vergara',
+  ],
+  authors: [{ name: 'Joseph Vergara' }],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://joalvergs.tech',
+    siteName: 'Joseph Vergara Portfolio',
+    title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
+    description:
+      'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
+    description:
+      'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions.',
+  },
   icons: {
     icon: [
       { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
