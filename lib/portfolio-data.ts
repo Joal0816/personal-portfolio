@@ -163,7 +163,7 @@ export const projects: Project[] = [
     ],
     image: '/projects/manual-interface.png',
     tags: ['React.js', 'Node.js', 'Supabase', 'PostgreSQL', 'ESP32-P4', 'IoT'],
-    demo: 'https://www.miow-lms.ids-ter.online',
+    demo: 'https://miow-lms.ter-ids.online/auth',
     repo: 'https://github.com/MIOW-CODES/lms',
   },
   {
@@ -183,7 +183,7 @@ export const projects: Project[] = [
     image: '/projects/mp-detect.jpg',
     tags: ['YOLOv8n', 'Edge AI', 'TFLite', 'Android SDK', 'Computer Vision'],
     demo: 'https://drive.google.com/drive/folders/1GOxtqUJavVIl_n6gHRzwyTU0WCLO-tB?usp=sharing',
-    repo: 'https://github.com/MP-DETECT-CODE',
+    repo: 'https://github.com/Joal0816/Microplastic-Detection',
   },
   {
     title: 'Barangay Connect Web App',
@@ -240,7 +240,7 @@ export const projects: Project[] = [
     image: '/projects/industrial-oven.png',
     tags: ['CODESYS V3', 'PLC', 'Ladder Logic', 'HMI', 'Industrial Automation'],
     demo: 'https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing',
-    repo: '#',
+    repo: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
   },
   {
     title: 'Snake OS: Embedded Interactive HMI Game',
@@ -259,7 +259,7 @@ export const projects: Project[] = [
     image: '/projects/snake-os.png',
     tags: ['C', 'Renesas RA6M3', 'RT-Thread', 'LVGL', 'RTOS'],
     demo: 'https://www.hackster.io/josephalanvergara/snake-os-interactive-hmi-game-on-rt-thread-f8b988',
-    repo: 'https://github.com/josephalanvergara/snake-os',
+    repo: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
   },
   {
     title: 'IoT Vermicomposting Monitor',
