@@ -1,4 +1,8 @@
-allowBuilds:
-  msw: set this to true or false
+overrides:
+  hono: 4.12.25
+
+onlyBuiltDependencies:
+  - msw
+
 minimumReleaseAgeExclude:
   - resend@6.27.0
