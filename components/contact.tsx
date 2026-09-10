@@ -9,12 +9,6 @@ import { Reveal } from '@/components/reveal'
 
 type Errors = Partial<Record<'name' | 'email' | 'message', string>>
 
-// Replace with your Formspree form ID: https://formspree.io
-// 1. Go to formspree.io and create a free account
-// 2. Create a new form and copy the form ID
-// 3. Paste it below
-const FORMSPREE_ID = 'YOUR_FORMSPREE_ID'
-
 export function Contact() {
   const [values, setValues] = useState({ name: '', email: '', message: '' })
   const [errors, setErrors] = useState<Errors>({})
@@ -39,34 +33,29 @@ export function Contact() {
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
-    // If Formspree is configured, send via API
-    if (FORMSPREE_ID !== 'YOUR_FORMSPREE_ID') {
-      setSending(true)
-      try {
-        const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: values.name,
-            email: values.email,
-            message: values.message,
-          }),
-        })
-        if (res.ok) {
-          setSubmitted(true)
-          setValues({ name: '', email: '', message: '' })
-        } else {
-          // Fallback to mailto
-          fallbackMailto()
-        }
-      } catch {
+    setSending(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: values.name,
+          email: values.email,
+          message: values.message,
+        }),
+      })
+
+      if (res.ok) {
+        setSubmitted(true)
+        setValues({ name: '', email: '', message: '' })
+      } else {
+        // Fallback to mailto
         fallbackMailto()
-      } finally {
-        setSending(false)
       }
-    } else {
-      // Fallback: open mail client
+    } catch {
       fallbackMailto()
+    } finally {
+      setSending(false)
     }
   }
 
