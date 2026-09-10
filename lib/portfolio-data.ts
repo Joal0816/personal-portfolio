@@ -66,13 +66,13 @@ export const experiences = [
 
 /** Certifications and trainings */
 export const certifications = [
-  { name: 'AI Career Readiness Training', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'August 20, 2026' },
-  { name: 'Quantum Circuits as Pictures: An Introduction to ZX Calculus', issuer: 'Zoom Meeting, Webinar', date: 'March 20, 2026' },
-  { name: 'Permaculture Webinar "From Code to Crops"', issuer: 'Zoom Meeting, Webinar', date: 'December 22, 2025' },
-  { name: 'TechShowcase 2025 Innovation in Application Development and Emerging Technologies', issuer: 'PRISM Mini theater, MSU-IIT, Iligan City', date: 'December 17, 2025' },
-  { name: 'my.ComApps Technology Symposium and Exhibit on RT-Thread Based Technology', issuer: '4th floor CCS Building, MSU-IIT, Iligan City', date: 'November 24-25, 2025' },
-  { name: 'Seize Your Opportunity Internships and OJTs Workshop!', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'November 24, 2025' },
-  { name: 'Software Freedom Day 2023', issuer: 'CCS Building, MSU-IIT, Iligan City', date: 'September 16, 2023' },
+  { name: 'AI Career Readiness Training', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'August 20, 2026', image: '/certificates/TECH/AI Career Readiness Training.png' },
+  { name: 'Quantum Circuits as Pictures: An Introduction to ZX Calculus', issuer: 'Zoom Meeting, Webinar', date: 'March 20, 2026', image: '/certificates/TECH/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.pdf' },
+  { name: 'Permaculture Webinar "From Code to Crops"', issuer: 'Zoom Meeting, Webinar', date: 'December 22, 2025', image: '/certificates/TECH/Permaculture Webinar \u201cFrom Code to Crops\u201d.png' },
+  { name: 'TechShowcase 2025 Innovation in Application Development and Emerging Technologies', issuer: 'PRISM Mini theater, MSU-IIT, Iligan City', date: 'December 17, 2025', image: '/certificates/TECH/techshowcase-2025.jpg' },
+  { name: 'my.ComApps Technology Symposium and Exhibit on RT-Thread Based Technology', issuer: '4th floor CCS Building, MSU-IIT, Iligan City', date: 'November 24-25, 2025', image: '/certificates/TECH/my-comapps-tech-symposium.jpg' },
+  { name: 'Seize Your Opportunity Internships and OJTs Workshop!', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'November 24, 2025', image: '/certificates/TECH/Seize Your Opportunity Internships and OJTs Workshop!.png' },
+  { name: 'Software Freedom Day 2023', issuer: 'CCS Building, MSU-IIT, Iligan City', date: 'September 16, 2023', image: '/certificates/TECH/Software Freedom Day 2023.png' },
 ]
 
 /** Leadership activities */
