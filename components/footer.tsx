@@ -1,4 +1,4 @@
-import { ArrowUp, Heart } from 'lucide-react'
+import { ArrowUp } from 'lucide-react'
 import { profile } from '@/lib/portfolio-data'
 import { GithubIcon, LinkedinIcon } from '@/components/brand-icons'
 
@@ -11,9 +11,6 @@ export function Footer() {
           <div className="text-center sm:text-left">
             <p className="font-mono text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} {profile.fullName}
-            </p>
-            <p className="mt-1 flex items-center justify-center gap-1 font-mono text-xs text-muted-foreground/60 sm:justify-start">
-              Built with <Heart className="size-3 text-primary" /> using Next.js
             </p>
           </div>
 
