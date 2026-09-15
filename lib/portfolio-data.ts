@@ -66,6 +66,7 @@ export const experiences = [
 
 /** Certifications and trainings */
 export const certifications = [
+  { name: 'IEEE Sumpai Hackathon 2026', issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City', date: 'September 14, 2026', image: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg' },
   { name: 'AI Career Readiness Training', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'August 20, 2026', image: '/certificates/TECH/AI Career Readiness Training.png' },
   { name: 'Quantum Circuits as Pictures: An Introduction to ZX Calculus', issuer: 'Zoom Meeting, Webinar', date: 'March 20, 2026', image: '/certificates/TECH/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.pdf' },
   { name: 'Permaculture Webinar "From Code to Crops"', issuer: 'Zoom Meeting, Webinar', date: 'December 22, 2025', image: '/certificates/TECH/Permaculture Webinar \u201cFrom Code to Crops\u201d.png' },
@@ -191,20 +192,21 @@ export const projects: Project[] = [
   {
     title: 'Barangay Connect Web App',
     category: 'Web Development',
-    role: 'Full-Stack Developer — Web Development, GitHub',
+    role: 'Full-Stack Developer — 2nd Best Innovation, 3rd Best Pitch at TechShowcase 2025',
     description:
-      'A full-stack portal streamlining local public service requests, document generation, and community reporting.',
+      'A full-stack community management platform streamlining barangay governance with incident reporting, document requests, and real-time polls.',
     longDescription:
-      'Built a full-stack portal streamlining local public service requests, document generation, and real-time community reporting. Features self-service document requests, incident logging, real-time status tracking, and announcement feeds for community members and barangay officials.',
+      'Built a full-stack community management platform with React, Supabase, and PostgreSQL that enables residents to report incidents, request documents, vote in polls, and receive real-time notifications — streamlining barangay governance through a modern, accessible web application. Won 2nd Best Innovation and 3rd Best Pitch at TechShowcase 2025, MSU-IIT.',
     features: [
-      'Full-stack portal with real-time community reporting.',
-      'Self-service document request and generation system.',
-      'Incident reporting and announcement feeds.',
-      'Administrative dashboard for municipal staff.',
+      'Full-stack platform with Supabase Auth and PostgreSQL.',
+      'Incident reporting with photo uploads via Supabase Storage.',
+      'Document request system with real-time status tracking.',
+      'Community polls with voting and results visualization.',
+      'Admin dashboard with analytics and user management.',
     ],
     image: '/projects/barangay-connect.png',
-    tags: ['Full-Stack', 'JavaScript', 'Community Portal', 'GitHub'],
-    demo: '#',
+    tags: ['React', 'Supabase', 'PostgreSQL', 'Vercel', 'Full-Stack'],
+    demo: 'https://barangay-connect.joalvergs.tech',
     repo: 'https://github.com/Joal0816/Barangay-Connect',
   },
   {
