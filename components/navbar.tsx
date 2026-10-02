@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Cpu, Terminal, FileDown } from 'lucide-react'
 import { navLinks, profile } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
@@ -14,13 +14,13 @@ export function Navbar() {
 
   useEffect(() => {
     setIsMounted(true)
-    const onScroll = () => setScrolled(window.scrollY > 8)
+    const onScroll = () => setScrolled(window.scrollY > 12)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Track which section is currently in view
+  // Track active section in view
   useEffect(() => {
     const ids = navLinks.map((l) => l.href.replace('#', ''))
     const sections = ids
@@ -36,7 +36,7 @@ export function Navbar() {
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
         if (visible[0]) setActive(`#${visible[0].target.id}`)
       },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+      { rootMargin: '-40% 0px -45% 0px', threshold: 0 },
     )
 
     sections.forEach((s) => observer.observe(s))
@@ -48,23 +48,42 @@ export function Navbar() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300',
         scrolled
-          ? 'border-b border-border bg-background/80 shadow-sm backdrop-blur-xl'
-          : 'border-b border-transparent bg-transparent',
+          ? 'border-b border-border/70 bg-background/85 shadow-lg shadow-black/20 backdrop-blur-xl'
+          : 'border-b border-border/20 bg-background/40 backdrop-blur-md',
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        {/* Logo / Name */}
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+        {/* Brand / Callsign */}
         <a
           href="#top"
-          className="group flex items-center gap-2.5 font-mono text-sm font-medium tracking-tight text-foreground"
+          className="group flex items-center gap-2.5 font-mono text-sm tracking-tight text-foreground"
         >
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground transition-all duration-300 group-hover:rotate-6 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-primary/20">
-            JV
-          </span>
-          <span className="hidden sm:inline">{profile.name}</span>
+          <div className="relative flex size-8 items-center justify-center rounded border border-primary/40 bg-primary/10 text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_15px_rgba(34,211,238,0.35)]">
+            <Cpu className="size-4 transition-transform group-hover:scale-110" />
+            <span className="absolute -bottom-0.5 -right-0.5 size-1.5 rounded-full bg-primary" />
+          </div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-1.5 font-bold tracking-wider">
+              <span>{profile.name.toUpperCase()}</span>
+              <span className="text-[10px] text-primary font-normal hidden sm:inline">[EMBEDDED]</span>
+            </div>
+            <span className="text-[9px] font-mono text-muted-foreground hidden sm:block">
+              MSU-IIT // 4TH YR COMAPPS
+            </span>
+          </div>
         </a>
 
-        {/* Desktop nav */}
+        {/* Status Beacon - Hidden on small screens */}
+        <div className="hidden lg:flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1 font-mono text-[11px] text-muted-foreground">
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+          </span>
+          <span className="text-foreground/90 font-medium">STATUS:</span>
+          <span className="text-primary font-mono">SYS_ONLINE // LOW-LATENCY</span>
+        </div>
+
+        {/* Desktop nav links */}
         <div className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
             const isActive = active === link.href
@@ -73,28 +92,34 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'group relative rounded-lg px-3.5 py-2 font-mono text-sm transition-colors duration-200',
+                  'group relative rounded-md px-3 py-1.5 font-mono text-xs tracking-wider transition-all duration-200',
                   isActive
-                    ? 'text-foreground'
-                    : 'text-muted-foreground hover:text-foreground',
+                    ? 'text-primary font-semibold bg-primary/10 border border-primary/30'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40 border border-transparent',
                 )}
               >
-                {link.label}
-                <span
-                  className={cn(
-                    'absolute inset-x-3.5 -bottom-0.5 h-px origin-left bg-primary transition-transform duration-300',
-                    isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100',
-                  )}
-                />
+                <span className="mr-1 text-[10px] text-primary/60 group-hover:text-primary">
+                  {link.code || '00'}
+                </span>
+                {link.label.toUpperCase()}
               </a>
             )
           })}
-          <div className="ml-2">
+
+          <div className="ml-2 flex items-center gap-2 border-l border-border/60 pl-3">
+            <a
+              href="/resume.pdf"
+              download
+              className="inline-flex items-center gap-1.5 rounded border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-xs text-primary transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+            >
+              <FileDown className="size-3" />
+              <span>RESUME</span>
+            </a>
             <ThemeToggle />
           </div>
         </div>
 
-        {/* Mobile nav toggle */}
+        {/* Mobile controls */}
         <div className="flex items-center gap-2 md:hidden">
           <ThemeToggle />
           <button
@@ -102,7 +127,7 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
-            className="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-secondary/40 text-foreground transition-all duration-200 hover:bg-accent active:scale-95"
+            className="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-secondary/50 text-foreground transition-all duration-200 hover:bg-accent active:scale-95"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -112,26 +137,43 @@ export function Navbar() {
       {/* Mobile menu dropdown */}
       <div
         className={cn(
-          'overflow-hidden border-t border-border bg-background/95 backdrop-blur-xl transition-all duration-300 md:hidden',
-          isMounted && open ? 'max-h-64 opacity-100' : 'max-h-0 opacity-0',
+          'overflow-hidden border-t border-border bg-background/95 backdrop-blur-2xl transition-all duration-300 md:hidden',
+          isMounted && open ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0',
         )}
       >
-        <div className="mx-auto flex max-w-6xl flex-col px-6 py-2">
+        <div className="mx-auto flex max-w-6xl flex-col px-6 py-4 space-y-1">
+          <div className="mb-2 flex items-center justify-between pb-2 border-b border-border/50 text-[10px] font-mono text-muted-foreground">
+            <span>SYS_NAV // CORE</span>
+            <span className="text-emerald-500 font-bold">ONLINE</span>
+          </div>
+
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
               className={cn(
-                'rounded-lg px-3 py-3 font-mono text-sm transition-colors duration-200',
+                'flex items-center justify-between rounded-md px-3 py-2 font-mono text-sm transition-colors',
                 active === link.href
-                  ? 'text-primary'
-                  : 'text-muted-foreground hover:text-foreground',
+                  ? 'bg-primary/10 text-primary font-medium'
+                  : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
               )}
             >
-              {link.label}
+              <span>{link.label}</span>
+              <span className="text-xs text-primary/60 font-mono">[{link.code || '00'}]</span>
             </a>
           ))}
+
+          <div className="pt-2 border-t border-border/50 flex gap-2">
+            <a
+              href="/resume.pdf"
+              download
+              className="flex flex-1 items-center justify-center gap-2 rounded border border-primary/40 bg-primary/10 py-2 font-mono text-xs text-primary font-medium"
+            >
+              <FileDown className="size-3.5" />
+              DOWNLOAD RESUME
+            </a>
+          </div>
         </div>
       </div>
     </header>

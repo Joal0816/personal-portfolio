@@ -1,136 +1,262 @@
 /**
  * ------------------------------------------------------------------
- * PORTFOLIO CONTENT
+ * PORTFOLIO CONTENT - JOSEPH ALAN B. VERGARA
  * ------------------------------------------------------------------
- * This is the single source of truth for everything shown on the site.
+ * Single source of truth for portfolio telemetry, projects, skills,
+ * and academic / research achievements.
  * ------------------------------------------------------------------
  */
 
-/** Top-level personal info shown in the hero, contact section, and navbar. */
 export const profile = {
   name: 'Joseph Vergara',
+  callsign: 'JOAL',
   fullName: 'Joseph Alan B. Vergara',
-  role: 'Embedded Systems & Full-Stack Developer',
+  role: 'Embedded Systems & Edge AI Engineer',
+  subRole: 'Firmware // TinyML // Full-Stack Telemetry',
+  institution: 'Mindanao State University – Iligan Institute of Technology',
+  department: 'College of Computer Studies • Dept. of Computer Applications',
   location: 'Iligan City, Philippines',
   address: 'Phase II-Doña Maria Subd, Tubod, Lanao Del Norte',
   email: 'josephalan.vergara@g.msuiit.edu.ph',
   phone: '+63 947-589-2995',
-  website: 'https://www.joalvergs.tech/',
-  tagline: 'Building at the intersection of hardware and software.',
+  website: 'https://joalvergs.tech',
+  status: 'OPERATIONAL // 4TH YEAR EMBEDDED SYS',
+  tagline: 'Engineering at the intersection of bare-metal silicon, real-time operating systems, and edge intelligence.',
   intro:
-    '4th-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT (CGPA: 1.96269), specializing in microcontroller firmware, Edge AI deployment, and full-stack telemetry dashboards.',
-  bio: "I'm Joseph Alan B. Vergara — an embedded systems and full-stack developer with a strong foundation in low-level hardware integration, Edge AI, and web development. Currently completing my BS in Computer Applications (Major in Embedded Systems) at Mindanao State University – Iligan Institute of Technology (MSU-IIT), I've contributed to academic and dissertation projects spanning deterministic sensor telemetry, computer vision on mobile/edge devices, IoT automation, and RTOS-based interactive systems.",
+    '4th-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT (CGPA: 1.96269). Architecting deterministic firmware in C/C++, FreeRTOS multitasking pipelines, TinyML edge inference (YOLOv8n / MediaPipe), and full-stack sensor telemetry.',
+  bio: "I'm Joseph Alan B. Vergara ('Joal') — an embedded systems developer and edge AI researcher based in Iligan City, Philippines. Currently completing my BS Computer Applications (Major in Embedded Systems) at MSU-IIT, I focus on low-level firmware engineering (STM32, ESP32, AVR, Renesas RA6M3), RTOS deterministic task scheduling (FreeRTOS, RT-Thread), edge computer vision with zero cloud latency, and full-stack telemetry dashboards.",
   socials: {
     github: 'https://github.com/Joal0816',
     linkedin: 'https://www.linkedin.com/in/joseph-alan-vergara-638803348/',
     email: 'https://mail.google.com/mail/?view=cm&fs=1&to=josephalan.vergara@g.msuiit.edu.ph',
   },
+  telemetry: {
+    cgpa: '1.96269',
+    yearLevel: '4th Year (Senior)',
+    targetArchs: ['ARM Cortex-M', 'ESP32-P4 / Xtensa', 'AVR 8-bit', 'Renesas RA6M3', 'Intel 8051'],
+    rtos: ['FreeRTOS', 'RT-Thread OS'],
+    protocols: ['I2C', 'SPI', 'UART/USART', 'CAN', 'MQTT', 'HTTP/REST', 'WebSockets'],
+    frameworks: ['Next.js 15/16', 'React 19', 'OpenCV', 'MediaPipe', 'YOLOv8', 'Flutter', 'Tailwind CSS'],
+  },
 }
 
-/** Education entries rendered in the About section. */
 export const education = [
   {
     degree: 'BS Computer Applications',
     major: 'Major in Embedded Systems',
-    school: 'Mindanao State University – Iligan Institute of Technology',
+    school: 'Mindanao State University – Iligan Institute of Technology (MSU-IIT)',
     period: 'Aug 2023 – Present',
     location: 'Iligan City, Philippines',
     gpa: 'CGPA: 1.96269',
-    description: '4th Year Student. Relevant coursework: Embedded Systems, Microcontroller Programming, IoT, Computer Vision, Full-Stack Development, PLC Programming, Digital Logic Design.',
+    status: 'In Progress // 4th Year Senior',
+    description:
+      'Specialized curriculum in Microcontroller Programming, FreeRTOS & Real-Time Kernels, Edge AI & Computer Vision, Industrial PLC Automation (CODESYS), IoT Telemetry, and Digital Logic Design.',
+    highlights: [
+      'Focus: Deterministic RTOS task architectures, low-power state machines, and bare-metal register manipulation.',
+      'Active researcher on multi-author PhD dissertation and Master’s research publications.',
+    ],
   },
   {
-    degree: 'Senior High School',
-    major: 'ABM Strand',
+    degree: 'Senior High School Diploma',
+    major: 'Accountancy, Business & Management (ABM)',
     school: 'MSU-IIT Integrated Developmental School',
     period: '2021 – 2023',
     location: 'A. Bonifacio Ave, Brgy. Tibanga, Iligan City',
-    description: 'Academic Honors recipient.',
+    status: 'Graduated with Academic Honors',
+    description: 'Developed strong analytical and quantitative modeling foundations alongside independent engineering projects.',
+    highlights: ['Academic Honors recipient.'],
   },
 ]
 
-/** Experience / research entries. */
 export const experiences = [
   {
     role: 'Co-Author & Full-Stack / Embedded Developer',
     organization: 'PhD Dissertation Research Collaboration',
-    period: 'In Progress',
-    description: 'Designed a specialized full-stack Learning Management System (React.js, Node.js, Supabase/PostgreSQL) to capture live microcontroller telemetry and automate laboratory scoring logic. Benchmarked standard web server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller.',
+    period: '2024 – Present',
+    badge: 'Research Publication',
+    description:
+      'Designed a full-stack Learning Management System (React.js, Node.js, Supabase/PostgreSQL) to ingest live microcontroller hardware telemetry and automate laboratory scoring logic with zero manual intervention. Benchmarked standard cloud server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller.',
+    tags: ['ESP32-P4', 'Microcontroller Telemetry', 'React', 'Node.js', 'PostgreSQL', 'Edge Benchmarking'],
   },
   {
     role: 'Co-Author & Mobile / Edge AI Developer',
-    organization: 'Master\'s & Undergraduate Research Collaboration',
-    period: 'In Progress',
-    description: 'Deployed an optimized YOLOv8n edge AI model into a cross-platform mobile app for zero-latency, on-device particle quantification. Configured Android SDK build environments to generate release APKs and established deployment bundles for iOS targets.',
+    organization: "Master's & Undergraduate Research Collaboration",
+    period: '2024 – Present',
+    badge: 'Edge AI Research',
+    description:
+      'Quantized and deployed an optimized YOLOv8n edge AI model into a cross-platform mobile application for zero-latency, on-device microplastic particle quantification. Configured native Android SDK build toolchains, automated OpenCV preprocessing pipelines, and established on-device inference benchmarking.',
+    tags: ['YOLOv8n', 'Edge Impulse', 'TFLite', 'Android SDK', 'Computer Vision', 'Mobile AI'],
   },
 ]
 
-/** Certifications and trainings */
 export const certifications = [
-  { name: 'IEEE Sumpai Hackathon 2026', issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City', date: 'September 14, 2026', image: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg' },
-  { name: 'AI Career Readiness Training', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'August 20, 2026', image: '/certificates/TECH/AI Career Readiness Training.png' },
-  { name: 'Quantum Circuits as Pictures: An Introduction to ZX Calculus', issuer: 'Zoom Meeting, Webinar', date: 'March 20, 2026', image: '/certificates/TECH/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.pdf' },
-  { name: 'Permaculture Webinar "From Code to Crops"', issuer: 'Zoom Meeting, Webinar', date: 'December 22, 2025', image: '/certificates/TECH/Permaculture Webinar \u201cFrom Code to Crops\u201d.png' },
-  { name: 'TechShowcase 2025 Innovation in Application Development and Emerging Technologies', issuer: 'PRISM Mini theater, MSU-IIT, Iligan City', date: 'December 17, 2025', image: '/certificates/TECH/techshowcase-2025.jpg' },
-  { name: 'my.ComApps Technology Symposium and Exhibit on RT-Thread Based Technology', issuer: '4th floor CCS Building, MSU-IIT, Iligan City', date: 'November 24-25, 2025', image: '/certificates/TECH/my-comapps-tech-symposium.jpg' },
-  { name: 'Seize Your Opportunity Internships and OJTs Workshop!', issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City', date: 'November 24, 2025', image: '/certificates/TECH/Seize Your Opportunity Internships and OJTs Workshop!.png' },
-  { name: 'Software Freedom Day 2023', issuer: 'CCS Building, MSU-IIT, Iligan City', date: 'September 16, 2023', image: '/certificates/TECH/Software Freedom Day 2023.png' },
+  {
+    name: 'IEEE Sumpai Hackathon 2026',
+    issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City',
+    date: 'September 14, 2026',
+    image: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
+    category: 'Hackathon & AI',
+  },
+  {
+    name: 'AI Career Readiness Training',
+    issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City',
+    date: 'August 20, 2026',
+    image: '/certificates/TECH/AI Career Readiness Training.png',
+    category: 'Edge AI & Professional',
+  },
+  {
+    name: 'Quantum Circuits as Pictures: An Introduction to ZX Calculus',
+    issuer: 'Zoom Meeting, Webinar Series',
+    date: 'March 20, 2026',
+    image: '/certificates/TECH/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.pdf',
+    category: 'Quantum Computing',
+  },
+  {
+    name: 'Permaculture Webinar "From Code to Crops"',
+    issuer: 'Zoom Meeting, Webinar Series',
+    date: 'December 22, 2025',
+    image: '/certificates/TECH/Permaculture Webinar \u201cFrom Code to Crops\u201d.png',
+    category: 'Smart Agriculture & IoT',
+  },
+  {
+    name: 'TechShowcase 2025 Innovation in Application Development and Emerging Technologies',
+    issuer: 'PRISM Mini theater, MSU-IIT, Iligan City',
+    date: 'December 17, 2025',
+    image: '/certificates/TECH/techshowcase-2025.jpg',
+    category: 'Innovation Award',
+  },
+  {
+    name: 'my.ComApps Technology Symposium and Exhibit on RT-Thread Based Technology',
+    issuer: '4th floor CCS Building, MSU-IIT, Iligan City',
+    date: 'November 24-25, 2025',
+    image: '/certificates/TECH/my-comapps-tech-symposium.jpg',
+    category: 'RTOS & Embedded',
+  },
+  {
+    name: 'Seize Your Opportunity Internships and OJTs Workshop!',
+    issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City',
+    date: 'November 24, 2025',
+    image: '/certificates/TECH/Seize Your Opportunity Internships and OJTs Workshop!.png',
+    category: 'Professional Dev',
+  },
+  {
+    name: 'Software Freedom Day 2023',
+    issuer: 'CCS Building, MSU-IIT, Iligan City',
+    date: 'September 16, 2023',
+    image: '/certificates/TECH/Software Freedom Day 2023.png',
+    category: 'Open Source',
+  },
 ]
 
-/** Leadership activities */
 export const leadership = [
   {
     role: 'College of Computer Studies Executive Council',
     organization: 'Sports & Development Affairs – Undersecretary',
     period: 'Aug 2025 – May 2026',
-    description: 'MSU-Iligan Institute of Technology, Iligan City, Philippines',
+    description: 'Directed student engagement, inter-collegiate tournaments, and technical community sports initiatives at MSU-IIT.',
   },
   {
     role: 'Titans Esports',
-    organization: 'Mobile Legends BangBang Team Captain',
+    organization: 'Mobile Legends: Bang Bang Team Captain',
     period: '2021 – 2023',
-    description: 'MSU-Iligan Institute of Technology, Iligan City, Philippines',
+    description: 'Competitive tactical leadership, communication orchestration, and high-pressure team execution in regional tournaments.',
   },
 ]
 
-/** Skill buckets rendered in the About section. */
 export const skillGroups = [
   {
-    category: 'Programming Languages',
-    skills: ['C', 'C++', 'Python', 'JavaScript', 'TypeScript', 'Java', 'PLC (Ladder Logic)', 'Assembly', 'Bash/Shell Scripting', 'CSS'],
+    category: 'Embedded Systems & RTOS',
+    tag: 'FIRMWARE_CORE',
+    skills: [
+      'C',
+      'C++',
+      'FreeRTOS',
+      'RT-Thread RTOS',
+      'STM32 (Blue Pill / Cortex-M3)',
+      'ESP32 / ESP32-P4',
+      'Renesas RA6M3',
+      'ATmega328P / AVR',
+      'Intel 8051',
+      'Bare-Metal Firmware',
+      'Task Synchronization & Queues',
+      'Hardware Timers & Interrupts (ISR)',
+    ],
   },
   {
-    category: 'Operating Systems & CLI',
-    skills: ['Linux (Arch Linux, CachyOS)', 'Unix Shell & CLI', 'Zsh', 'Bash', 'Dotfiles', 'RT-Thread RTOS'],
+    category: 'Edge AI & Computer Vision',
+    tag: 'TINYML_INFERENCE',
+    skills: [
+      'YOLOv8n / Ultralytics',
+      'MediaPipe Pose Kinematics',
+      'OpenCV',
+      'Edge Impulse',
+      'Roboflow',
+      'TensorFlow Lite / Micro',
+      'MLX90640 Thermal Radiometry',
+      'Model Quantization (INT8/FP16)',
+      'Zero-Latency Mobile Inference',
+    ],
   },
   {
-    category: 'Networking & Web Infrastructure',
-    skills: ['DNS Management (A, CNAME, TXT records, Nameservers)', 'Custom Domain Config', 'SSL/TLS', 'Vercel', 'Railway', 'Hostinger', 'Cisco Packet Tracer'],
+    category: 'Protocols & Hardware Design',
+    tag: 'BUS_&_CIRCUITS',
+    skills: [
+      'I2C',
+      'SPI',
+      'UART / USART',
+      'CAN Bus',
+      'MQTT / Mosquitto',
+      'PLC Ladder Logic (CODESYS V3)',
+      'PCB Layout & Soldering',
+      'Oscilloscope & Logic Analyzers',
+      'Rotary Encoders & OLEDs (SSD1306)',
+      'Sensor Fusion (IR, Inductive, Ultrasonic)',
+    ],
   },
   {
-    category: 'Software & Frameworks',
-    skills: ['VS Code', 'Git', 'GitHub', 'Node.js', 'React.js', 'Express.js', 'Pictoblox', 'CodeBlocks', 'Microchip (ATMEL) Studio', 'Arduino IDE', 'Google Colab', 'Edge Impulse', 'TensorFlow', 'MATLAB', 'MARIE.js', 'Vivado', 'RT-Thread Studio', 'SquareLine Studio', 'MongoDB', 'Supabase', 'SQLite', 'CMake'],
+    category: 'Web & Telemetry Architecture',
+    tag: 'FULLSTACK_IOT',
+    skills: [
+      'TypeScript',
+      'Next.js 15/16',
+      'React 19',
+      'Node.js',
+      'Tailwind CSS v4',
+      'Supabase',
+      'PostgreSQL',
+      'SQLite',
+      'REST APIs & WebSockets',
+      'Flutter (Web & Android)',
+    ],
   },
   {
-    category: 'Hardware',
-    skills: ['Microcontrollers (8051, ATmega328P, ATmega2560, ESP8266, ESP32)', 'Field Programmable Gate Arrays (FPGAs)', 'Basic & Advanced Electronics', 'Test Equipment (Multimeter, Oscilloscope)', 'PCB Layout & Design', 'Prototyping & Simulation', 'Soldering', 'Computer & Laptop Hardware Repair'],
+    category: 'Toolchains, DevOps & OS',
+    tag: 'SYS_ENVIRONMENT',
+    skills: [
+      'Linux (Arch Linux, CachyOS)',
+      'Git & GitHub CI/CD',
+      'CMake / Makefiles',
+      'Microchip (ATMEL) Studio',
+      'RT-Thread Studio',
+      'SquareLine Studio / LVGL',
+      'VS Code / Neovim',
+      'Cloudflare Pages / Vercel',
+      'Bash & Zsh Scripting',
+    ],
   },
 ]
 
-/**
- * Project category used for the filter pills in the Projects section.
- */
 export type ProjectCategory =
   | 'Full-Stack & Embedded'
   | 'Mobile & Edge AI'
-  | 'Web Development'
   | 'Embedded & HMI'
+  | 'Web Development'
 
-/** Ordered list of filter pills. 'All' is prepended automatically in the UI. */
 export const projectCategories: ProjectCategory[] = [
   'Full-Stack & Embedded',
   'Mobile & Edge AI',
-  'Web Development',
   'Embedded & HMI',
+  'Web Development',
 ]
 
 export type Project = {
@@ -146,92 +272,276 @@ export type Project = {
   demoLabel?: string
   repo: string
   repoLabel?: string
+  badge?: string
+  telemetrySpec?: {
+    target: string
+    protocol: string
+    latency?: string
+  }
 }
 
-/** Your work. Reorder or trim this list — the grid + filters adapt. */
 export const projects: Project[] = [
+  {
+    title: 'O.I.N.K. — Swine Thermal Fever Surveillance',
+    category: 'Full-Stack & Embedded',
+    role: 'Lead Firmware & Edge CV Developer',
+    badge: 'Live Telemetry System',
+    description:
+      'Continuous thermal screening pipeline utilizing an MLX90640 32x24 IR array on ESP32 streaming to edge CV inference and a live Flutter telemetry dashboard.',
+    longDescription:
+      'Engineered an automated non-invasive fever surveillance system for livestock biosecurity. Streams real-time 768-pixel thermal heatmaps from an MLX90640 sensor over ESP32 Wi-Fi to an edge laptop processing pipeline. Employs OpenCV false-color visualization, radiometric temperature calibration, and automated febrile threshold triggers with cross-platform Flutter Web/Android telemetry monitoring.',
+    features: [
+      'MLX90640 32x24 (768-pixel) thermal matrix streaming at 4-8 Hz over ESP32 Wi-Fi.',
+      'Edge OpenCV radiometric calibration, isotherm filtering, and thermal heatmaps.',
+      'Automated febrile state classification triggers for early swine illness intervention.',
+      'Full cross-platform telemetry monitoring deployed live via Flutter Web and Android.',
+    ],
+    image: '/projects/oink-system.png',
+    tags: ['ESP32', 'MLX90640', 'Thermal Imaging', 'Flutter', 'OpenCV', 'IoT Telemetry'],
+    demo: 'https://oink.joalvergs.tech',
+    demoLabel: 'Live Platform',
+    repo: 'https://github.com/Joal0816/oink',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'ESP32-WROOM-32',
+      protocol: 'I2C / Wi-Fi UDP Stream',
+      latency: '< 120ms pipeline',
+    },
+  },
+  {
+    title: 'Agap AI — Multimodal Emergency Triage Platform',
+    category: 'Web Development',
+    role: 'Lead Full-Stack & AI Systems Architect — IEEE Sumpai Hackathon 2026',
+    badge: 'IEEE Hackathon 2026',
+    description:
+      'Emergency response platform translating panicked SOS voice calls into structured responder situational intelligence and real-time GIS dispatch queues.',
+    longDescription:
+      'Developed during the IEEE Sumpai Hackathon 2026, Agap AI addresses 911/emergency dispatch bottlenecks during natural disasters and mass-casualty incidents. Uses multimodal speech-to-text and NLP extraction to turn unstructured audio calls into immediate dispatch telemetry: geolocation extraction, injury severity grading, hazard categorization, and interactive geospatial mapping for rapid response teams.',
+    features: [
+      'Multimodal SOS ingestion transforming frantic voice calls into structured incident logs.',
+      'NLP extraction for automated caller geolocation, injury severity, and danger levels.',
+      'Real-time GIS emergency dispatch map with instant priority queue ordering.',
+      'Designed for extreme low-bandwidth resiliency during regional network disruptions.',
+    ],
+    image: '/projects/agap-ai.jpg',
+    tags: ['Next.js', 'TypeScript', 'AI / NLP', 'GIS Mapping', 'Speech-to-Text', 'Hackathon'],
+    demo: 'https://github.com/Joal0816/agap-ai',
+    demoLabel: 'View Repository',
+    repo: 'https://github.com/Joal0816/agap-ai',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Next.js 15 & AI Engine',
+      protocol: 'WebSockets / REST',
+      latency: 'Sub-second NLP parsing',
+    },
+  },
+  {
+    title: 'BCA182 Multisensor Room Monitor',
+    category: 'Embedded & HMI',
+    role: 'Firmware & Systems Engineer',
+    badge: 'Hackster.io Published',
+    description:
+      'Real-time environmental telemetry system built on STM32 ARM Cortex-M3 (Blue Pill) running a 5-task FreeRTOS architecture with SSD1306 OLED and rotary encoder.',
+    longDescription:
+      'Architected a deterministic environmental monitoring workstation running FreeRTOS on the STM32F103C8T6 (Blue Pill). Employs a pre-emptive 5-task priority structure for sensor acquisition, SSD1306 OLED graphical rendering, rotary encoder UI navigation, serial logging, and sleep mode management. Validated with 33 unit tests and complete technical schematics published on Hackster.io.',
+    features: [
+      'Preemptive FreeRTOS 5-task priority kernel on STM32 Cortex-M3 (Blue Pill).',
+      'I2C SSD1306 OLED display driver paired with quadrature rotary encoder menu navigation.',
+      'Power-saving idle state machine with wake-on-interrupt external triggers.',
+      '33 automated unit tests validating sensor queue synchronization and telemetry integrity.',
+    ],
+    image: '/projects/room-monitor.png',
+    tags: ['FreeRTOS', 'STM32 Blue Pill', 'ARM Cortex-M3', 'C', 'I2C/SPI', 'Hackster.io'],
+    demo: 'https://www.hackster.io/554910/real-time-multisensor-room-monitoring-system-with-freertos-450a00',
+    demoLabel: 'Hackster Writeup',
+    repo: 'https://github.com/Joal0816/BCA182-RoomMonitor',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'STM32F103C8T6',
+      protocol: 'I2C / Hardware EXTI',
+      latency: 'Deterministic 5ms Tick',
+    },
+  },
+  {
+    title: 'ARUGA Fall Detection & Inactivity Monitoring',
+    category: 'Mobile & Edge AI',
+    role: 'Computer Vision & Edge AI Engineer',
+    badge: 'Biomechanical Kinematics',
+    description:
+      'Zero-dataset real-time computer vision system using 33-point MediaPipe Pose kinematics, spine inclination vectors, and inactivity timers for eldercare safety.',
+    longDescription:
+      'Engineered an edge computer vision fall-detection and prolonged inactivity monitoring system that bypasses training dataset constraints through direct kinematic vector math. Tracks MediaPipe Pose 33-point skeletal landmarks to calculate vertical centroid drop velocity and spine inclination angles, sounding emergency alerts and updating a live telemetry dashboard upon hazardous immobilization.',
+    features: [
+      'Deterministic zero-dataset kinematic analysis using MediaPipe Pose 33-point tracking.',
+      'Real-time calculation of spine inclination angles and centroid velocity vectors.',
+      'Prolonged inactivity timer with automated alert thresholds for elder safety.',
+      'Live visual telemetry dashboard with skeleton wireframe overlay and alarm state machine.',
+    ],
+    image: '/projects/aruga-system.png',
+    tags: ['Python', 'OpenCV', 'MediaPipe', 'Kinematics', 'Edge AI', 'Computer Vision'],
+    demo: 'https://github.com/Joal0816/ARUGA-fall-detection-and-inactivity-monitoring-system',
+    demoLabel: 'View Repository',
+    repo: 'https://github.com/Joal0816/ARUGA-fall-detection-and-inactivity-monitoring-system',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Edge Compute (Python/CV)',
+      protocol: 'Real-Time Video Stream',
+      latency: '30 FPS Real-Time',
+    },
+  },
   {
     title: 'Microcontroller-Based Automated Feedback System',
     category: 'Full-Stack & Embedded',
-    role: 'Co-Author & Full-Stack / Embedded Developer — PhD Dissertation Research Collaboration',
+    role: 'Co-Author & Full-Stack / Embedded Developer — PhD Research Collaboration',
+    badge: 'PhD Dissertation Research',
     description:
-      'A full-stack LMS paired with live sensor telemetry and edge hosting on ESP32-P4 for automated assessment.',
+      'Full-stack LMS paired with live sensor telemetry and edge hosting on ESP32-P4 for automated laboratory assessment.',
     longDescription:
       'Designed a specialized full-stack Learning Management System (React.js, Node.js, Supabase/PostgreSQL) to capture live microcontroller telemetry and automate laboratory scoring logic. Reduced evaluation latency and eliminated manual record-keeping errors by engineering deterministic evaluation pipelines paired with interactive instructor dashboards for instant feedback. Benchmarked standard web server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller to evaluate low-power, localized server reliability.',
     features: [
-      'Full-stack MERN LMS (React.js, Node.js, Supabase/PostgreSQL).',
-      'Real-time microcontroller telemetry capture and automated scoring.',
+      'Full-stack LMS architecture (React.js, Node.js, Supabase/PostgreSQL).',
+      'Real-time microcontroller telemetry capture and automated scoring logic.',
       'Deterministic evaluation pipelines with interactive dashboards.',
-      'Benchmarked edge deployment on ESP32-P4 vs standard servers.',
+      'Benchmarked edge deployment on ESP32-P4 vs standard cloud servers.',
     ],
     image: '/projects/manual-interface.png',
-    tags: ['React.js', 'Node.js', 'Supabase', 'PostgreSQL', 'ESP32-P4', 'IoT'],
+    tags: ['React.js', 'Node.js', 'Supabase', 'PostgreSQL', 'ESP32-P4', 'IoT Telemetry'],
     demo: 'https://miow-lms.ter-ids.online/auth',
+    demoLabel: 'Live Platform',
     repo: 'https://github.com/MIOW-CODES/lms',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'ESP32-P4 Dual Core RISC-V',
+      protocol: 'HTTP / REST Telemetry',
+      latency: '< 50ms Edge Scoring',
+    },
   },
   {
     title: 'Mobile Microplastic Detection App',
     category: 'Mobile & Edge AI',
-    role: 'Co-Author & Mobile / Edge AI Developer — Master\'s & Undergraduate Research Collaboration',
+    role: 'Co-Author & Edge AI Developer — Master’s & Undergraduate Collaboration',
+    badge: 'Published Collaboration',
     description:
-      'An on-device computer vision mobile app using optimized YOLOv8n for real-time microplastic classification.',
+      'On-device computer vision mobile app using quantized YOLOv8n for real-time microplastic classification with zero cloud latency.',
     longDescription:
       'Deployed an optimized YOLOv8n edge AI model into a cross-platform mobile app for zero-latency, on-device particle quantification. Configured Android SDK build environments to generate release APKs and established deployment bundles for iOS targets. Enhanced UI/UX flow to handle camera lifecycles, live bounding-box rendering, and research-grade inference visualization.',
     features: [
-      'Zero-latency on-device particle quantification with YOLOv8n.',
+      'Zero-latency on-device particle quantification with quantized YOLOv8n.',
       'Cross-platform deployment (Android APKs & iOS bundles).',
       'Camera lifecycle management with live bounding-box rendering.',
-      'Research-grade inference visualization.',
+      'Research-grade inference visualization and statistical reporting.',
     ],
     image: '/projects/mp-detect.jpg',
     tags: ['YOLOv8n', 'Edge AI', 'TFLite', 'Android SDK', 'Computer Vision'],
     demo: 'https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing',
     demoLabel: 'View Documentation',
     repo: 'https://github.com/MP-DETECT-CODE/Mp-Detect',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Mobile Neural Engine (NPU/GPU)',
+      protocol: 'TFLite Model Runner',
+      latency: '22ms per frame',
+    },
   },
   {
     title: 'Barangay Connect Web App',
     category: 'Web Development',
-    role: 'Full-Stack Developer — 2nd Best Innovation, 3rd Best Pitch at TechShowcase 2025',
+    role: 'Full-Stack Developer — TechShowcase 2025 Award Winner',
+    badge: '2nd Best Innovation Award',
     description:
-      'A full-stack community management platform streamlining barangay governance with incident reporting, document requests, and real-time polls.',
+      'Full-stack civic management platform streamlining local governance with incident reporting, document requests, and real-time polls.',
     longDescription:
       'Built a full-stack community management platform with React, Supabase, and PostgreSQL that enables residents to report incidents, request documents, vote in polls, and receive real-time notifications — streamlining barangay governance through a modern, accessible web application. Won 2nd Best Innovation and 3rd Best Pitch at TechShowcase 2025, MSU-IIT.',
     features: [
-      'Full-stack platform with Supabase Auth and PostgreSQL.',
+      'Full-stack platform with Supabase Auth and PostgreSQL Row Level Security.',
       'Incident reporting with photo uploads via Supabase Storage.',
       'Document request system with real-time status tracking.',
-      'Community polls with voting and results visualization.',
-      'Admin dashboard with analytics and user management.',
+      'Community polls with instant voting and results visualization.',
+      'Admin analytics dashboard with user role management.',
     ],
     image: '/projects/barangay-connect.png',
-    tags: ['React', 'Supabase', 'PostgreSQL', 'Vercel', 'Full-Stack'],
+    tags: ['React', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Vercel'],
     demo: 'https://barangay-connect.joalvergs.tech',
+    demoLabel: 'Live Platform',
     repo: 'https://github.com/Joal0816/Barangay-Connect',
+    repoLabel: 'GitHub Repo',
+  },
+  {
+    title: 'Snake OS: Embedded Interactive HMI Game',
+    category: 'Embedded & HMI',
+    role: 'Embedded Developer — Renesas RA6M3, RT-Thread OS, LVGL',
+    badge: 'Hackster.io Showcase',
+    description:
+      'Arcade game engine utilizing RT-Thread RTOS and LVGL to deliver fluid real-time graphical rendering and autonomous AI autopilot on bare metal.',
+    longDescription:
+      'Engineered an arcade game engine utilizing Renesas RA6M3, RT-Thread RTOS, and LVGL to deliver fluid real-time graphical rendering on bare metal. Implemented autonomous AI autopilot navigation, non-volatile high-score persistence, and dynamic multi-level obstacle logic.',
+    features: [
+      'Real-time 2D graphics engine powered by LVGL on RT-Thread OS.',
+      'Autonomous AI autopilot navigation mode with pathfinding.',
+      'Non-volatile high-score persistence in onboard flash.',
+      'Dynamic multi-level obstacle generation and physics loop.',
+    ],
+    image: '/projects/snake-os.png',
+    tags: ['C', 'Renesas RA6M3', 'RT-Thread', 'LVGL', 'RTOS', 'HMI'],
+    demo: 'https://www.hackster.io/josephalanvergara/snake-os-interactive-hmi-game-on-rt-thread-f8b988',
+    demoLabel: 'Hackster Writeup',
+    repo: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Renesas RA6M3 (120MHz Cortex-M4)',
+      protocol: 'SPI Display + LVGL GUI',
+      latency: '60 FPS display refresh',
+    },
+  },
+  {
+    title: 'Sustainability in the Cup Web',
+    category: 'Web Development',
+    role: 'Frontend & Data Visualization Engineer',
+    badge: 'Academic Research Showcase',
+    description:
+      'Interactive research showcase examining green marketing awareness and eco-packaging consumer perception across Northern Mindanao coffee shops.',
+    longDescription:
+      'Engineered a modern, responsive web application presenting empirical research findings on eco-friendly packaging and green consumer perception among specialty coffee shops in Northern Mindanao. Features dynamic data breakdowns, methodology documentation, and interactive charts deployed with zero latency on Cloudflare Pages.',
+    features: [
+      'Interactive data visualization presenting empirical consumer perception scores.',
+      'Responsive design engineered for mobile research reading and desktop review.',
+      'Edge deployment on Cloudflare Pages with sub-50ms global delivery.',
+      'Detailed methodology breakdowns and statistical survey insights.',
+    ],
+    image: '/projects/barangay-connect.png',
+    tags: ['React', 'Data Visualization', 'Cloudflare Pages', 'Tailwind CSS', 'Research'],
+    demo: 'https://sustainability-in-the-cup.pages.dev',
+    demoLabel: 'Live Website',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'Edge AI Glasses Object Detection',
     category: 'Full-Stack & Embedded',
     role: 'Edge AI Developer — Roboflow, Edge Impulse',
+    badge: 'Wearable TinyML',
     description:
-      'Low-latency on-device eyewear object detection trained in Roboflow and deployed via Edge Impulse.',
+      'Low-latency on-device eyewear object detection trained via Roboflow and quantized with Edge Impulse for wearable assistance.',
     longDescription:
-      'Trained, quantized, and validated a low-latency edge vision model for wearable hardware via Edge Impulse and custom Roboflow datasets. The model runs directly on wearable glasses for real-time object detection without cloud dependency.',
+      'Trained, quantized, and validated a low-latency edge vision model for wearable hardware via Edge Impulse and custom Roboflow datasets. The model executes directly on wearable microcontrollers for real-time visual assistance without external cloud dependencies.',
     features: [
       'Low-latency edge-optimized vision inference on wearable hardware.',
       'Custom dataset curation and augmentation in Roboflow.',
-      'Deployed via Edge Impulse for on-device processing.',
-      'Quantized model for resource-constrained devices.',
+      'Quantized INT8 model for resource-constrained wearable MCUs.',
+      'Standalone operation with zero cloud latency and full privacy.',
     ],
     image: '/projects/object-detection.jpg',
-    tags: ['Edge Impulse', 'Roboflow', 'Computer Vision', 'TinyML', 'Wearable'],
+    tags: ['Edge Impulse', 'Roboflow', 'TinyML', 'Computer Vision', 'Wearable'],
     demo: 'https://studio.edgeimpulse.com/studio/848525',
-    repo: '#',
+    demoLabel: 'Edge Impulse Studio',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'Industrial Oven Simulation & Control',
     category: 'Embedded & HMI',
     role: 'PLC & Automation Developer — CODESYS V3, PLC, HMI',
+    badge: 'Industrial Automation',
     description:
       'Virtual PLC ladder logic and interactive HMI with automated heating logic, safety interlocks, and threshold alarms.',
     longDescription:
@@ -239,77 +549,65 @@ export const projects: Project[] = [
     features: [
       'Virtual PLC ladder logic in CODESYS V3.',
       'Interactive HMI with threshold alarms and safety interlocks.',
-      'Automated heating logic with real-time monitoring.',
-      'Adjustable setpoints for temperature regulation.',
+      'Automated heating logic with real-time feedback loops.',
+      'Adjustable setpoints for thermal regulation.',
     ],
     image: '/projects/industrial-oven.png',
     tags: ['CODESYS V3', 'PLC', 'Ladder Logic', 'HMI', 'Industrial Automation'],
     demo: 'https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing',
     demoLabel: 'View Documentation',
-    repo: '#',
-  },
-  {
-    title: 'Snake OS: Embedded Interactive HMI Game',
-    category: 'Embedded & HMI',
-    role: 'Embedded Developer — Renesas RA6M3, RT-Thread OS, LVGL',
-    description:
-      'An arcade game engine utilizing RT-Thread RTOS and LVGL to deliver fluid real-time graphical rendering on bare metal.',
-    longDescription:
-      'Engineered an arcade game engine utilizing Renesas RA6M3, RT-Thread RTOS, and LVGL to deliver fluid real-time graphical rendering on bare metal. Implemented autonomous AI autopilot navigation, non-volatile high-score persistence, and dynamic multi-level obstacle logic.',
-    features: [
-      'Real-time 2D graphics via LVGL on RT-Thread OS.',
-      'Autonomous AI autopilot navigation mode.',
-      'Non-volatile high-score persistence.',
-      'Dynamic multi-level obstacle logic.',
-    ],
-    image: '/projects/snake-os.png',
-    tags: ['C', 'Renesas RA6M3', 'RT-Thread', 'LVGL', 'RTOS'],
-    demo: 'https://www.hackster.io/josephalanvergara/snake-os-interactive-hmi-game-on-rt-thread-f8b988',
-    repo: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'IoT Vermicomposting Monitor',
     category: 'Embedded & HMI',
     role: 'IoT Developer — ESP32, MQTT, Sensors',
+    badge: 'Smart Agriculture',
     description:
-      'Automated closed-loop irrigation based on real-time soil moisture (60-80%) with 5+ environmental parameters over MQTT.',
+      'Automated closed-loop irrigation triggered on real-time soil moisture (60-80%) with 5+ environmental parameters over MQTT.',
     longDescription:
-      'Automated closed-loop irrigation triggered on real-time soil moisture levels (60-80%) and piped 5+ environmental parameters over MQTT to a centralized dashboard for continuous monitoring and analysis.',
+      'Automated closed-loop irrigation triggered on real-time soil moisture levels (60-80%) and piped 5+ environmental parameters over MQTT to a centralized dashboard for continuous monitoring and biological cultivation analysis.',
     features: [
       'Real-time soil moisture monitoring (60-80% threshold).',
-      'Automated closed-loop irrigation control.',
-      '5+ environmental parameters via MQTT.',
-      'Centralized dashboard for data visualization.',
+      'Automated closed-loop relay irrigation control.',
+      '5+ environmental parameters streamed via MQTT.',
+      'Centralized telemetry dashboard for continuous monitoring.',
     ],
     image: '/projects/vermicomposting.png',
     tags: ['ESP32', 'MQTT', 'IoT', 'Sensors', 'Environmental Monitoring'],
     demo: 'https://canva.link/k5sngerg431bggp',
     demoLabel: 'View Documentation',
-    repo: '#',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'Line Following Robot',
     category: 'Embedded & HMI',
     role: 'Firmware Developer — Arduino Uno, AVR Assembly',
+    badge: 'Bare-Metal AVR',
     description:
-      'Hand-tuned AVR Assembly firmware and dual PWM hardware timers (Timer0/2) for a 5-channel IR array, 100% course completion.',
+      'Hand-tuned AVR Assembly firmware and dual PWM hardware timers (Timer0/2) for a 5-channel IR array, achieving 100% course completion.',
     longDescription:
       'Hand-tuned AVR Assembly firmware and dual PWM hardware timers (Timer0/2) for a 5-channel IR array, achieving a 100% course completion rate. Processes sensor readings with deterministic pattern matching for high-speed line tracking.',
     features: [
       'Low-level AVR Assembly on ATmega328P.',
       'Dual hardware PWM timer control (Timer0/2).',
-      '5-channel IR sensor array.',
+      '5-channel IR sensor array with fast debounce.',
       '100% course completion rate.',
     ],
     image: '/projects/line-following-robot.png',
     tags: ['AVR Assembly', 'ATmega328P', 'Arduino Uno', 'Robotics', 'PWM'],
     demo: 'https://docs.google.com/document/d/1k9SudemZJafofm2p3hludQYK7nMUtvUpkMm6N-_rJvY/edit?usp=sharing',
-    repo: '#',
+    demoLabel: 'Project Report',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'K-Bin: Automated Smart Waste Sorting',
     category: 'Embedded & HMI',
     role: 'Software & Embedded Developer — Qt C++, CMake, Sensors',
+    badge: 'Desktop HMI & Sensors',
     description:
       'A Qt C++ GUI with real-time level tracking and multi-sensor routing (inductive, capacitive, ultrasonic) to sort 3 waste streams.',
     longDescription:
@@ -318,39 +616,42 @@ export const projects: Project[] = [
       '3-stream classification (Wet, Dry, Metal) via sensor fusion.',
       'Qt C++/CMake desktop GUI with real-time bin tracking.',
       'Multi-sensor routing (inductive, capacitive, ultrasonic).',
-      'SQLite logging for maintenance tracking.',
+      'SQLite logging for maintenance and fill-level tracking.',
     ],
     image: '/projects/k-bin.png',
     tags: ['Qt C++', 'CMake', 'SQLite', 'Sensors', 'Desktop GUI'],
     demo: 'https://drive.google.com/drive/folders/1OVPIXr5QFTa3_Uin5QVysLJvsKLshUdQ?usp=sharing',
     demoLabel: 'View Documentation',
-    repo: '#',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
   {
     title: 'Adjustable DC Power Supply',
     category: 'Embedded & HMI',
     role: 'Electronics Engineering',
+    badge: 'Hardware Prototyping',
     description:
-      'Engineered a regulated benchtop power supply unit with variable output up to 12V and short-circuit protection.',
+      'Regulated benchtop power supply unit with variable output up to 12V and short-circuit protection for embedded development.',
     longDescription:
-      'Engineered a regulated benchtop power supply unit with variable output up to 12V and short-circuit protection. Designed for reliable operation in various electronic applications and embedded system prototyping.',
+      'Engineered a regulated benchtop power supply unit with variable output up to 12V and short-circuit protection. Designed for reliable benchtop operation during embedded system prototyping and sensor calibration.',
     features: [
-      'Variable output up to 12V.',
-      'Short-circuit protection.',
-      'Regulated linear design.',
-      'Compact form factor for prototyping.',
+      'Variable output up to 12V regulated DC.',
+      'Integrated short-circuit protection circuitry.',
+      'Clean low-ripple linear regulation for sensitive MCUs.',
+      'Compact lab bench chassis with terminal lugs.',
     ],
     image: '/projects/power-supply.png',
-    tags: ['Power Electronics', 'Circuit Design', 'Linear Regulator'],
+    tags: ['Power Electronics', 'Circuit Design', 'Linear Regulator', 'Hardware'],
     demo: '#',
-    repo: '#',
+    repo: 'https://github.com/Joal0816',
+    repoLabel: 'GitHub Profile',
   },
 ]
 
-/** Anchor links rendered in the navbar. `href` must match a section id. */
 export const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Certifications', href: '#certifications' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '#about', code: '01' },
+  { label: 'Telemetry', href: '#telemetry', code: '02' },
+  { label: 'Projects', href: '#projects', code: '03' },
+  { label: 'Certifications', href: '#certifications', code: '04' },
+  { label: 'Contact', href: '#contact', code: '05' },
 ]

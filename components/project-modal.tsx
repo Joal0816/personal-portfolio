@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Dialog } from '@base-ui/react/dialog'
-import { Check, X, ExternalLink, User } from 'lucide-react'
+import { Check, X, ExternalLink, Cpu, Terminal, Radio } from 'lucide-react'
 import { GithubIcon } from '@/components/brand-icons'
 import { Button } from '@/components/ui/button'
 import type { Project } from '@/lib/portfolio-data'
@@ -17,87 +17,133 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Backdrop className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-        <Dialog.Popup className="fixed left-1/2 top-1/2 z-50 grid max-h-[90vh] w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_1fr] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl transition-all duration-300 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0">
+        <Dialog.Backdrop className="fixed inset-0 z-50 bg-background/85 backdrop-blur-md transition-opacity duration-300 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
+        <Dialog.Popup className="fixed left-1/2 top-1/2 z-50 grid max-h-[92vh] w-[calc(100vw-2rem)] max-w-2xl -translate-x-1/2 -translate-y-1/2 grid-rows-[auto_1fr] overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl transition-all duration-300 data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0">
           {project && (
             <>
-              {/* Image header */}
-              <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-muted">
+              {/* Image & Header Banner */}
+              <div className="relative aspect-[16/9] max-h-72 overflow-hidden border-b border-border/70 bg-muted">
                 <Image
                   src={project.image || '/placeholder.svg'}
-                  alt={`${project.title} preview`}
+                  alt={`${project.title} technical snapshot`}
                   fill
                   sizes="(max-width: 768px) 100vw, 42rem"
                   className="object-cover"
                 />
+
+                {/* Overlaid Header Controls */}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
+
+                <div className="absolute top-3 left-3 flex items-center gap-2">
+                  <span className="rounded bg-background/90 px-2.5 py-1 font-mono text-[11px] font-bold text-primary border border-border/80 backdrop-blur-md">
+                    {project.category}
+                  </span>
+                  {project.badge && (
+                    <span className="rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-1 font-mono text-[10px] font-bold backdrop-blur-md">
+                      {project.badge}
+                    </span>
+                  )}
+                </div>
+
                 <Dialog.Close
-                  className="absolute right-3 top-3 inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background/80 text-foreground backdrop-blur-md transition-all duration-200 hover:bg-accent active:scale-95"
+                  className="absolute right-3 top-3 inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background/85 text-foreground backdrop-blur-md transition-all duration-200 hover:bg-primary/20 hover:text-primary active:scale-95"
                   aria-label="Close"
                 >
                   <X className="size-4" />
                 </Dialog.Close>
+
+                {/* Title over image bottom */}
+                <div className="absolute bottom-3 left-4 right-4">
+                  <Dialog.Title className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground drop-shadow">
+                    {project.title}
+                  </Dialog.Title>
+                </div>
               </div>
 
-              {/* Content */}
-              <div className="overflow-y-auto p-6 sm:p-8">
-                <span className="font-mono text-xs uppercase tracking-widest text-primary">
-                  {project.category}
-                </span>
-                <Dialog.Title className="mt-2 text-2xl font-bold tracking-tight">
-                  {project.title}
-                </Dialog.Title>
-
-                {/* Role */}
+              {/* Scrollable Technical Dossier */}
+              <div className="overflow-y-auto p-5 sm:p-7 space-y-6">
+                {/* Role / Authorship */}
                 {project.role && (
-                  <p className="mt-2 flex items-center gap-1.5 font-mono text-sm text-primary/80">
-                    <User className="size-3.5" />
-                    {project.role}
-                  </p>
+                  <div className="flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2 text-xs font-mono text-primary">
+                    <Terminal className="size-3.5 shrink-0" />
+                    <span>ROLE: {project.role}</span>
+                  </div>
                 )}
 
-                <Dialog.Description className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-                  {project.longDescription}
-                </Dialog.Description>
+                {/* Hardware Telemetry Spec Banner if available */}
+                {project.telemetrySpec && (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 rounded-xl border border-border/80 bg-secondary/30 p-3 font-mono text-xs">
+                    <div>
+                      <div className="text-[10px] text-muted-foreground">TARGET_SILICON</div>
+                      <div className="font-bold text-foreground truncate">{project.telemetrySpec.target}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-muted-foreground">COMM_PROTOCOL</div>
+                      <div className="font-bold text-primary truncate">{project.telemetrySpec.protocol}</div>
+                    </div>
+                    <div>
+                      <div className="text-[10px] text-muted-foreground">SYSTEM_TIMING</div>
+                      <div className="font-bold text-emerald-400 truncate">{project.telemetrySpec.latency || 'Real-Time'}</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Description */}
+                <div>
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-1.5">
+                    TECHNICAL ARCHITECTURE
+                  </h4>
+                  <Dialog.Description className="text-pretty text-sm sm:text-base leading-relaxed text-muted-foreground">
+                    {project.longDescription}
+                  </Dialog.Description>
+                </div>
 
                 {/* Features */}
-                <h4 className="mt-6 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                  Key features
-                </h4>
-                <ul className="mt-3 grid gap-2.5">
-                  {project.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-2.5 text-sm text-foreground">
-                      <Check className="mt-0.5 size-4 shrink-0 text-primary" />
-                      <span className="text-pretty">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2.5">
+                    KEY ENGINEERING DELIVERABLES
+                  </h4>
+                  <ul className="grid gap-2 text-xs sm:text-sm">
+                    {project.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2.5 text-foreground/90 bg-secondary/20 border border-border/50 rounded-lg p-2.5"
+                      >
+                        <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                        <span className="text-pretty">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                {/* Tech stack */}
-                <h4 className="mt-6 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                  Tech stack
-                </h4>
-                <ul className="mt-3 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <li
-                      key={tag}
-                      className="rounded-full border border-border bg-secondary/50 px-2.5 py-0.5 font-mono text-xs text-secondary-foreground"
-                    >
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
+                {/* Tech Stack */}
+                <div>
+                  <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+                    TECHNOLOGY STACK & PROTOCOLS
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {project.tags.map((tag) => (
+                      <li
+                        key={tag}
+                        className="rounded border border-border/80 bg-secondary/50 px-2.5 py-1 font-mono text-xs text-foreground/80"
+                      >
+                        {tag}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                {/* Action buttons */}
-                <div className="mt-8 flex flex-wrap gap-3">
+                {/* Action Buttons */}
+                <div className="pt-2 flex flex-wrap gap-3 border-t border-border/60">
                   {project.demo && project.demo !== '#' && (
                     <Button
                       render={<a href={project.demo} target="_blank" rel="noopener noreferrer" />}
                       nativeButton={false}
                       size="lg"
-                      className="gap-1.5"
+                      className="gap-2 font-mono text-xs tracking-wider uppercase font-bold bg-primary text-primary-foreground hover:bg-primary/90"
                     >
-                      {project.demoLabel || 'Live Demo'}
                       <ExternalLink className="size-4" />
+                      {project.demoLabel || 'Launch Telemetry / Demo'}
                     </Button>
                   )}
                   {project.repo && project.repo !== '#' && (
@@ -106,10 +152,10 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                       nativeButton={false}
                       size="lg"
                       variant="outline"
-                      className="gap-1.5"
+                      className="gap-2 font-mono text-xs tracking-wider uppercase hover:border-primary/50"
                     >
                       <GithubIcon className="size-4" />
-                      {project.repoLabel || 'View Code'}
+                      {project.repoLabel || 'Source Code'}
                     </Button>
                   )}
                 </div>
