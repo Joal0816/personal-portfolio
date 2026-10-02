@@ -18,10 +18,11 @@ import {
 import { Button } from '@/components/ui/button'
 import { GithubIcon, LinkedinIcon } from '@/components/brand-icons'
 import { profile } from '@/lib/portfolio-data'
+import { HardwarePlayground } from '@/components/hardware-playground'
 import { cn } from '@/lib/utils'
 
 export function Hero() {
-  const [activeTelemetryTab, setActiveTelemetryTab] = useState<'specs' | 'pipeline'>('specs')
+  const [activeTelemetryTab, setActiveTelemetryTab] = useState<'interactive' | 'specs' | 'pipeline'>('interactive')
 
   return (
     <section
@@ -211,12 +212,24 @@ export function Hero() {
             </div>
 
             {/* Toggle tabs */}
-            <div className="grid grid-cols-2 sm:flex items-center rounded-lg border border-border bg-secondary/50 p-1 font-mono text-xs w-full sm:w-auto">
+            <div className="grid grid-cols-3 sm:flex items-center rounded-lg border border-border bg-secondary/50 p-1 font-mono text-xs w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => setActiveTelemetryTab('interactive')}
+                className={cn(
+                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
+                  activeTelemetryTab === 'interactive'
+                    ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground',
+                )}
+              >
+                INTERACTIVE RIG
+              </button>
               <button
                 type="button"
                 onClick={() => setActiveTelemetryTab('specs')}
                 className={cn(
-                  'rounded px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
+                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
                   activeTelemetryTab === 'specs'
                     ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
                     : 'text-muted-foreground hover:text-foreground',
@@ -228,7 +241,7 @@ export function Hero() {
                 type="button"
                 onClick={() => setActiveTelemetryTab('pipeline')}
                 className={cn(
-                  'rounded px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
+                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
                   activeTelemetryTab === 'pipeline'
                     ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
                     : 'text-muted-foreground hover:text-foreground',
@@ -240,7 +253,11 @@ export function Hero() {
           </div>
 
           {/* Tab content */}
-          {activeTelemetryTab === 'specs' ? (
+          {activeTelemetryTab === 'interactive' ? (
+            <div className="mt-4">
+              <HardwarePlayground />
+            </div>
+          ) : activeTelemetryTab === 'specs' ? (
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
               {/* Architecture 1 */}
               <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">

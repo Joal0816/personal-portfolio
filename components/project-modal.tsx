@@ -116,6 +116,43 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                   </ul>
                 </div>
 
+                {/* Code Snippet & Pipeline Flow if available */}
+                {project.architectureFlow && (
+                  <div>
+                    <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">
+                      SYSTEM DATAFLOW PIPELINE
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
+                      {project.architectureFlow.map((step, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5">
+                          <span className="rounded bg-secondary/70 border border-border/80 px-2 py-1 text-foreground/90 font-medium">
+                            {step}
+                          </span>
+                          {idx < project.architectureFlow!.length - 1 && (
+                            <span className="text-primary font-bold">→</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {project.codeSnippet && (
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+                        CORE FIRMWARE / ALGORITHM LOGIC
+                      </h4>
+                      <span className="font-mono text-[10px] text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
+                        {project.codeSnippet.filename}
+                      </span>
+                    </div>
+                    <pre className="max-h-48 overflow-y-auto rounded-xl border border-border/70 bg-black/85 p-3 text-[11px] text-emerald-400 font-mono leading-relaxed whitespace-pre-wrap">
+                      {project.codeSnippet.code}
+                    </pre>
+                  </div>
+                )}
+
                 {/* Tech Stack */}
                 <div>
                   <h4 className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground mb-2">

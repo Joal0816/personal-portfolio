@@ -18,6 +18,11 @@ export const profile = {
   location: 'Iligan City, Philippines',
   address: 'Phase II-Doña Maria Subd, Tubod, Lanao Del Norte',
   email: 'josephalan.vergara@g.msuiit.edu.ph',
+  personalEmail: 'hpesojnalab.aragrev@gmail.com',
+  emails: {
+    institutional: 'josephalan.vergara@g.msuiit.edu.ph',
+    personal: 'hpesojnalab.aragrev@gmail.com',
+  },
   phone: '+63 947-589-2995',
   website: 'https://joalvergs.tech',
   status: 'OPERATIONAL // 4TH YEAR EMBEDDED SYS',
@@ -28,7 +33,10 @@ export const profile = {
   socials: {
     github: 'https://github.com/Joal0816',
     linkedin: 'https://www.linkedin.com/in/joseph-alan-vergara-638803348/',
-    email: 'https://mail.google.com/mail/?view=cm&fs=1&to=josephalan.vergara@g.msuiit.edu.ph',
+    email: 'mailto:josephalan.vergara@g.msuiit.edu.ph',
+    personalEmail: 'mailto:hpesojnalab.aragrev@gmail.com',
+    gmailInstitutional: 'https://mail.google.com/mail/?view=cm&fs=1&to=josephalan.vergara@g.msuiit.edu.ph',
+    gmailPersonal: 'https://mail.google.com/mail/?view=cm&fs=1&to=hpesojnalab.aragrev@gmail.com',
   },
   telemetry: {
     cgpa: '1.96269',
@@ -145,6 +153,55 @@ export const certifications = [
     date: 'September 16, 2023',
     image: '/certificates/TECH/Software Freedom Day 2023.png',
     category: 'Open Source',
+  },
+  {
+    name: 'Academic Honors Recognition (Grade 11)',
+    issuer: 'MSU-IIT Integrated Developmental School',
+    date: '2022 – 2023',
+    image: '/certificates/OTHERS/ids-academic-honor-g11.pdf',
+    category: 'Academic Honors',
+  },
+  {
+    name: 'MSU-IIT SASE 2023 Official Admission & Acceptance',
+    issuer: 'Mindanao State University – IIT Admissions',
+    date: 'August 2023',
+    image: '/certificates/OTHERS/msuiit-sase-admission-acceptance.pdf',
+    category: 'Academic Merit',
+  },
+  {
+    name: 'TUKISayod Research & Academic Symposium',
+    issuer: 'MSU-IIT Research Colloquium Series',
+    date: '2023',
+    image: '/certificates/OTHERS/tukisayod-certificate-of-participation.pdf',
+    category: 'Research Colloquium',
+  },
+  {
+    name: 'TEENPRENEUR 2021 Business & Innovation Bootcamp',
+    issuer: 'Youth Entrepreneurship Program & Mentorship',
+    date: '2021',
+    image: '/certificates/OTHERS/teenpreneur-2021.pdf',
+    category: 'Technopreneurship',
+  },
+  {
+    name: 'Statistics: Bridging Gaps For Every Juan in the Digital Age',
+    issuer: 'Department of Mathematics and Statistics, MSU-IIT',
+    date: 'October 2023',
+    image: '/certificates/OTHERS/statistics-bridging-gaps-digital-age.pdf',
+    category: 'Data & Analytics',
+  },
+  {
+    name: 'DMS National Statistics Month Webinar Series',
+    issuer: 'Department of Mathematics & Statistics (DMS)',
+    date: '2023',
+    image: '/certificates/OTHERS/dms-statistics-webinar-participation.pdf',
+    category: 'Data & Analytics',
+  },
+  {
+    name: 'MSU-IIT Official Certificate of Registration & Enrolment',
+    issuer: 'Office of the Institute Registrar, MSU-IIT',
+    date: '2023 – Present',
+    image: '/certificates/OTHERS/msuiit-certificate-of-registration.pdf',
+    category: 'Academic Records',
   },
 ]
 
@@ -277,7 +334,15 @@ export type Project = {
     target: string
     protocol: string
     latency?: string
+    clockSpeed?: string
+    memoryFootprint?: string
   }
+  codeSnippet?: {
+    filename: string
+    language: string
+    code: string
+  }
+  architectureFlow?: string[]
 }
 
 export const projects: Project[] = [
@@ -306,7 +371,33 @@ export const projects: Project[] = [
       target: 'ESP32-WROOM-32',
       protocol: 'I2C / Wi-Fi UDP Stream',
       latency: '< 120ms pipeline',
+      clockSpeed: '240 MHz Dual-Core',
+      memoryFootprint: '520 KB SRAM',
     },
+    codeSnippet: {
+      filename: 'mlx90640_telemetry.c',
+      language: 'c',
+      code: `void vTaskThermalAcquire(void *pvParameters) {
+  float frame[768];
+  for(;;) {
+    if (mlx90640_get_frame_data(MLX_I2C_ADDR, frame) == ESP_OK) {
+      calibrate_radiometry(frame, &g_telemetry.max_temp);
+      if (g_telemetry.max_temp > FEVER_THRESHOLD_C) {
+        gpio_set_level(ALARM_PIN, 1);
+        send_udp_fever_packet(&g_telemetry);
+      }
+    }
+    vTaskDelay(pdMS_TO_TICKS(125)); // 8 Hz acquisition
+  }
+}`,
+    },
+    architectureFlow: [
+      'MLX90640 32x24 Sensor',
+      'I2C 400kHz DMA Bus',
+      'ESP32 FreeRTOS Kernel',
+      'UDP Wi-Fi Streamer',
+      'OpenCV False-Color & Flutter App',
+    ],
   },
   {
     title: 'Agap AI — Multimodal Emergency Triage Platform',
@@ -333,7 +424,29 @@ export const projects: Project[] = [
       target: 'Next.js 15 & AI Engine',
       protocol: 'WebSockets / REST',
       latency: 'Sub-second NLP parsing',
+      clockSpeed: 'Multi-Core Edge Host',
+      memoryFootprint: 'V8 Isolate / 64MB',
     },
+    codeSnippet: {
+      filename: 'emergency_nlp_triage.ts',
+      language: 'typescript',
+      code: `export async function classifySosPayload(audioBuffer: ArrayBuffer) {
+  const transcript = await whisperEdgeInference(audioBuffer);
+  const triage = await nlpEngine.extractTelemetry({
+    text: transcript,
+    entities: ['injury_severity', 'gps_coordinates', 'hazard_type'],
+  });
+  await broadcastGisPriorityQueue(triage);
+  return { status: 'DISPATCHED', priority: triage.priorityScore };
+}`,
+    },
+    architectureFlow: [
+      'Caller Audio Stream',
+      'Whisper Edge ASR',
+      'NLP Triage Classifier',
+      'GIS Geospatial Map',
+      'First Responder Dispatch',
+    ],
   },
   {
     title: 'BCA182 Multisensor Room Monitor',
@@ -360,7 +473,27 @@ export const projects: Project[] = [
       target: 'STM32F103C8T6',
       protocol: 'I2C / Hardware EXTI',
       latency: 'Deterministic 5ms Tick',
+      clockSpeed: '72 MHz ARM Cortex-M3',
+      memoryFootprint: '20 KB SRAM / 64 KB Flash',
     },
+    codeSnippet: {
+      filename: 'freertos_scheduler.c',
+      language: 'c',
+      code: `xTaskCreate(vTaskSensorRead,   "SENS", 128, NULL, 4, &xSensorHandle);
+xTaskCreate(vTaskOledDisplay,  "DISP", 256, NULL, 2, &xOledHandle);
+xTaskCreate(vTaskEncoderInput, "ENC",  128, NULL, 3, &xEncoderHandle);
+xTaskCreate(vTaskSerialLog,    "LOG",  128, NULL, 1, &xLogHandle);
+
+/* Preemptive tick scheduler started */
+vTaskStartScheduler();`,
+    },
+    architectureFlow: [
+      'DHT22 & Light Sensors',
+      'STM32 EXTI & ADC Timers',
+      'FreeRTOS Priority Queues',
+      'SSD1306 OLED Rendering',
+      'Rotary Encoder HMI',
+    ],
   },
   {
     title: 'ARUGA Fall Detection & Inactivity Monitoring',
@@ -387,7 +520,29 @@ export const projects: Project[] = [
       target: 'Edge Compute (Python/CV)',
       protocol: 'Real-Time Video Stream',
       latency: '30 FPS Real-Time',
+      clockSpeed: 'Zero-Cloud Local Host',
+      memoryFootprint: '120 MB RAM',
     },
+    codeSnippet: {
+      filename: 'kinematic_fall_classifier.py',
+      language: 'python',
+      code: `def evaluate_kinematic_pose(landmarks, prev_centroid_y, dt):
+    spine_vector = landmarks[NOSE] - landmarks[MID_HIP]
+    pitch_angle = np.degrees(np.arctan2(spine_vector.y, spine_vector.x))
+    drop_velocity = (landmarks[MID_HIP].y - prev_centroid_y) / dt
+
+    if pitch_angle > 65.0 and drop_velocity > 2.8:
+        trigger_fall_alarm(pitch_angle, drop_velocity)
+        return State.CRITICAL_FALL
+    return State.STABLE_AMBULATION`,
+    },
+    architectureFlow: [
+      'Camera Video Feed',
+      'MediaPipe 33-pt Skeleton',
+      'Spine Vector Calculation',
+      'Drop Velocity Thresholding',
+      'Emergency Telemetry Alert',
+    ],
   },
   {
     title: 'Microcontroller-Based Automated Feedback System',
@@ -414,7 +569,29 @@ export const projects: Project[] = [
       target: 'ESP32-P4 Dual Core RISC-V',
       protocol: 'HTTP / REST Telemetry',
       latency: '< 50ms Edge Scoring',
+      clockSpeed: '400 MHz RISC-V / Xtensa',
+      memoryFootprint: '768 KB L2 Cache',
     },
+    codeSnippet: {
+      filename: 'edge_lms_sync.c',
+      language: 'c',
+      code: `void handle_lab_telemetry_packet(telemetry_pkt_t *pkt) {
+  bool passed = verify_pin_waveform(pkt->pin, pkt->expected_hz);
+  grade_record_t record = {
+    .student_uid = pkt->student_uid,
+    .score = passed ? 100 : 0,
+    .timestamp = esp_timer_get_time()
+  };
+  sqlite3_insert_lab_grade(&record);
+}`,
+    },
+    architectureFlow: [
+      'Microcontroller Lab Bench',
+      'Hardware Waveform Monitor',
+      'ESP32-P4 Edge Ingest',
+      'Automated Scoring Logic',
+      'Full-Stack LMS Telemetry',
+    ],
   },
   {
     title: 'Mobile Microplastic Detection App',
@@ -441,7 +618,26 @@ export const projects: Project[] = [
       target: 'Mobile Neural Engine (NPU/GPU)',
       protocol: 'TFLite Model Runner',
       latency: '22ms per frame',
+      clockSpeed: 'On-Device Mobile GPU',
+      memoryFootprint: '4.2 MB INT8 Model',
     },
+    codeSnippet: {
+      filename: 'tflite_runner.kt',
+      language: 'kotlin',
+      code: `val inputTensor = preprocessMicroscopeBitmap(frameBitmap)
+val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 84, 8400), DataType.FLOAT32)
+tfliteInterpreter.run(inputTensor.buffer, outputBuffer.buffer)
+
+val particles = postprocessNms(outputBuffer, confidenceThreshold = 0.65f)
+updateParticleTelemetryCount(particles.size)`,
+    },
+    architectureFlow: [
+      'Microscope Video Feed',
+      'OpenCV Filter & Crop',
+      'TFLite INT8 Quantized YOLO',
+      'Non-Max Suppression (NMS)',
+      'Real-Time Particle Count',
+    ],
   },
   {
     title: 'Barangay Connect Web App',
