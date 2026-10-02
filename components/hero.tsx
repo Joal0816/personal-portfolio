@@ -170,14 +170,14 @@ export function Hero() {
               </div>
 
               {/* Image Container with Laser Beam on Hover */}
-              <div className="relative size-56 sm:size-72 max-w-[calc(100vw-3.5rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+              <div className="relative aspect-[3/4] w-56 sm:w-72 max-w-[calc(100vw-3.5rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
                 <div className="card-laser-beam" />
                 <Image
                   src="/profile.jpg"
                   alt="Joseph Alan B. Vergara"
                   width={320}
-                  height={320}
-                  className="h-full w-full object-cover grayscale-[25%] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
+                  height={427}
+                  className="h-full w-full object-cover object-[50%_18%] grayscale-[25%] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
                   priority
                 />
 
