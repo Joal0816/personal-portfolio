@@ -123,8 +123,9 @@ export function Certifications() {
                   cyberAudio.click(0.03)
                   setSelected(cert)
                 }}
-                className="group relative flex h-full w-full flex-col justify-between rounded-xl border border-border/80 bg-card/60 p-4 sm:p-5 text-left backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 min-h-[44px]"
+                className="group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 sm:p-5 text-left backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 min-h-[44px] hud-bracket-expand border-glow"
               >
+                <div className="card-laser-beam" />
                 <div>
                   <div className="flex items-start justify-between gap-3">
                     <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground">

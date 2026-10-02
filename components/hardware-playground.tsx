@@ -296,6 +296,11 @@ export function HardwarePlayground() {
     freeHeap: 48.2,
   })
 
+  // Dynamic telemetry logic spectrum bars
+  const [spectrumBars, setSpectrumBars] = useState<number[]>([
+    25, 40, 65, 80, 50, 30, 45, 75, 90, 60, 40, 70, 85, 55, 35, 60, 70, 45, 30, 50, 65, 40, 25, 35,
+  ])
+
   useEffect(() => {
     if (!streamingActive) return
     const interval = setInterval(() => {
@@ -305,7 +310,12 @@ export function HardwarePlayground() {
         freeRtosTick: v.freeRtosTick + 10,
         freeHeap: +(48.0 + Math.random() * 0.4).toFixed(1),
       }))
-    }, 1000)
+
+      // Fluctuating logic waveform amplitudes
+      setSpectrumBars((bars) =>
+        bars.map((_, i) => Math.floor(20 + Math.abs(Math.sin((Date.now() / 700) + i * 0.4) * 65) + Math.random() * 15))
+      )
+    }, 600)
     return () => clearInterval(interval)
   }, [streamingActive])
 
@@ -450,6 +460,10 @@ export function HardwarePlayground() {
                     {log.text}
                   </div>
                 ))}
+                <div className="flex items-center text-[11px] sm:text-xs text-primary/90 font-mono pt-1">
+                  <span>joal@stm32-freertos:~$ {commandInput}</span>
+                  <span className="terminal-cursor" />
+                </div>
                 <div ref={terminalBottomRef} />
               </div>
             </div>
@@ -564,16 +578,23 @@ export function HardwarePlayground() {
                 <span className="text-[10px] text-muted-foreground">100%</span>
               </div>
 
-              {/* Animated SVG Square Wave based on duty cycle */}
-              <div className="mt-3 h-16 w-full rounded-lg border border-border/60 bg-black/60 p-2 overflow-hidden flex items-center">
-                <svg className="w-full h-full" viewBox="0 0 600 60" preserveAspectRatio="none">
+              {/* Animated SVG Square Wave based on duty cycle with Oscilloscope beam scan */}
+              <div className="relative mt-3 h-20 w-full rounded-lg border border-border/60 bg-black/85 p-2 overflow-hidden flex items-center shadow-inner">
+                {/* Oscilloscope Grid Background */}
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#00ffcc08_1px,transparent_1px),linear-gradient(to_bottom,#00ffcc08_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+
+                {/* Oscilloscope Phosphor Scan Beam */}
+                <div className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-primary/20 to-primary/60 blur-[1px] pointer-events-none animate-[oscilloscope-scan_3s_linear_infinite]" />
+
+                <svg className="w-full h-full relative z-10" viewBox="0 0 600 60" preserveAspectRatio="none">
                   <path
                     d={`M 0 50 L ${100 * (1 - pwmDuty / 100)} 50 L ${100 * (1 - pwmDuty / 100)} 10 L 100 10 L 100 50 L ${200 - 100 * (pwmDuty / 100)} 50 L ${200 - 100 * (pwmDuty / 100)} 10 L 200 10 L 200 50 L ${300 - 100 * (pwmDuty / 100)} 50 L ${300 - 100 * (pwmDuty / 100)} 10 L 300 10 L 300 50 L ${400 - 100 * (pwmDuty / 100)} 50 L ${400 - 100 * (pwmDuty / 100)} 10 L 400 10 L 400 50 L ${500 - 100 * (pwmDuty / 100)} 50 L ${500 - 100 * (pwmDuty / 100)} 10 L 500 10 L 500 50 L 600 50`}
                     fill="none"
-                    stroke="var(--color-primary)"
+                    stroke="var(--primary)"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="filter drop-shadow-[0_0_8px_var(--primary)]"
                   />
                 </svg>
               </div>
@@ -818,29 +839,131 @@ export function HardwarePlayground() {
               </button>
             </div>
 
+            {/* Live Sensor Metrics Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5">
+              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
                 <div className="text-[10px] text-muted-foreground">CORE_TEMPERATURE</div>
                 <div className="mt-1 text-xl font-bold text-foreground">{sensorValues.coreTemp}°C</div>
                 <div className="mt-1 text-[10px] text-emerald-400">Nominal thermal band</div>
               </div>
 
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5">
+              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
                 <div className="text-[10px] text-muted-foreground">BUS_VOLTAGE_VCC</div>
                 <div className="mt-1 text-xl font-bold text-cyan-400">{sensorValues.busVoltage} V</div>
                 <div className="mt-1 text-[10px] text-muted-foreground">Regulated 3.3V rail</div>
               </div>
 
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5">
+              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
                 <div className="text-[10px] text-muted-foreground">FREERTOS_TICK</div>
                 <div className="mt-1 text-xl font-bold text-primary">{sensorValues.freeRtosTick}</div>
                 <div className="mt-1 text-[10px] text-muted-foreground">1 kHz SysTick timer</div>
               </div>
 
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5">
+              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
                 <div className="text-[10px] text-muted-foreground">HEAP_AVAILABLE</div>
                 <div className="mt-1 text-xl font-bold text-emerald-400">{sensorValues.freeHeap} KB</div>
                 <div className="mt-1 text-[10px] text-muted-foreground">heap_4 allocator</div>
+              </div>
+            </div>
+
+            {/* Dynamic Logic Bars Spectrum Waveform */}
+            <div className="rounded-xl border border-border/80 bg-black/85 p-3.5 space-y-2 shadow-inner">
+              <div className="flex items-center justify-between text-[10px] text-muted-foreground border-b border-border/40 pb-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="size-2 rounded-full bg-primary animate-ping" />
+                  <span className="text-primary font-bold">LIVE TELEMETRY BUS LOGIC SPECTRUM // 24 CHANNELS</span>
+                </div>
+                <span className="text-emerald-400 font-bold">100 kSa/s SAMPLING</span>
+              </div>
+              <div className="flex items-end justify-between gap-1 h-14 pt-2">
+                {spectrumBars.map((height, i) => (
+                  <div
+                    key={i}
+                    className="flex-1 bg-gradient-to-t from-primary/30 via-primary to-emerald-400 rounded-t transition-all duration-300 shadow-[0_0_6px_var(--primary)]"
+                    style={{ height: `${height}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* RTOS Task Loads & Heap Allocation Meters */}
+            <div className="rounded-xl border border-border/80 bg-secondary/20 p-4 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/40 pb-2">
+                <span className="text-xs font-bold text-foreground">
+                  FREERTOS DETERMINISTIC TASK LOADS &amp; HEAP ALLOCATION
+                </span>
+                <span className="text-[10px] text-emerald-400">KERNEL v10.5.1 // PREEMPTIVE PRIORITY</span>
+              </div>
+
+              {/* Task load progress bars */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-foreground">vEdgeInference (TinyML INT8)</span>
+                    <span className="text-primary font-bold">42.1%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-primary transition-all duration-700 ease-out shadow-[0_0_8px_var(--primary)]"
+                      style={{ width: '42.1%' }}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-foreground">vSensThermal (MLX90640 DMA)</span>
+                    <span className="text-emerald-400 font-bold">28.4%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-400 transition-all duration-700 ease-out shadow-[0_0_8px_#34d399]"
+                      style={{ width: '28.4%' }}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-foreground">vTelemetryMqtt (WiFi Queue)</span>
+                    <span className="text-cyan-400 font-bold">14.5%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-cyan-400 transition-all duration-700 ease-out shadow-[0_0_8px_#22d3ee]"
+                      style={{ width: '14.5%' }}
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex justify-between">
+                    <span className="text-foreground">vOledRender (HMI Framebuffer)</span>
+                    <span className="text-amber-400 font-bold">8.2%</span>
+                  </div>
+                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-amber-400 transition-all duration-700 ease-out shadow-[0_0_8px_#fbbf24]"
+                      style={{ width: '8.2%' }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* RAM heap meter bar */}
+              <div className="pt-2 border-t border-border/40 space-y-1.5">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">FreeRTOS Dynamic Heap (heap_4 allocator):</span>
+                  <span className="text-emerald-400 font-bold">
+                    {sensorValues.freeHeap} KB Free / 64 KB (75.3% Headroom)
+                  </span>
+                </div>
+                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden p-0.5 border border-border/60">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-primary to-cyan-400 transition-all duration-1000 shadow-[0_0_10px_rgba(52,211,153,0.3)]"
+                    style={{ width: `${(sensorValues.freeHeap / 64) * 100}%` }}
+                  />
+                </div>
               </div>
             </div>
           </div>

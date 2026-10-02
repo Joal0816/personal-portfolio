@@ -93,10 +93,10 @@ export function Navbar() {
         </a>
 
         {/* Status Beacon - Hidden on small screens */}
-        <div className="hidden lg:flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1 font-mono text-[11px] text-muted-foreground">
-          <span className="relative flex size-2">
+        <div className="hidden lg:flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1 font-mono text-[11px] text-muted-foreground shadow-[0_0_12px_-3px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
+          <span className="relative flex size-2.5 items-center justify-center">
             <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+            <span className="status-beacon relative inline-flex size-2 rounded-full bg-emerald-500" />
           </span>
           <span className="text-foreground/90 font-medium">STATUS:</span>
           <span className="text-primary font-mono">SYS_ONLINE // LOW-LATENCY</span>

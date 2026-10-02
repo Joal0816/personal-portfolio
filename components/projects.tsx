@@ -247,9 +247,9 @@ export function Projects() {
             const isSnippetCopied = copiedSnippet === project.title
 
             return (
-              <Reveal as="article" key={project.title} delay={i * 30}>
-                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-md transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/10">
-                  {/* Image Section */}
+              <Reveal as="article" key={project.title} delay={i * 40}>
+                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-md transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/10 hud-bracket-expand border-glow">
+                  {/* Image Section with Cyan Vignette & Laser Beam on Hover */}
                   <div
                     onClick={() => openProject(project)}
                     className="relative aspect-[16/10] overflow-hidden border-b border-border/60 bg-muted cursor-pointer"
@@ -259,8 +259,14 @@ export function Projects() {
                       alt={`${project.title} telemetry preview`}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     />
+
+                    {/* Cybernetic scanning laser beam on hover */}
+                    <div className="card-laser-beam" />
+
+                    {/* Cyan vignette overlay on hover */}
+                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(ellipse_at_center,transparent_30%,color-mix(in_oklch,var(--primary)_25%,transparent)_100%)]" />
 
                     {/* Gradient bottom overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-transparent to-transparent opacity-60" />

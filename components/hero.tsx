@@ -32,6 +32,7 @@ export function Hero() {
       {/* Background Matrix & Lighting */}
       <div className="tech-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
       <div className="tech-dots pointer-events-none absolute inset-0 opacity-20" />
+      <div className="scanline-overlay pointer-events-none" />
 
       {/* Cyber Luminous Glows */}
       <div
@@ -52,13 +53,18 @@ export function Hero() {
           {/* Main Column */}
           <div className="flex-1 max-w-3xl">
             {/* Top Status HUD Badge */}
-            <div className="animate-fade-up mb-4 sm:mb-5 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-3.5 py-1.5 font-mono text-xs text-foreground/90 backdrop-blur-md">
-              <span className="relative flex size-2">
+            <div className="animate-fade-up mb-4 sm:mb-5 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-3.5 py-1.5 font-mono text-xs text-foreground/90 backdrop-blur-md shadow-[0_0_15px_-3px_color-mix(in_oklch,var(--primary)_25%,transparent)] transition-all">
+              <span className="relative flex size-2.5 items-center justify-center">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                <span className="status-beacon relative inline-flex size-2 rounded-full bg-emerald-400" />
               </span>
-              <span className="text-primary font-bold">STATUS:</span>
+              <span className="text-primary font-bold tracking-wider">STATUS:</span>
               <span className="font-mono text-muted-foreground">{profile.status}</span>
+              <span className="hidden sm:inline-block text-border/80">•</span>
+              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-primary/80 font-mono">
+                <Activity className="size-3 animate-pulse" />
+                <span>SYS_ONLINE</span>
+              </span>
             </div>
 
             {/* Main Headline */}
@@ -94,7 +100,7 @@ export function Hero() {
                 render={<a href="#projects" />}
                 nativeButton={false}
                 size="lg"
-                className="w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all justify-center"
+                className="cyber-sheen w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all justify-center"
               >
                 <span>View Projects</span>
                 <ArrowDown className="size-4" />
@@ -147,16 +153,15 @@ export function Hero() {
             className="animate-fade-up flex flex-col items-center lg:items-end shrink-0 max-w-full px-2 sm:px-0"
             style={{ animationDelay: '200ms' }}
           >
-            {/* Tech Frame with Corner Brackets */}
-            <div className="relative group max-w-full">
+            {/* Tech Frame with Corner Brackets & Hover Laser Beam */}
+            <div className="relative group max-w-full hud-bracket-expand">
               {/* Outer decorative cyber chassis */}
-              <div className="absolute -inset-2.5 rounded-2xl border border-primary/20 bg-primary/5 -z-10 group-hover:border-primary/40 transition-colors" />
+              <div className="absolute -inset-2.5 rounded-2xl border border-primary/20 bg-primary/5 -z-10 group-hover:border-primary/50 group-hover:shadow-[0_0_25px_-5px_color-mix(in_oklch,var(--primary)_30%,transparent)] transition-all duration-300" />
 
-              {/* Corner tech tick marks */}
-              <div className="absolute -top-1.5 -left-1.5 size-3 border-t-2 border-l-2 border-primary" />
-              <div className="absolute -top-1.5 -right-1.5 size-3 border-t-2 border-r-2 border-primary" />
-              <div className="absolute -bottom-1.5 -left-1.5 size-3 border-b-2 border-l-2 border-primary" />
-              <div className="absolute -bottom-1.5 -right-1.5 size-3 border-b-2 border-r-2 border-primary" />
+              {/* Radar sweep background accent */}
+              <div className="pointer-events-none absolute -inset-6 -z-20 overflow-hidden rounded-full opacity-20 group-hover:opacity-35 transition-opacity">
+                <div className="size-full radar-sweep-cone" />
+              </div>
 
               {/* Top coordinates label */}
               <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-[9px] font-mono text-muted-foreground truncate max-w-full">
@@ -164,14 +169,15 @@ export function Hero() {
                 <span className="truncate">ILIGAN CITY // 8.2280° N, 124.2452° E</span>
               </div>
 
-              {/* Image Container */}
+              {/* Image Container with Laser Beam on Hover */}
               <div className="relative size-56 sm:size-72 max-w-[calc(100vw-3.5rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+                <div className="card-laser-beam" />
                 <Image
                   src="/profile.jpg"
                   alt="Joseph Alan B. Vergara"
                   width={320}
                   height={320}
-                  className="h-full w-full object-cover grayscale-[25%] transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                  className="h-full w-full object-cover grayscale-[25%] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
                   priority
                 />
 
@@ -179,7 +185,7 @@ export function Hero() {
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-2 left-2 right-2 rounded bg-background/90 px-2.5 py-1.5 backdrop-blur-md border border-border/80 text-[11px] font-mono flex items-center justify-between">
                   <div className="flex items-center gap-1.5 text-foreground">
-                    <Zap className="size-3 text-primary" />
+                    <Zap className="size-3 text-primary animate-pulse" />
                     <span>CGPA: {profile.telemetry.cgpa}</span>
                   </div>
                   <span className="text-[10px] text-emerald-400 font-semibold">SENIOR</span>
@@ -198,13 +204,30 @@ export function Hero() {
           {/* Header row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-border/60">
             <div className="flex items-center gap-2.5">
-              <div className="flex size-7 shrink-0 items-center justify-center rounded bg-primary/10 text-primary border border-primary/30">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded bg-primary/10 text-primary border border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
                 <TerminalIcon className="size-3.5" />
               </div>
               <div>
-                <h3 className="text-xs sm:text-sm font-mono font-bold tracking-wider text-foreground uppercase">
-                  SYSTEM_TELEMETRY // HARDWARE & STACK SPECIFICATION
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xs sm:text-sm font-mono font-bold tracking-wider text-foreground uppercase">
+                    SYSTEM_TELEMETRY // HARDWARE & STACK SPECIFICATION
+                  </h3>
+                  {/* Animated Oscilloscope / Digital Logic Indicator */}
+                  <div className="hidden lg:flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/60 border border-primary/30 shadow-inner">
+                    <span className="size-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <svg className="w-16 h-3.5 text-primary" viewBox="0 0 64 14" fill="none">
+                      <path
+                        d="M0 7 H12 L16 1 L20 13 L24 7 H36 L40 2 L44 12 L48 7 H64"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="[stroke-dasharray:120] [stroke-dashoffset:120] animate-[waveform-flow_3s_linear_infinite]"
+                      />
+                    </svg>
+                    <span className="text-[9px] font-mono text-emerald-400 font-bold">10 kHz</span>
+                  </div>
+                </div>
                 <p className="text-[11px] font-mono text-muted-foreground">
                   Target Architectures, Deterministic Kernels & Edge Accelerators
                 </p>
