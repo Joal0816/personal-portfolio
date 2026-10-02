@@ -80,7 +80,7 @@ export function Projects() {
         {/* Filter Pills */}
         <Reveal delay={80}>
           <div
-            className="mt-8 flex flex-wrap gap-2"
+            className="mt-8 -mx-4 px-4 sm:mx-0 sm:px-0 flex overflow-x-auto sm:flex-wrap gap-2 pb-2 sm:pb-0 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]"
             role="tablist"
             aria-label="Filter projects by domain"
           >
@@ -94,7 +94,7 @@ export function Projects() {
                   aria-selected={isActive}
                   onClick={() => setFilter(f)}
                   className={cn(
-                    'rounded-lg border px-3.5 py-1.5 font-mono text-xs transition-all duration-200 flex items-center gap-1.5',
+                    'shrink-0 whitespace-nowrap rounded-lg border px-3.5 py-2 sm:py-1.5 font-mono text-xs transition-all duration-200 flex items-center gap-1.5 min-h-[38px] sm:min-h-[34px]',
                     isActive
                       ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-md shadow-primary/20'
                       : 'border-border/80 bg-secondary/30 text-muted-foreground hover:border-primary/40 hover:text-foreground',
@@ -103,8 +103,8 @@ export function Projects() {
                   <span>{f.toUpperCase()}</span>
                   <span
                     className={cn(
-                      'text-[10px] px-1.5 py-0.2 rounded font-mono',
-                      isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'text-primary'
+                      'text-[10px] px-1.5 py-0.5 rounded font-mono',
+                      isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'text-primary bg-primary/10'
                     )}
                   >
                     {counts[f] || 0}
@@ -116,7 +116,7 @@ export function Projects() {
         </Reveal>
 
         {/* Project Grid */}
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+        <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
           {visible.map((project, i) => (
             <Reveal as="article" key={project.title} delay={i * 40}>
               <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/10">
@@ -150,7 +150,7 @@ export function Projects() {
 
                   {/* Quick specs pill on bottom of image */}
                   {project.telemetrySpec && (
-                    <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between rounded bg-background/90 px-2.5 py-1 text-[11px] font-mono border border-border/80 text-muted-foreground backdrop-blur-md">
+                    <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:left-3 sm:right-3 flex items-center justify-between rounded bg-background/90 px-2.5 py-1 text-[10px] sm:text-[11px] font-mono border border-border/80 text-muted-foreground backdrop-blur-md">
                       <div className="flex items-center gap-1.5 truncate">
                         <Cpu className="size-3 text-primary shrink-0" />
                         <span className="truncate text-foreground font-medium">
@@ -167,7 +167,7 @@ export function Projects() {
                 </div>
 
                 {/* Content Section */}
-                <div className="flex flex-1 flex-col p-6">
+                <div className="flex flex-1 flex-col p-4 sm:p-6">
                   {/* Title & Click to Inspect */}
                   <div
                     onClick={() => openProject(project)}
@@ -198,19 +198,19 @@ export function Projects() {
                     <button
                       type="button"
                       onClick={() => openProject(project)}
-                      className="inline-flex items-center gap-1 text-primary font-bold hover:underline"
+                      className="inline-flex min-h-[36px] items-center gap-1 text-primary font-bold hover:underline py-1 px-1.5 rounded transition-colors"
                     >
                       <span>INSPECT_SPECS</span>
                       <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </button>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                       {project.demo && project.demo !== '#' && (
                         <a
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1"
+                          className="inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1.5 rounded border border-transparent hover:border-border/60 hover:bg-secondary/40"
                           title={project.demoLabel || 'Live Demo'}
                         >
                           <ExternalLink className="size-3.5" />
@@ -222,7 +222,7 @@ export function Projects() {
                           href={project.repo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1"
+                          className="inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1.5 rounded border border-transparent hover:border-border/60 hover:bg-secondary/40"
                           title="View Repository"
                         >
                           <GithubIcon className="size-3.5" />

@@ -153,10 +153,10 @@ export function Contact() {
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="mt-12 grid gap-8 sm:gap-10 lg:grid-cols-[1.1fr_0.9fr]">
         {/* Contact Form */}
         <Reveal delay={80}>
-          <div className="rounded-2xl border border-border/80 bg-card/60 p-6 sm:p-8 backdrop-blur-md">
+          <div className="rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-8 backdrop-blur-md">
             <div className="flex items-center justify-between pb-4 border-b border-border/60 mb-6">
               <span className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
                 MESSAGE_PAYLOAD // FORM
@@ -174,7 +174,7 @@ export function Contact() {
                   type="text"
                   value={values.name}
                   onChange={(e) => update('name', e.target.value)}
-                  className="w-full rounded-lg border border-input bg-secondary/30 px-4 py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25"
+                  className="w-full min-h-[44px] rounded-lg border border-input bg-secondary/30 px-3.5 py-2.5 sm:py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25"
                   placeholder="e.g. Alex Mercer"
                   aria-invalid={!!errors.name}
                 />
@@ -187,7 +187,7 @@ export function Contact() {
                   type="email"
                   value={values.email}
                   onChange={(e) => update('email', e.target.value)}
-                  className="w-full rounded-lg border border-input bg-secondary/30 px-4 py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25"
+                  className="w-full min-h-[44px] rounded-lg border border-input bg-secondary/30 px-3.5 py-2.5 sm:py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25"
                   placeholder="alex@domain.tech"
                   aria-invalid={!!errors.email}
                 />
@@ -200,7 +200,7 @@ export function Contact() {
                   rows={4}
                   value={values.message}
                   onChange={(e) => update('message', e.target.value)}
-                  className="w-full rounded-lg border border-input bg-secondary/30 px-4 py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25 resize-none"
+                  className="w-full rounded-lg border border-input bg-secondary/30 px-3.5 py-3 font-mono text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/40 focus:border-primary focus:ring-2 focus:ring-ring/25 resize-none"
                   placeholder="Details regarding your embedded hardware, RTOS scheduling, or full-stack telemetry project..."
                   aria-invalid={!!errors.message}
                 />
@@ -220,7 +220,7 @@ export function Contact() {
                 type="submit"
                 size="lg"
                 disabled={sending}
-                className="w-full gap-2 font-mono text-xs tracking-wider uppercase font-bold bg-primary text-primary-foreground hover:bg-primary/90"
+                className="w-full min-h-[48px] gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase font-bold bg-primary text-primary-foreground hover:bg-primary/90 justify-center"
               >
                 {sending ? (
                   <>
@@ -241,7 +241,7 @@ export function Contact() {
         {/* Telemetry Channel Cards */}
         <Reveal delay={120}>
           <div className="space-y-4">
-            <div className="rounded-2xl border border-border/80 bg-card/60 p-6 backdrop-blur-md">
+            <div className="rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-6 backdrop-blur-md">
               <div className="flex items-center justify-between pb-3 border-b border-border/60 mb-4">
                 <span className="font-mono text-xs font-bold uppercase tracking-wider text-foreground">
                   DIRECT_COMMS_CHANNELS
@@ -257,14 +257,14 @@ export function Contact() {
                   return (
                     <div
                       key={ch.key}
-                      className="group flex items-center justify-between rounded-xl border border-border/60 bg-secondary/30 p-3.5 transition-all hover:border-primary/40"
+                      className="group flex items-center justify-between rounded-xl border border-border/60 bg-secondary/30 p-3 sm:p-3.5 transition-all hover:border-primary/40 gap-2"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
                         <div className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/20 bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                           <Icon className="size-4" />
                         </div>
-                        <div className="min-w-0">
-                          <div className="font-mono text-[10px] text-muted-foreground uppercase">
+                        <div className="min-w-0 flex-1">
+                          <div className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase truncate">
                             {ch.label}
                           </div>
                           {ch.href ? (
@@ -289,12 +289,13 @@ export function Contact() {
                           type="button"
                           onClick={() => copyText(ch.key, ch.value)}
                           className={cn(
-                            'shrink-0 ml-2 rounded p-1.5 font-mono text-[10px] transition-all flex items-center gap-1 border',
+                            'shrink-0 ml-1.5 sm:ml-2 rounded min-h-[38px] min-w-[38px] sm:min-h-0 sm:min-w-0 px-2.5 py-1.5 font-mono text-[10px] transition-all flex items-center justify-center gap-1 border',
                             isCopied
                               ? 'border-emerald-500 bg-emerald-500/20 text-emerald-400'
                               : 'border-border/80 bg-secondary/50 text-muted-foreground hover:border-primary/50 hover:text-primary'
                           )}
                           title="Copy to clipboard"
+                          aria-label={`Copy ${ch.label}`}
                         >
                           {isCopied ? (
                             <>
@@ -316,7 +317,7 @@ export function Contact() {
             </div>
 
             {/* Quick Status Pill */}
-            <div className="rounded-xl border border-primary/30 bg-primary/5 p-4 font-mono text-xs text-muted-foreground flex items-center gap-3">
+            <div className="rounded-xl border border-primary/30 bg-primary/5 p-3.5 sm:p-4 font-mono text-xs text-muted-foreground flex items-center gap-3">
               <Radio className="size-4 text-primary animate-pulse shrink-0" />
               <div>
                 <span className="text-foreground font-semibold">COORDINATION READY:</span> Open for freelance engineering, firmware development, edge AI integration, and technical research roles.

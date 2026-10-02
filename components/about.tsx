@@ -47,10 +47,10 @@ export function About() {
       </Reveal>
 
       {/* Telemetry Matrix Grid: Education & Research Timeline */}
-      <div className="mt-16 grid gap-10 lg:grid-cols-2">
+      <div className="mt-16 grid gap-8 sm:gap-10 lg:grid-cols-2">
         {/* Education Column */}
         <Reveal delay={120}>
-          <div className="rounded-2xl border border-border/80 bg-card/50 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/80 bg-card/50 p-4 sm:p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between pb-4 border-b border-border/60 mb-6">
               <h3 className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-foreground">
                 <GraduationCap className="size-4 text-primary" />
@@ -61,24 +61,24 @@ export function About() {
               </span>
             </div>
 
-            <div className="relative pl-6 space-y-8 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-border before:to-transparent">
-              {education.map((edu, idx) => (
+            <div className="relative pl-5 sm:pl-7 space-y-6 sm:space-y-8 before:absolute before:left-1.5 sm:before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-border before:to-transparent">
+              {education.map((edu) => (
                 <div key={edu.degree} className="relative group">
                   {/* Timeline Node */}
-                  <div className="absolute -left-[27px] top-1.5 size-3 rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors" />
+                  <div className="absolute -left-[19px] sm:-left-[26px] top-4 size-3 rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors" />
 
-                  <div className="rounded-xl border border-border/60 bg-secondary/30 p-4 transition-all hover:border-primary/40">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <h4 className="font-bold text-foreground text-base">{edu.degree}</h4>
+                  <div className="rounded-xl border border-border/60 bg-secondary/30 p-3.5 sm:p-4 transition-all hover:border-primary/40">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5 sm:gap-2">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-bold text-foreground text-sm sm:text-base leading-snug break-words">{edu.degree}</h4>
                         {edu.major && (
-                          <p className="mt-0.5 font-mono text-xs font-semibold text-primary">
+                          <p className="mt-0.5 font-mono text-xs font-semibold text-primary break-words">
                             {edu.major}
                           </p>
                         )}
-                        <p className="mt-1 text-xs text-muted-foreground">{edu.school}</p>
+                        <p className="mt-1 text-xs text-muted-foreground break-words">{edu.school}</p>
                       </div>
-                      <span className="shrink-0 rounded bg-secondary/80 border border-border px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+                      <span className="self-start shrink-0 rounded bg-secondary/80 border border-border px-2 py-0.5 font-mono text-[10px] sm:text-[11px] text-muted-foreground">
                         {edu.period}
                       </span>
                     </div>
@@ -104,7 +104,7 @@ export function About() {
 
         {/* Experience & Research Collaborations */}
         <Reveal delay={160}>
-          <div className="rounded-2xl border border-border/80 bg-card/50 p-6 backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/80 bg-card/50 p-4 sm:p-6 backdrop-blur-sm">
             <div className="flex items-center justify-between pb-4 border-b border-border/60 mb-6">
               <h3 className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-foreground">
                 <Briefcase className="size-4 text-primary" />
@@ -115,19 +115,19 @@ export function About() {
               </span>
             </div>
 
-            <div className="relative pl-6 space-y-8 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-border before:to-transparent">
+            <div className="relative pl-5 sm:pl-7 space-y-6 sm:space-y-8 before:absolute before:left-1.5 sm:before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-primary before:via-border before:to-transparent">
               {experiences.map((exp) => (
                 <div key={exp.role} className="relative group">
                   {/* Timeline Node */}
-                  <div className="absolute -left-[27px] top-1.5 size-3 rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors" />
+                  <div className="absolute -left-[19px] sm:-left-[26px] top-4 size-3 rounded-full border-2 border-primary bg-background group-hover:bg-primary transition-colors" />
 
-                  <div className="rounded-xl border border-border/60 bg-secondary/30 p-4 transition-all hover:border-primary/40">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <h4 className="font-bold text-foreground text-sm sm:text-base">{exp.role}</h4>
-                        <p className="mt-0.5 font-mono text-xs text-primary">{exp.organization}</p>
+                  <div className="rounded-xl border border-border/60 bg-secondary/30 p-3.5 sm:p-4 transition-all hover:border-primary/40">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5 sm:gap-2">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-bold text-foreground text-sm sm:text-base leading-snug break-words">{exp.role}</h4>
+                        <p className="mt-0.5 font-mono text-xs text-primary break-words">{exp.organization}</p>
                       </div>
-                      <span className="shrink-0 rounded bg-secondary/80 border border-border px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
+                      <span className="self-start shrink-0 rounded bg-secondary/80 border border-border px-2 py-0.5 font-mono text-[10px] sm:text-[11px] text-muted-foreground">
                         {exp.period}
                       </span>
                     </div>
@@ -158,7 +158,7 @@ export function About() {
 
       {/* Leadership Activities */}
       <Reveal delay={200}>
-        <div className="mt-12 rounded-2xl border border-border/80 bg-card/40 p-6 backdrop-blur-sm">
+        <div className="mt-12 rounded-2xl border border-border/80 bg-card/40 p-4 sm:p-6 backdrop-blur-sm">
           <div className="flex items-center justify-between pb-4 border-b border-border/60 mb-6">
             <h3 className="flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-widest text-foreground">
               <Trophy className="size-4 text-primary" />
@@ -167,18 +167,18 @@ export function About() {
             <span className="font-mono text-[10px] text-muted-foreground">EXEC_COUNCIL</span>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
             {leadership.map((item) => (
               <div
                 key={item.role}
-                className="rounded-xl border border-border/60 bg-secondary/30 p-4 transition-all hover:border-primary/40"
+                className="rounded-xl border border-border/60 bg-secondary/30 p-3.5 sm:p-4 transition-all hover:border-primary/40"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h4 className="font-semibold text-foreground text-sm">{item.role}</h4>
-                    <p className="mt-0.5 font-mono text-xs text-primary">{item.organization}</p>
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1 sm:gap-3">
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-semibold text-foreground text-sm break-words">{item.role}</h4>
+                    <p className="mt-0.5 font-mono text-xs text-primary break-words">{item.organization}</p>
                   </div>
-                  <span className="shrink-0 rounded border border-border bg-secondary px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+                  <span className="self-start shrink-0 rounded border border-border bg-secondary px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
                     {item.period}
                   </span>
                 </div>
@@ -200,7 +200,7 @@ export function About() {
                 <Cpu className="size-3.5" />
                 <span>[STACK_MANIFEST // CORE COMPETENCIES]</span>
               </div>
-              <h3 className="text-2xl font-bold tracking-tight text-foreground">
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                 Technical Specifications & Capabilities
               </h3>
             </div>
@@ -209,18 +209,18 @@ export function About() {
             </p>
           </div>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {skillGroups.map((group) => (
               <div
                 key={group.category}
-                className="relative rounded-2xl border border-border/80 bg-card/60 p-5 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 group"
+                className="relative rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-5 backdrop-blur-sm transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 group"
               >
                 {/* Tech tag banner */}
                 <div className="flex items-center justify-between pb-3 border-b border-border/50 mb-3.5">
                   <h4 className="font-bold text-sm text-foreground tracking-tight">
                     {group.category}
                   </h4>
-                  <span className="font-mono text-[9px] font-semibold text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded">
+                  <span className="font-mono text-[9px] font-semibold text-primary bg-primary/10 border border-primary/20 px-1.5 py-0.5 rounded shrink-0">
                     [{group.tag}]
                   </span>
                 </div>

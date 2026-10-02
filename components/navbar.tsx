@@ -20,6 +20,25 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Lock body scroll and listen for Escape key when mobile menu is open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+
+    window.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open])
+
   // Track active section in view
   useEffect(() => {
     const ids = navLinks.map((l) => l.href.replace('#', ''))
@@ -56,18 +75,18 @@ export function Navbar() {
         {/* Brand / Callsign */}
         <a
           href="#top"
-          className="group flex items-center gap-2.5 font-mono text-sm tracking-tight text-foreground"
+          className="group flex items-center gap-2 sm:gap-2.5 font-mono text-sm tracking-tight text-foreground min-w-0"
         >
-          <div className="relative flex size-8 items-center justify-center rounded border border-primary/40 bg-primary/10 text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_15px_rgba(34,211,238,0.35)]">
+          <div className="relative flex size-8 shrink-0 items-center justify-center rounded border border-primary/40 bg-primary/10 text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_15px_rgba(34,211,238,0.35)]">
             <Cpu className="size-4 transition-transform group-hover:scale-110" />
             <span className="absolute -bottom-0.5 -right-0.5 size-1.5 rounded-full bg-primary" />
           </div>
-          <div className="flex flex-col">
-            <div className="flex items-center gap-1.5 font-bold tracking-wider">
-              <span>{profile.name.toUpperCase()}</span>
-              <span className="text-[10px] text-primary font-normal hidden sm:inline">[EMBEDDED]</span>
+          <div className="flex flex-col min-w-0">
+            <div className="flex items-center gap-1.5 font-bold tracking-wider truncate">
+              <span className="truncate">{profile.name.toUpperCase()}</span>
+              <span className="text-[10px] text-primary font-normal hidden sm:inline shrink-0">[EMBEDDED]</span>
             </div>
-            <span className="text-[9px] font-mono text-muted-foreground hidden sm:block">
+            <span className="text-[9px] font-mono text-muted-foreground hidden sm:block truncate">
               MSU-IIT // 4TH YR COMAPPS
             </span>
           </div>
@@ -110,7 +129,7 @@ export function Navbar() {
             <a
               href="/resume.pdf"
               download
-              className="inline-flex items-center gap-1.5 rounded border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-xs text-primary transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+              className="inline-flex min-h-[36px] items-center gap-1.5 rounded border border-primary/30 bg-primary/10 px-2.5 py-1 font-mono text-xs text-primary transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground"
             >
               <FileDown className="size-3" />
               <span>RESUME</span>
@@ -127,9 +146,9 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
-            className="inline-flex size-9 items-center justify-center rounded-lg border border-border bg-secondary/50 text-foreground transition-all duration-200 hover:bg-accent active:scale-95"
+            className="inline-flex size-10 sm:size-9 items-center justify-center rounded-lg border border-border bg-secondary/50 text-foreground transition-all duration-200 hover:bg-accent active:scale-95"
           >
-            {open ? <X className="size-4" /> : <Menu className="size-4" />}
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
@@ -137,11 +156,11 @@ export function Navbar() {
       {/* Mobile menu dropdown */}
       <div
         className={cn(
-          'overflow-hidden border-t border-border bg-background/95 backdrop-blur-2xl transition-all duration-300 md:hidden',
-          isMounted && open ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0',
+          'overflow-y-auto border-t border-border bg-background/95 backdrop-blur-2xl transition-all duration-300 md:hidden shadow-2xl',
+          isMounted && open ? 'max-h-[calc(100dvh-4rem)] opacity-100 py-4' : 'max-h-0 opacity-0 py-0 pointer-events-none',
         )}
       >
-        <div className="mx-auto flex max-w-6xl flex-col px-6 py-4 space-y-1">
+        <div className="mx-auto flex max-w-6xl flex-col px-4 sm:px-6 space-y-1">
           <div className="mb-2 flex items-center justify-between pb-2 border-b border-border/50 text-[10px] font-mono text-muted-foreground">
             <span>SYS_NAV // CORE</span>
             <span className="text-emerald-500 font-bold">ONLINE</span>
@@ -153,10 +172,10 @@ export function Navbar() {
               href={link.href}
               onClick={() => setOpen(false)}
               className={cn(
-                'flex items-center justify-between rounded-md px-3 py-2 font-mono text-sm transition-colors',
+                'flex min-h-[44px] items-center justify-between rounded-lg px-3.5 py-2.5 font-mono text-sm transition-colors active:scale-[0.99]',
                 active === link.href
-                  ? 'bg-primary/10 text-primary font-medium'
-                  : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
+                  ? 'bg-primary/10 text-primary font-medium border border-primary/20'
+                  : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground border border-transparent',
               )}
             >
               <span>{link.label}</span>
@@ -168,9 +187,10 @@ export function Navbar() {
             <a
               href="/resume.pdf"
               download
-              className="flex flex-1 items-center justify-center gap-2 rounded border border-primary/40 bg-primary/10 py-2 font-mono text-xs text-primary font-medium"
+              onClick={() => setOpen(false)}
+              className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 py-2.5 font-mono text-xs text-primary font-medium transition-colors hover:bg-primary hover:text-primary-foreground active:scale-[0.99]"
             >
-              <FileDown className="size-3.5" />
+              <FileDown className="size-4" />
               DOWNLOAD RESUME
             </a>
           </div>

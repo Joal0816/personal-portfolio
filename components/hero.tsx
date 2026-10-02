@@ -51,7 +51,7 @@ export function Hero() {
           {/* Main Column */}
           <div className="flex-1 max-w-3xl">
             {/* Top Status HUD Badge */}
-            <div className="animate-fade-up mb-5 inline-flex flex-wrap items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1.5 font-mono text-xs text-foreground/90 backdrop-blur-md">
+            <div className="animate-fade-up mb-4 sm:mb-5 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-3.5 py-1.5 font-mono text-xs text-foreground/90 backdrop-blur-md">
               <span className="relative flex size-2">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
@@ -62,7 +62,7 @@ export function Hero() {
 
             {/* Main Headline */}
             <div className="animate-fade-up space-y-2" style={{ animationDelay: '80ms' }}>
-              <h1 className="text-balance text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-6xl leading-[1.08]">
+              <h1 className="text-balance text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12] sm:leading-[1.08] break-words">
                 <span>{profile.name}</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-emerald-400">
                   {profile.role}
@@ -75,7 +75,7 @@ export function Hero() {
 
             {/* Intro paragraph */}
             <p
-              className="animate-fade-up mt-5 max-w-2xl text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground"
+              className="animate-fade-up mt-4 sm:mt-5 max-w-2xl text-pretty text-sm sm:text-lg leading-relaxed text-muted-foreground"
               style={{ animationDelay: '160ms' }}
             >
               {profile.tagline}{' '}
@@ -86,14 +86,14 @@ export function Hero() {
 
             {/* CTA action cluster */}
             <div
-              className="animate-fade-up mt-8 flex flex-wrap items-center gap-3"
+              className="animate-fade-up mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3"
               style={{ animationDelay: '240ms' }}
             >
               <Button
                 render={<a href="#projects" />}
                 nativeButton={false}
                 size="lg"
-                className="gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all"
+                className="w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all justify-center"
               >
                 <span>View Projects</span>
                 <ArrowDown className="size-4" />
@@ -104,7 +104,7 @@ export function Hero() {
                 nativeButton={false}
                 size="lg"
                 variant="outline"
-                className="font-mono text-xs sm:text-sm tracking-wider uppercase border-border/80 hover:border-primary/60 hover:bg-secondary/40"
+                className="w-full sm:w-auto min-h-[44px] font-mono text-xs sm:text-sm tracking-wider uppercase border-border/80 hover:border-primary/60 hover:bg-secondary/40 justify-center"
               >
                 Get In Touch
               </Button>
@@ -114,7 +114,7 @@ export function Hero() {
                 nativeButton={false}
                 size="lg"
                 variant="ghost"
-                className="gap-2 font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20"
+                className="w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 justify-center"
               >
                 <Download className="size-4" />
                 Resume PDF
@@ -123,7 +123,7 @@ export function Hero() {
 
             {/* Social channels with telemetry micro-labels */}
             <div
-              className="animate-fade-up mt-8 flex items-center gap-3"
+              className="animate-fade-up mt-6 sm:mt-8 flex flex-wrap items-center gap-2 sm:gap-3"
               style={{ animationDelay: '300ms' }}
             >
               <SocialLink href={profile.socials.github} label="GitHub">
@@ -143,11 +143,11 @@ export function Hero() {
 
           {/* Right Column: HUD Profile Chassis & Live Silicon Specs */}
           <div
-            className="animate-fade-up flex flex-col items-center lg:items-end shrink-0"
+            className="animate-fade-up flex flex-col items-center lg:items-end shrink-0 max-w-full px-2 sm:px-0"
             style={{ animationDelay: '200ms' }}
           >
             {/* Tech Frame with Corner Brackets */}
-            <div className="relative group">
+            <div className="relative group max-w-full">
               {/* Outer decorative cyber chassis */}
               <div className="absolute -inset-2.5 rounded-2xl border border-primary/20 bg-primary/5 -z-10 group-hover:border-primary/40 transition-colors" />
 
@@ -158,13 +158,13 @@ export function Hero() {
               <div className="absolute -bottom-1.5 -right-1.5 size-3 border-b-2 border-r-2 border-primary" />
 
               {/* Top coordinates label */}
-              <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-[9px] font-mono text-muted-foreground">
-                <Radio className="size-3 text-primary animate-pulse" />
-                <span>ILIGAN CITY // 8.2280° N, 124.2452° E</span>
+              <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-[9px] font-mono text-muted-foreground truncate max-w-full">
+                <Radio className="size-3 text-primary animate-pulse shrink-0" />
+                <span className="truncate">ILIGAN CITY // 8.2280° N, 124.2452° E</span>
               </div>
 
               {/* Image Container */}
-              <div className="relative size-60 sm:size-72 overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
+              <div className="relative size-56 sm:size-72 max-w-[calc(100vw-3.5rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
                 <Image
                   src="/profile.jpg"
                   alt="Joseph Alan B. Vergara"
@@ -195,9 +195,9 @@ export function Hero() {
           style={{ animationDelay: '360ms' }}
         >
           {/* Header row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border/60">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-border/60">
             <div className="flex items-center gap-2.5">
-              <div className="flex size-7 items-center justify-center rounded bg-primary/10 text-primary border border-primary/30">
+              <div className="flex size-7 shrink-0 items-center justify-center rounded bg-primary/10 text-primary border border-primary/30">
                 <TerminalIcon className="size-3.5" />
               </div>
               <div>
@@ -211,12 +211,12 @@ export function Hero() {
             </div>
 
             {/* Toggle tabs */}
-            <div className="flex items-center rounded-lg border border-border bg-secondary/50 p-1 font-mono text-xs">
+            <div className="grid grid-cols-2 sm:flex items-center rounded-lg border border-border bg-secondary/50 p-1 font-mono text-xs w-full sm:w-auto">
               <button
                 type="button"
                 onClick={() => setActiveTelemetryTab('specs')}
                 className={cn(
-                  'rounded px-3 py-1 transition-all',
+                  'rounded px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
                   activeTelemetryTab === 'specs'
                     ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
                     : 'text-muted-foreground hover:text-foreground',
@@ -228,7 +228,7 @@ export function Hero() {
                 type="button"
                 onClick={() => setActiveTelemetryTab('pipeline')}
                 className={cn(
-                  'rounded px-3 py-1 transition-all',
+                  'rounded px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
                   activeTelemetryTab === 'pipeline'
                     ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
                     : 'text-muted-foreground hover:text-foreground',
@@ -241,7 +241,7 @@ export function Hero() {
 
           {/* Tab content */}
           {activeTelemetryTab === 'specs' ? (
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4 text-xs font-mono">
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
               {/* Architecture 1 */}
               <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
                 <div className="flex items-center justify-between text-muted-foreground text-[10px]">
@@ -295,7 +295,7 @@ export function Hero() {
               </div>
             </div>
           ) : (
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3 text-xs font-mono">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
               {/* Pipeline 1 */}
               <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
                 <div className="flex items-center justify-between text-muted-foreground text-[10px]">
@@ -366,7 +366,7 @@ function SocialLink({
       target={href.startsWith('http') ? '_blank' : undefined}
       rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
       aria-label={label}
-      className="inline-flex items-center gap-2 rounded border border-border/80 bg-secondary/40 px-3 py-2 text-muted-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10 hover:text-primary hover:shadow-lg hover:shadow-primary/10"
+      className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border/80 bg-secondary/40 px-3.5 py-2 text-muted-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10 hover:text-primary hover:shadow-lg hover:shadow-primary/10 active:scale-95"
     >
       {children}
     </a>
