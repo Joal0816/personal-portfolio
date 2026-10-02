@@ -77,9 +77,13 @@ export function Navbar() {
           href="#top"
           className="group flex items-center gap-2 sm:gap-2.5 font-mono text-sm tracking-tight text-foreground min-w-0"
         >
-          <div className="relative flex size-8 shrink-0 items-center justify-center rounded border border-primary/40 bg-primary/10 text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:shadow-[0_0_15px_rgba(34,211,238,0.35)]">
-            <Cpu className="size-4 transition-transform group-hover:scale-110" />
-            <span className="absolute -bottom-0.5 -right-0.5 size-1.5 rounded-full bg-primary" />
+          <div className="relative flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-card p-1 text-primary transition-all duration-300 group-hover:border-primary group-hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] group-hover:scale-105">
+            <img
+              src="/icon.svg"
+              alt="Joseph Vergara Logo"
+              className="size-7 object-contain transition-transform group-hover:scale-110"
+            />
+            <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-emerald-400 border border-background shadow-[0_0_8px_#10b981]" />
           </div>
           <div className="flex flex-col min-w-0">
             <div className="flex items-center gap-1.5 font-bold tracking-wider truncate">
