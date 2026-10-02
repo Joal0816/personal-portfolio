@@ -6,11 +6,13 @@ import { Certifications } from '@/components/certifications'
 import { Contact } from '@/components/contact'
 import { Footer } from '@/components/footer'
 import { CyberHudCursor } from '@/components/cyber-hud-cursor'
+import { InstallPwa } from '@/components/install-pwa'
 
 export default function Page() {
   return (
     <>
       <CyberHudCursor />
+      <InstallPwa />
       <Navbar />
       <main className="overflow-x-hidden">
         <Hero />

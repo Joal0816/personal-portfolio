@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Geist_Mono } from 'next/font/google'
+import { SwRegister } from './sw-register'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
+  manifest: '/manifest.webmanifest',
   title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
   description:
     'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions. Based in Iligan City, Philippines.',
@@ -77,6 +79,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
+        <SwRegister />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
