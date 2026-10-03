@@ -177,9 +177,13 @@ export function HardwarePlayground() {
 
       case 'neofetch':
         newLogs.push(
-          { text: '  ██████╗  ██████╗  █████╗ ██╗     ', type: 'accent' },
-          { text: '  ██╔══██╗██╔═══██╗██╔══██╗██║     ', type: 'accent' },
-          { text: '  ██████╔╝██║   ██║███████║██║     ', type: 'accent' },
+          { text: '     ██╗  ██████╗  ██████╗ ██╗     ', type: 'accent' },
+          { text: '     ██║ ██╔══██╗ ██╔══██╗ ██║     ', type: 'accent' },
+          { text: '     ██║ ██║  ██║ ██║  ██║ ██║     ', type: 'accent' },
+          { text: '     ██║ ██║  ██║ ███████║ ██║     ', type: 'accent' },
+          { text: '███████╗ ██║  ██║ ██║  ██║ ███████╗', type: 'accent' },
+          { text: '╚══════╝ ╚██████╝ ╚═╝  ╚═╝ ╚══════╝', type: 'accent' },
+          { text: '', type: 'dim' },
           { text: '  JOSEPH ALAN B. VERGARA // JOAL', type: 'info' },
           { text: '  ROLE: Embedded Systems & Edge AI Engineer', type: 'success' },
           { text: '  INSTITUTION: MSU-IIT (BS Computer Applications)', type: 'dim' },
