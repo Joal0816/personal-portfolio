@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Space_Grotesk, Geist_Mono } from 'next/font/google'
 import { SwRegister } from './sw-register'
+import { AiCompanion } from '@/components/ai-companion'
 import './globals.css'
 
 const spaceGrotesk = Space_Grotesk({
@@ -79,6 +80,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         {children}
+        <AiCompanion />
         <SwRegister />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
