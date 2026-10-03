@@ -116,12 +116,25 @@ export function AiCompanion() {
   const [inputValue, setInputValue] = useState('')
   const [showHint, setShowHint] = useState(true)
   const [soundEnabled, setSoundEnabled] = useState(true)
+  const [hasPwaPrompt, setHasPwaPrompt] = useState(false)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const reactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Listen for PWA prompt banner to dynamically adjust bottom offsets and avoid collision
+  useEffect(() => {
+    const checkPwa = () => {
+      const el = document.querySelector('aside[aria-label="Install Portfolio Progressive Web App"]')
+      setHasPwaPrompt(!!el)
+    }
+    checkPwa()
+    const observer = new MutationObserver(checkPwa)
+    observer.observe(document.body, { childList: true, subtree: true })
+    return () => observer.disconnect()
+  }, [])
 
   const activeChar = CHARACTERS[activeId]
   const currentTheme = CHARACTER_THEMES[activeId]
@@ -277,32 +290,32 @@ export function AiCompanion() {
   return (
     <>
       {/* ====================================================================
-          LAUNCHER BUTTON & FLOATING HINT (Positioned safely above bottom dock)
-          Mobile: bottom-20 (80px), Desktop: bottom-6 (24px)
+          LAUNCHER BUTTON & FLOATING HINT (Safe Area & PWA-aware Offsets)
+          Mobile: bottom-20 (or bottom-48 with PWA), Desktop: bottom-6
           ==================================================================== */}
       <div
         className={cn(
           'fixed z-50 transition-all duration-300 ease-out select-none',
-          'bottom-20 right-4 sm:bottom-6 sm:right-6',
+          hasPwaPrompt ? 'companion-launcher-bottom-pwa' : 'companion-launcher-bottom',
           isOpen ? 'pointer-events-none opacity-0 scale-90' : 'pointer-events-auto opacity-100 scale-100',
         )}
       >
-        {/* Floating Unread / Welcome Hint Bubble */}
+        {/* Floating Unread / Welcome Hint Bubble (Responsive & width-capped) */}
         {showHint && (
           <aside
             role="status"
             aria-live="polite"
-            className="animate-companion-hint-float pointer-events-auto absolute -top-13 right-0 sm:right-1 flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-[#0a0e17]/95 px-3 py-1.5 text-xs text-foreground shadow-[0_0_18px_rgba(6,182,212,0.25)] backdrop-blur-xl whitespace-nowrap"
+            className="animate-companion-hint-float pointer-events-auto absolute -top-13 right-0 sm:right-1 flex max-w-[calc(100vw-2.5rem)] sm:max-w-xs items-center gap-2 rounded-xl border border-cyan-500/40 bg-[#0a0e17]/95 px-3 py-1.5 text-xs text-foreground shadow-[0_0_18px_rgba(6,182,212,0.25)] backdrop-blur-xl"
           >
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex size-2">
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
               </span>
-              <span className="font-mono text-[11px] font-bold tracking-wider text-cyan-400">
+              <span className="font-mono text-[11px] font-bold tracking-wider text-cyan-400 shrink-0">
                 AI UPLINK:
               </span>
-              <span className="font-sans text-[11px] text-muted-foreground">
+              <span className="font-sans text-[11px] text-muted-foreground truncate">
                 Chat with Joal & cats
               </span>
             </div>
@@ -315,7 +328,7 @@ export function AiCompanion() {
                 playSound('click')
               }}
               aria-label="Dismiss AI companion hint"
-              className="ml-1 inline-flex size-4 items-center justify-center rounded text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/60"
+              className="relative ml-1 inline-flex size-6 sm:size-4 shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/60 touch-target-expand"
             >
               <X className="size-3" />
             </button>
@@ -356,7 +369,7 @@ export function AiCompanion() {
               src={activeChar.photo}
               alt={activeChar.name}
               className={cn(
-                'size-full object-cover transition-transform duration-300 group-hover:scale-110',
+                'size-full object-cover pixelated transition-transform duration-300 group-hover:scale-110',
                 (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
               )}
               style={{ objectPosition: currentTheme.avatarCrop }}
@@ -395,8 +408,7 @@ export function AiCompanion() {
         className={cn(
           'fixed z-50 flex flex-col overflow-hidden rounded-2xl',
           'border bg-[#0a0e17]/95 backdrop-blur-2xl transition-all duration-300 ease-out',
-          'bottom-20 left-3 right-3 sm:left-auto sm:right-6 sm:bottom-6',
-          'w-auto sm:w-[390px] h-[min(570px,calc(100dvh-6.5rem))]',
+          'companion-panel-pos',
           isOpen
             ? 'pointer-events-auto opacity-100 scale-100 origin-bottom-right'
             : 'pointer-events-none opacity-0 scale-95 origin-bottom-right',
@@ -435,23 +447,23 @@ export function AiCompanion() {
         {/* ==================================================================
             HEADER: Status Line, Telemetry, Active Avatar & Character Switcher
             ================================================================== */}
-        <header className="relative z-10 border-b border-border/70 bg-card/40 px-3.5 pt-3 pb-2.5 backdrop-blur-md">
+        <header className="relative z-10 shrink-0 border-b border-border/70 bg-card/40 px-3.5 pt-3 pb-2.5 backdrop-blur-md companion-header-compact">
           {/* Top Telemetry & Controls Row */}
           <div className="flex items-center justify-between pb-2 border-b border-border/40 text-[10px] font-mono">
-            <div className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="relative flex size-2">
+            <div className="flex items-center gap-1.5 text-muted-foreground min-w-0">
+              <span className="relative flex size-2 shrink-0">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
               </span>
-              <span className="font-bold text-foreground">LINK ESTABLISHED</span>
-              <span className="text-border">•</span>
-              <span className="hidden sm:inline" style={{ color: currentTheme.accentColor }}>
+              <span className="font-bold text-foreground truncate">LINK ESTABLISHED</span>
+              <span className="text-border shrink-0 hidden sm:inline">•</span>
+              <span className="hidden sm:inline truncate" style={{ color: currentTheme.accentColor }}>
                 LOW_LATENCY // 12ms
               </span>
             </div>
 
-            <div className="flex items-center gap-1">
-              {/* Audio toggle button */}
+            <div className="flex items-center gap-1 shrink-0">
+              {/* Audio toggle button (≥44px effective touch target) */}
               <button
                 type="button"
                 onClick={() => {
@@ -459,12 +471,12 @@ export function AiCompanion() {
                   playSound('click')
                 }}
                 aria-label={soundEnabled ? 'Mute companion sound effects' : 'Enable companion sound effects'}
-                className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                className="relative inline-flex size-8 sm:size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary touch-target-expand"
               >
                 {soundEnabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
               </button>
 
-              {/* Close Button */}
+              {/* Close Button (≥44px effective touch target) */}
               <button
                 type="button"
                 onClick={() => {
@@ -472,7 +484,7 @@ export function AiCompanion() {
                   setIsOpen(false)
                 }}
                 aria-label="Close AI virtual companion"
-                className="inline-flex size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary"
+                className="relative inline-flex size-8 sm:size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary touch-target-expand"
               >
                 <X className="size-4" />
               </button>
@@ -480,12 +492,12 @@ export function AiCompanion() {
           </div>
 
           {/* Active Character Profile Row */}
-          <div className="mt-2.5 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2.5 min-w-0">
+          <div className="mt-2.5 flex items-center justify-between gap-2.5 min-w-0">
+            <div className="flex items-center gap-2.5 min-w-0 flex-1">
               {/* Circular Avatar with Idle Bob & Pop Reaction */}
               <div
                 className={cn(
-                  'relative size-12 shrink-0 rounded-full border-2 p-0.5 transition-all duration-300',
+                  'relative size-12 shrink-0 rounded-full border-2 p-0.5 transition-all duration-300 companion-avatar-compact',
                   avatarReaction ? 'animate-companion-pop' : 'animate-companion-bob',
                 )}
                 style={{
@@ -498,7 +510,7 @@ export function AiCompanion() {
                     src={activeChar.photo}
                     alt={activeChar.name}
                     className={cn(
-                      'size-full object-cover transition-transform duration-300',
+                      'size-full object-cover pixelated transition-transform duration-300',
                       (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
                     )}
                     style={{ objectPosition: currentTheme.avatarCrop }}
@@ -507,14 +519,14 @@ export function AiCompanion() {
               </div>
 
               {/* Character Identity & Callsign */}
-              <div className="min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-sm font-bold tracking-tight text-foreground truncate">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <h3 className="text-sm font-bold tracking-tight text-foreground truncate shrink-0 max-w-[80px] sm:max-w-none">
                     {activeChar.name}
                   </h3>
                   <span
                     className={cn(
-                      'rounded px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider',
+                      'rounded px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider shrink-0 truncate max-w-[130px] sm:max-w-none',
                       currentTheme.badgeBg,
                       currentTheme.badgeText,
                     )}
@@ -531,7 +543,7 @@ export function AiCompanion() {
           </div>
 
           {/* Character Switcher Tabs */}
-          <div className="mt-2.5 flex items-center gap-1.5 rounded-lg border border-border/60 bg-background/60 p-1">
+          <div className="mt-2.5 flex items-center gap-1 sm:gap-1.5 rounded-lg border border-border/60 bg-background/60 p-1">
             {CHARACTER_ORDER.map((id) => {
               const char = CHARACTERS[id]
               const theme = CHARACTER_THEMES[id]
@@ -545,7 +557,7 @@ export function AiCompanion() {
                   aria-selected={isActive}
                   aria-label={`Switch companion to ${char.name} (${char.species})`}
                   className={cn(
-                    'flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-mono transition-all',
+                    'flex flex-1 min-w-0 items-center justify-center gap-1 sm:gap-1.5 rounded-md px-1.5 sm:px-2 py-2 sm:py-1.5 min-h-[38px] sm:min-h-[32px] text-xs font-mono transition-all',
                     isActive
                       ? 'bg-secondary text-foreground font-semibold shadow-sm'
                       : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
@@ -555,17 +567,17 @@ export function AiCompanion() {
                   }}
                 >
                   <div
-                    className="relative size-4.5 shrink-0 overflow-hidden rounded-full border"
+                    className="relative size-4 sm:size-4.5 shrink-0 overflow-hidden rounded-full border"
                     style={{ borderColor: isActive ? theme.accentColor : 'transparent' }}
                   >
                     <img
                       src={char.photo}
                       alt={char.name}
-                      className="size-full object-cover"
+                      className="size-full object-cover pixelated"
                       style={{ objectPosition: theme.avatarCrop }}
                     />
                   </div>
-                  <span className="text-[11px] truncate">{char.name}</span>
+                  <span className="text-[10px] sm:text-[11px] truncate">{char.name}</span>
                 </button>
               )
             })}
@@ -580,7 +592,7 @@ export function AiCompanion() {
           role="log"
           aria-live="polite"
           aria-label={`Conversation with ${activeChar.name}`}
-          className="flex-1 overflow-y-auto px-3.5 py-3 space-y-3 tech-grid"
+          className="flex-1 min-h-[70px] sm:min-h-[100px] overflow-y-auto px-3.5 py-3 space-y-3 tech-grid overscroll-contain"
           style={{ backgroundSize: '1.75rem 1.75rem' }}
         >
           {/* Welcome telemetry notice */}
@@ -661,9 +673,9 @@ export function AiCompanion() {
         {/* ==================================================================
             FOOTER: Suggestion Chips & Text Input
             ================================================================== */}
-        <footer className="relative z-10 border-t border-border/70 bg-card/50 p-2.5 backdrop-blur-md">
-          {/* Quick Suggestion Chips */}
-          <div className="mb-2 flex items-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <footer className="relative z-10 shrink-0 border-t border-border/70 bg-card/50 p-2.5 backdrop-blur-md">
+          {/* Quick Suggestion Chips (Swipeable horizontally, accessible touch target) */}
+          <div className="mb-2 flex items-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain">
             <span className="shrink-0 flex items-center gap-1 pl-0.5 text-[10px] font-mono text-muted-foreground/80">
               <Sparkles className="size-2.5" style={{ color: currentTheme.accentColor }} />
               <span>PROMPTS:</span>
@@ -677,19 +689,16 @@ export function AiCompanion() {
                 disabled={isTyping}
                 aria-label={`Ask: ${suggestion}`}
                 className={cn(
-                  'shrink-0 rounded-full border border-border/80 bg-secondary/50 px-2.5 py-1 font-mono text-[10px] text-muted-foreground',
+                  'relative shrink-0 rounded-full border border-border/80 bg-secondary/50 px-3 sm:px-2.5 py-1.5 sm:py-1 min-h-[36px] sm:min-h-[28px] font-mono text-[11px] sm:text-[10px] text-muted-foreground flex items-center touch-target-expand',
                   'transition-all hover:bg-secondary hover:text-foreground active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
                 )}
-                style={{
-                  borderColor: undefined,
-                }}
               >
                 {suggestion}
               </button>
             ))}
           </div>
 
-          {/* Text Input Row */}
+          {/* Text Input Row (>=16px on mobile prevents iOS zoom-on-focus) */}
           <form
             onSubmit={(e) => {
               e.preventDefault()
@@ -697,7 +706,7 @@ export function AiCompanion() {
             }}
             className="flex items-center gap-2"
           >
-            <div className="relative flex-1">
+            <div className="relative flex-1 min-w-0">
               <input
                 ref={inputRef}
                 type="text"
@@ -707,20 +716,20 @@ export function AiCompanion() {
                 disabled={isTyping}
                 aria-label={`Message ${activeChar.name}`}
                 className={cn(
-                  'w-full rounded-xl border border-border/80 bg-background/80 px-3 py-2 text-xs text-foreground placeholder:text-muted-foreground/60',
+                  'w-full rounded-xl border border-border/80 bg-background/80 px-3.5 py-2.5 sm:py-2 text-base sm:text-xs text-foreground placeholder:text-muted-foreground/60 placeholder:text-xs leading-normal',
                   'transition-colors focus:border-cyan-500/80 focus:bg-background focus:outline-none focus:ring-1 focus:ring-cyan-500/50',
                   'disabled:opacity-60',
                 )}
               />
             </div>
 
-            {/* Send Button */}
+            {/* Send Button (>=44px touch target on mobile) */}
             <button
               type="submit"
               disabled={!inputValue.trim() || isTyping}
               aria-label="Send message to AI companion"
               className={cn(
-                'inline-flex size-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-200',
+                'inline-flex size-11 sm:size-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-200',
                 inputValue.trim() && !isTyping
                   ? 'border-transparent text-black shadow-md hover:scale-105 active:scale-95'
                   : 'border-border/60 bg-secondary/40 text-muted-foreground opacity-40 cursor-not-allowed',
