@@ -369,7 +369,7 @@ export function AiCompanion() {
               src={activeChar.photo}
               alt={activeChar.name}
               className={cn(
-                'size-full object-cover pixelated transition-transform duration-300 group-hover:scale-110',
+                'size-full object-cover transition-transform duration-300 group-hover:scale-110',
                 (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
               )}
               style={{ objectPosition: currentTheme.avatarCrop }}
@@ -510,7 +510,7 @@ export function AiCompanion() {
                     src={activeChar.photo}
                     alt={activeChar.name}
                     className={cn(
-                      'size-full object-cover pixelated transition-transform duration-300',
+                      'size-full object-cover transition-transform duration-300',
                       (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
                     )}
                     style={{ objectPosition: currentTheme.avatarCrop }}
@@ -573,7 +573,7 @@ export function AiCompanion() {
                     <img
                       src={char.photo}
                       alt={char.name}
-                      className="size-full object-cover pixelated"
+                      className="size-full object-cover"
                       style={{ objectPosition: theme.avatarCrop }}
                     />
                   </div>
