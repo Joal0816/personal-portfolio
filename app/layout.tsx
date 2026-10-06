@@ -36,9 +36,32 @@ const splineMono = Spline_Sans_Mono({
 
 export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
-  title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
+  metadataBase: new URL('https://joalvergs.tech'),
+  title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
   description:
-    'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions. Based in Iligan City, Philippines.',
+    'Portfolio of Joseph Vergara, embedded systems and edge AI engineer specializing in microcontroller firmware (C/C++, FreeRTOS), TinyML, and full-stack sensor telemetry. MSU-IIT.',
+  openGraph: {
+    title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
+    description: 'Hardware firmware, real-time operating systems, and edge computer vision without the cloud.',
+    url: 'https://joalvergs.tech',
+    siteName: 'Joseph Vergara Portfolio',
+    images: [
+      {
+        url: '/profile.jpg',
+        width: 800,
+        height: 800,
+        alt: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
+    description: 'Hardware firmware, real-time operating systems, and edge computer vision without the cloud.',
+    images: ['/profile.jpg'],
+  },
   keywords: [
     'embedded systems',
     'full-stack developer',

@@ -18,10 +18,19 @@ export function Navbar() {
 
   useEffect(() => {
     setIsMounted(true)
+    let ticking = false
+
     const onScroll = () => {
-      setScrolled(window.scrollY > 16)
-      if (window.scrollY < 200) setActive('')
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 16)
+          if (window.scrollY < 200) setActive('')
+          ticking = false
+        })
+        ticking = true
+      }
     }
+
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -147,7 +156,7 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer (Always rendered, hidden offscreen or visually hidden when closed for seamless locator tests) */}
+      {/* Mobile Drawer */}
       <div
         ref={panelRef}
         aria-hidden={!open}
@@ -182,7 +191,7 @@ export function Navbar() {
         </nav>
       </div>
 
-      {/* Hidden semantic links for mobile crawl & accessibility in closed state */}
+      {/* Hidden semantic links for mobile crawl & accessibility */}
       <div className="sr-only md:hidden">
         {navLinks.map((link) => (
           <a key={`sr-${link.href}`} href={link.href}>

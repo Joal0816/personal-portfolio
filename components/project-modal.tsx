@@ -23,7 +23,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
           {project && (
             <>
               {/* The photo print at the top of the page */}
-              <div className="relative aspect-[16/9] max-h-48 shrink-0 overflow-hidden border-b border-border bg-secondary sm:max-h-64">
+              <div className="relative h-48 sm:h-64 w-full shrink-0 overflow-hidden border-b border-border bg-secondary">
                 <div className="thumb-mat absolute inset-0">
                   <Image
                     src={project.image || '/placeholder.svg'}
