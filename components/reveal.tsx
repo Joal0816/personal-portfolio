@@ -5,31 +5,26 @@ import { cn } from '@/lib/utils'
 
 type RevealProps = {
   children: React.ReactNode
-  /** Delay in ms before the reveal transition starts once in view. */
+  /** Delay in ms before the settle starts once in view. */
   delay?: number
-  /** Direction the element travels from as it fades in. */
-  direction?: 'up' | 'down' | 'left' | 'right' | 'none'
+  /** Small rotation the element settles out of, like paper landing on a page. */
+  tilt?: number
   className?: string
   /** Render as a different element (e.g. 'li', 'article'). Defaults to 'div'. */
   as?: React.ElementType
 }
 
-const hiddenByDirection: Record<NonNullable<RevealProps['direction']>, string> = {
-  up: 'translate-y-6',
-  down: '-translate-y-6',
-  left: 'translate-x-6',
-  right: '-translate-x-6',
-  none: '',
-}
-
 /**
- * Lightweight scroll-reveal wrapper built on IntersectionObserver + CSS
- * transitions — no animation library required. Respects reduced-motion.
+ * Paper-settle wrapper: elements arrive the way a page settles onto a desk —
+ * a short lift, a slight rotation, and a shadow that deepens into place.
+ * IntersectionObserver + CSS transitions only. Content is never trapped
+ * hidden: a short fallback reveals anything the observer misses, and
+ * reduced-motion users see everything immediately.
  */
 export function Reveal({
   children,
   delay = 0,
-  direction = 'up',
+  tilt = 0,
   className,
   as: Tag = 'div',
 }: RevealProps) {
@@ -53,22 +48,30 @@ export function Reveal({
           observer.disconnect()
         }
       },
-      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
     )
 
     observer.observe(node)
-    return () => observer.disconnect()
+
+    // Safety net: nothing stays invisible because an observer never fired.
+    const fallback = window.setTimeout(() => setVisible(true), 2500)
+
+    return () => {
+      observer.disconnect()
+      window.clearTimeout(fallback)
+    }
   }, [])
 
   return (
     <Tag
       ref={ref}
-      style={{ transitionDelay: `${delay}ms` }}
+      style={{
+        transitionDelay: `${delay}ms`,
+        transform: visible ? undefined : `translateY(14px) rotate(${tilt}deg)`,
+      }}
       className={cn(
-        'transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform motion-reduce:transition-none',
-        visible
-          ? 'translate-x-0 translate-y-0 opacity-100'
-          : `opacity-0 ${hiddenByDirection[direction]}`,
+        'transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none',
+        visible ? 'opacity-100' : 'opacity-0',
         className,
       )}
     >

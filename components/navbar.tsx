@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { Menu, X, FileDown, Terminal } from 'lucide-react'
+import { Menu, X, FileDown } from 'lucide-react'
 import { navLinks, profile } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
@@ -19,7 +19,11 @@ export function Navbar() {
 
   useEffect(() => {
     setIsMounted(true)
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => {
+      setScrolled(window.scrollY > 12)
+      // Above the first section nothing is "current" — clear the tab highlight.
+      if (window.scrollY < 240) setActive('')
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -40,14 +44,12 @@ export function Navbar() {
   useEffect(() => {
     if (open) {
       document.body.style.overflow = 'hidden'
-      // Shift focus into the panel for screen readers and keyboard users
       const firstFocusable = panelRef.current?.querySelector<HTMLElement>(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
       )
       firstFocusable?.focus()
     } else {
       document.body.style.overflow = ''
-      // Return focus to the toggle button on close
       if (prevOpenRef.current && !open) {
         toggleRef.current?.focus()
       }
@@ -97,6 +99,7 @@ export function Navbar() {
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
         if (visible[0]) setActive(`#${visible[0].target.id}`)
+        else setActive('')
       },
       { rootMargin: '-40% 0px -45% 0px', threshold: 0 },
     )
@@ -128,151 +131,126 @@ export function Navbar() {
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-all duration-300',
         scrolled || open
-          ? 'border-b border-border/70 bg-background/85 shadow-lg shadow-black/20 backdrop-blur-xl'
-          : 'border-b border-border/20 bg-background/40 backdrop-blur-md',
+          ? 'shadow-[0_1px_0_var(--border),0_10px_24px_-18px_color-mix(in_oklch,var(--graphite)_45%,transparent)]'
+          : 'shadow-[0_1px_0_color-mix(in_oklch,var(--border)_60%,transparent)]',
       )}
     >
-      <nav className="mx-auto flex h-16 max-w-6xl 2xl:max-w-7xl items-center justify-between px-3 sm:px-6">
-        {/* Brand / Callsign - Guaranteed unclipped across all screen widths */}
-        <a
-          href="#top"
-          onClick={(e) => {
-            if (open) handleLinkClick(e, '#top')
-          }}
-          aria-label="Joseph Vergara Portfolio - Back to top"
-          className="group flex items-center gap-2 sm:gap-2.5 font-mono text-sm tracking-tight text-foreground shrink-0 rounded-lg p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          <div className="relative flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/40 bg-card p-1 text-primary transition-all duration-300 group-hover:border-primary group-hover:shadow-[0_0_16px_rgba(6,182,212,0.4)] group-hover:scale-105">
-            <img
-              src="/icon.svg"
-              alt="Joseph Vergara Logo"
-              className="size-7 object-contain transition-transform group-hover:scale-110"
-            />
-            <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-emerald-400 border border-background shadow-[0_0_8px_#10b981]" />
-          </div>
-          <div className="flex flex-col shrink-0">
-            <div className="flex items-center gap-1.5 font-bold tracking-wider whitespace-nowrap">
-              <span className="text-foreground">{profile.name.toUpperCase()}</span>
-              <span className="text-[10px] text-primary font-mono font-normal hidden sm:inline shrink-0">[EMBEDDED]</span>
-            </div>
-            <span className="text-[9px] font-mono text-muted-foreground hidden sm:block whitespace-nowrap">
-              MSU-IIT // 4TH YR COMAPPS
+      {/* Cloth binding of the notebook */}
+      <div className="bg-cloth text-cloth-foreground">
+        <nav className="mx-auto flex h-16 max-w-6xl 2xl:max-w-7xl items-center justify-between px-3 sm:px-6">
+          {/* Cover stamp — gold foil on maroon cloth */}
+          <a
+            href="#top"
+            onClick={(e) => {
+              if (open) handleLinkClick(e, '#top')
+            }}
+            aria-label="Joseph Vergara Portfolio - Back to top"
+            className="group flex min-h-[44px] items-center gap-2.5 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foil focus-visible:ring-offset-2 focus-visible:ring-offset-cloth shrink-0"
+          >
+            <span className="foil-stamp font-display text-xl font-extrabold leading-none tracking-tight">
+              {profile.callsign}
             </span>
-          </div>
-        </a>
+            <span className="hidden sm:block h-6 w-px bg-cloth-foreground/25" />
+            <span className="hidden sm:flex flex-col leading-tight">
+              <span className="text-[13px] font-semibold tracking-tight">
+                {profile.name}
+              </span>
+              <span className="text-[10px] text-cloth-foreground/75">
+                Iligan City · MSU-IIT
+              </span>
+            </span>
+          </a>
 
-        {/* Status Beacon - Displayed inline only at 2xl (>=1536px) where width math guarantees breathing room */}
-        <div className="hidden 2xl:flex items-center gap-2 rounded-full border border-border/80 bg-secondary/50 px-3 py-1 font-mono text-[11px] text-muted-foreground shadow-[0_0_12px_-3px_color-mix(in_oklch,var(--primary)_20%,transparent)] shrink-0">
-          <span className="relative flex size-2.5 items-center justify-center">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-            <span className="status-beacon relative inline-flex size-2 rounded-full bg-emerald-500" />
-          </span>
-          <span className="text-foreground/90 font-medium">STATUS:</span>
-          <span className="text-primary font-mono">SYS_ONLINE // LOW-LATENCY</span>
-        </div>
+          {/* Divider tabs */}
+          <div className="hidden items-center gap-0.5 xl:flex">
+            {navLinks.map((link) => {
+              const isActive = active === link.href
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  data-active={isActive}
+                  className={cn(
+                    'index-tab inline-flex min-h-[36px] items-center rounded-t-md px-3 py-1.5 text-xs tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foil',
+                    isActive
+                      ? 'bg-background text-foreground font-semibold'
+                      : 'text-cloth-foreground/85 hover:bg-cloth-foreground/10 hover:text-cloth-foreground',
+                  )}
+                >
+                  <span>{link.label}</span>
+                </a>
+              )
+            })}
 
-        {/* Full Desktop Nav Links - Displayed inline at xl and above (>=1280px) */}
-        <div className="hidden items-center gap-1 xl:flex">
-          {navLinks.map((link) => {
-            const isActive = active === link.href
-            return (
+            <div className="ml-3 flex items-center gap-2 pl-3 border-l border-cloth-foreground/20">
               <a
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  'group relative min-h-[36px] inline-flex items-center rounded-md px-3 py-1.5 font-mono text-xs tracking-wider transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-                  isActive
-                    ? 'text-primary font-semibold bg-primary/10 border border-primary/30 shadow-[0_0_8px_rgba(6,182,212,0.15)]'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/40 border border-transparent',
-                )}
+                href="/resume.pdf"
+                download
+                className="inline-flex min-h-[36px] items-center gap-1.5 rounded-md border border-cloth-foreground/30 px-3 py-1.5 text-xs text-cloth-foreground transition-colors duration-200 hover:bg-cloth-foreground/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foil active:scale-95"
               >
-                <span className="mr-1 text-[10px] text-primary/60 group-hover:text-primary">
-                  {link.code || '00'}
-                </span>
-                {link.label.toUpperCase()}
+                <FileDown className="size-3.5" />
+                <span>Résumé</span>
               </a>
-            )
-          })}
+              <ThemeToggle />
+            </div>
+          </div>
 
-          <div className="ml-2 flex items-center gap-2 border-l border-border/60 pl-3">
+          {/* Compact controls (below xl) */}
+          <div className="flex items-center gap-2 xl:hidden">
             <a
               href="/resume.pdf"
               download
-              className="inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-xs text-primary transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95"
+              className="hidden sm:inline-flex min-h-[44px] items-center gap-1.5 rounded-md border border-cloth-foreground/30 px-3 py-1.5 text-xs text-cloth-foreground transition-colors duration-200 hover:bg-cloth-foreground/12 active:scale-95"
             >
               <FileDown className="size-3.5" />
-              <span>RESUME</span>
+              <span>Résumé</span>
             </a>
+
             <ThemeToggle />
+
+            <button
+              ref={toggleRef}
+              id="navbar-toggle"
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={open}
+              aria-controls="navbar-menu-panel"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-cloth-foreground/30 text-cloth-foreground transition-colors duration-200 hover:bg-cloth-foreground/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foil active:scale-95"
+            >
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
+            </button>
           </div>
-        </div>
+        </nav>
+      </div>
 
-        {/* Compact Navigation Controls - Displayed below xl (<1280px) */}
-        <div className="flex items-center gap-2 xl:hidden">
-          {/* Direct Resume Download Button - Visible on tablets/compact desktop (>=640px) */}
-          <a
-            href="/resume.pdf"
-            download
-            className="hidden sm:inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-primary/30 bg-primary/10 px-3 py-1.5 font-mono text-xs text-primary transition-all duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95"
-          >
-            <FileDown className="size-3.5" />
-            <span>RESUME</span>
-          </a>
-
-          <ThemeToggle />
-
-          <button
-            ref={toggleRef}
-            id="navbar-toggle"
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={open}
-            aria-controls="navbar-menu-panel"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-lg border border-border bg-secondary/50 text-foreground transition-all duration-200 hover:bg-accent hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95"
-          >
-            {open ? <X className="size-5" /> : <Menu className="size-5" />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Top-Anchored Dropdown Panel - Drops cleanly from top header */}
+      {/* Tabbed contents panel */}
       <div
         ref={panelRef}
         id="navbar-menu-panel"
         role="region"
         aria-label="Site Navigation Menu"
         className={cn(
-          'overflow-y-auto border-t border-border/80 bg-background/95 backdrop-blur-2xl transition-all duration-300 xl:hidden shadow-2xl shadow-black/40',
+          'overflow-y-auto border-b border-border bg-background/97 backdrop-blur-xl transition-all duration-300 xl:hidden shadow-lift',
           isMounted && open
-            ? 'max-h-[calc(100dvh-4rem)] opacity-100 py-4 pointer-events-auto'
+            ? 'max-h-[calc(100dvh-4rem)] opacity-100 py-5 pointer-events-auto'
             : 'max-h-0 opacity-0 py-0 pointer-events-none',
         )}
       >
-        <div className="mx-auto flex max-w-6xl flex-col px-4 sm:px-6 space-y-3">
-          {/* Panel Header & Status Beacon */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-border/50">
-            <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground">
-              <span className="flex items-center gap-1.5 font-medium text-foreground">
-                <Terminal className="size-3.5 text-primary" />
-                SYS_NAV // CORE
-              </span>
-              <span className="text-emerald-500 font-bold sm:hidden">ONLINE</span>
+        <div className="mx-auto flex max-w-6xl flex-col px-5 sm:px-6 space-y-5">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="marginalia text-lg leading-none">contents</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {profile.name} — {profile.role}
+              </p>
             </div>
-
-            {/* Status Beacon inside panel */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-secondary/60 px-3 py-1 font-mono text-[11px] text-muted-foreground w-fit shadow-[0_0_12px_-3px_color-mix(in_oklch,var(--primary)_20%,transparent)]">
-              <span className="relative flex size-2.5 items-center justify-center">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="status-beacon relative inline-flex size-2 rounded-full bg-emerald-500" />
-              </span>
-              <span className="text-foreground/90 font-medium">STATUS:</span>
-              <span className="text-primary font-mono">SYS_ONLINE // LOW-LATENCY</span>
-            </div>
+            <span className="measure text-[11px] text-muted-foreground">
+              {navLinks.length} tabs
+            </span>
           </div>
 
-          {/* Numbered Nav Links */}
-          <div className="flex flex-col space-y-1">
+          <div className="flex flex-col border-t border-border">
             {navLinks.map((link) => {
               const isActive = active === link.href
               return (
@@ -281,37 +259,33 @@ export function Navbar() {
                   href={link.href}
                   onClick={(e) => handleLinkClick(e, link.href)}
                   className={cn(
-                    'flex min-h-[44px] items-center justify-between rounded-lg px-3.5 py-2.5 font-mono text-sm transition-all active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+                    'flex min-h-[52px] items-center justify-between border-b border-border px-1 py-3 text-base transition-colors active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded',
                     isActive
-                      ? 'bg-primary/10 text-primary font-medium border border-primary/20 shadow-[0_0_12px_rgba(6,182,212,0.1)]'
-                      : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground border border-transparent',
+                      ? 'text-primary font-semibold'
+                      : 'text-foreground/85 hover:text-primary',
                   )}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-xs text-primary/70 font-mono font-semibold">[{link.code || '00'}]</span>
-                    <span className="tracking-wide">{link.label.toUpperCase()}</span>
-                  </div>
-                  <span className="text-xs font-mono text-muted-foreground/60">{link.href}</span>
+                  <span>{link.label}</span>
+                  <span className="measure text-[11px] text-muted-foreground">
+                    {link.href}
+                  </span>
                 </a>
               )
             })}
           </div>
 
-          {/* Full Resume Action in Panel */}
-          <div className="pt-2 border-t border-border/50 flex flex-col sm:flex-row gap-2">
-            <a
-              href="/resume.pdf"
-              download
-              onClick={() => {
-                setOpen(false)
-                document.body.style.overflow = ''
-              }}
-              className="flex min-h-[44px] flex-1 items-center justify-center gap-2 rounded-lg border border-primary/40 bg-primary/10 py-2.5 px-4 font-mono text-xs text-primary font-medium transition-all hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.99]"
-            >
-              <FileDown className="size-4" />
-              <span>DOWNLOAD RESUME (PDF)</span>
-            </a>
-          </div>
+          <a
+            href="/resume.pdf"
+            download
+            onClick={() => {
+              setOpen(false)
+              document.body.style.overflow = ''
+            }}
+            className="flex min-h-[48px] items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.99]"
+          >
+            <FileDown className="size-4" />
+            <span>Download the résumé (PDF)</span>
+          </a>
         </div>
       </div>
     </header>

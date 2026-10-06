@@ -5,8 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), var(--font-schibsted), ui-sans-serif, sans-serif;
+  --font-note: var(--font-caveat), var(--font-schibsted), cursive;
+  --font-mono: var(--font-spline-mono), ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -38,6 +40,12 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-foil: var(--foil);
+  --color-tape: var(--tape);
+  --color-graphite: var(--graphite);
+  --color-olive: var(--olive);
+  --color-cloth: var(--cloth);
+  --color-cloth-foreground: var(--cloth-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -47,75 +55,100 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ==========================================================================
+   THE LAB NOTEBOOK — daylight page (light)
+   Paper: pale olive-grey quadrille · Ink: graphite · Accent: regalia maroon
+   Details: gold foil stamp, masking tape, photo prints with white borders
+   ========================================================================== */
 :root {
   color-scheme: light;
-  --background: oklch(0.985 0.003 240);
-  --foreground: oklch(0.20 0.02 255);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.20 0.02 255);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.20 0.02 255);
-  --primary: oklch(0.55 0.14 195);
-  --primary-foreground: oklch(0.99 0.01 200);
-  --secondary: oklch(0.95 0.006 240);
-  --secondary-foreground: oklch(0.24 0.02 255);
-  --muted: oklch(0.95 0.005 240);
-  --muted-foreground: oklch(0.45 0.02 255);
-  --accent: oklch(0.92 0.04 195);
-  --accent-foreground: oklch(0.24 0.08 195);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.008 240);
-  --input: oklch(0.88 0.008 240);
-  --ring: oklch(0.55 0.14 195);
-  --chart-1: oklch(0.55 0.14 195);
-  --chart-2: oklch(0.65 0.13 190);
-  --chart-3: oklch(0.5 0.09 230);
-  --chart-4: oklch(0.72 0.12 175);
-  --chart-5: oklch(0.44 0.08 250);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0.003 240);
-  --sidebar-foreground: oklch(0.20 0.02 255);
-  --sidebar-primary: oklch(0.55 0.14 195);
-  --sidebar-primary-foreground: oklch(0.99 0.01 200);
-  --sidebar-accent: oklch(0.95 0.006 240);
-  --sidebar-accent-foreground: oklch(0.24 0.02 255);
-  --sidebar-border: oklch(0.88 0.008 240);
-  --sidebar-ring: oklch(0.55 0.14 195);
+  --background: oklch(0.945 0.012 120);
+  --foreground: oklch(0.255 0.017 250);
+  --card: oklch(0.985 0.006 115);
+  --card-foreground: oklch(0.255 0.017 250);
+  --popover: oklch(0.985 0.006 115);
+  --popover-foreground: oklch(0.255 0.017 250);
+  --primary: oklch(0.435 0.135 25);
+  --primary-foreground: oklch(0.975 0.008 115);
+  --cloth: oklch(0.3 0.095 25);
+  --cloth-foreground: oklch(0.975 0.008 115);
+  --secondary: oklch(0.905 0.015 118);
+  --secondary-foreground: oklch(0.275 0.017 250);
+  --muted: oklch(0.912 0.013 118);
+  --muted-foreground: oklch(0.445 0.018 250);
+  --accent: oklch(0.875 0.032 85);
+  --accent-foreground: oklch(0.28 0.03 60);
+  --destructive: oklch(0.52 0.19 27);
+  --border: oklch(0.822 0.014 118);
+  --input: oklch(0.795 0.016 118);
+  --ring: oklch(0.435 0.135 25);
+  --chart-1: oklch(0.435 0.135 25);
+  --chart-2: oklch(0.72 0.115 85);
+  --chart-3: oklch(0.52 0.05 130);
+  --chart-4: oklch(0.55 0.09 45);
+  --chart-5: oklch(0.4 0.02 250);
+  --foil: oklch(0.75 0.115 85);
+  --tape: oklch(0.885 0.036 85);
+  --graphite: oklch(0.445 0.018 250);
+  /* Handwriting ink: the graphite family pressed harder so thin Caveat
+     strokes keep their mass on paper (measured ≥4.5:1 stroke contrast) */
+  --hand: oklch(0.3 0.018 250);
+  --olive: oklch(0.52 0.05 130);
+  --radius: 0.375rem;
+  --sidebar: oklch(0.945 0.012 120);
+  --sidebar-foreground: oklch(0.255 0.017 250);
+  --sidebar-primary: oklch(0.435 0.135 25);
+  --sidebar-primary-foreground: oklch(0.975 0.008 115);
+  --sidebar-accent: oklch(0.875 0.032 85);
+  --sidebar-accent-foreground: oklch(0.28 0.03 60);
+  --sidebar-border: oklch(0.822 0.014 118);
+  --sidebar-ring: oklch(0.435 0.135 25);
 }
 
+/* ==========================================================================
+   THE LAB NOTEBOOK — under the desk lamp (dark)
+   Same notebook at night: ink-blue paper, warm lamp light, foil that glints
+   ========================================================================== */
 .dark {
   color-scheme: dark;
-  --background: oklch(0.14 0.02 260);
-  --foreground: oklch(0.96 0.01 240);
-  --card: oklch(0.17 0.022 255);
-  --card-foreground: oklch(0.96 0.01 240);
-  --popover: oklch(0.17 0.022 255);
-  --popover-foreground: oklch(0.96 0.01 240);
-  --primary: oklch(0.78 0.16 190);
-  --primary-foreground: oklch(0.12 0.03 260);
-  --secondary: oklch(0.21 0.022 255);
-  --secondary-foreground: oklch(0.96 0.01 240);
-  --muted: oklch(0.20 0.018 255);
-  --muted-foreground: oklch(0.68 0.02 245);
-  --accent: oklch(0.24 0.04 200);
-  --accent-foreground: oklch(0.92 0.08 190);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.28 0.025 250 / 60%);
-  --input: oklch(0.28 0.025 250 / 60%);
-  --ring: oklch(0.78 0.16 190);
-  --chart-1: oklch(0.78 0.16 190);
-  --chart-2: oklch(0.7 0.14 185);
-  --chart-3: oklch(0.62 0.11 235);
-  --chart-4: oklch(0.75 0.12 170);
-  --chart-5: oklch(0.55 0.1 255);
-  --sidebar: oklch(0.17 0.022 255);
-  --sidebar-foreground: oklch(0.96 0.01 240);
-  --sidebar-primary: oklch(0.78 0.16 190);
-  --sidebar-primary-foreground: oklch(0.12 0.03 260);
-  --sidebar-accent: oklch(0.21 0.022 255);
-  --sidebar-accent-foreground: oklch(0.96 0.01 240);
-  --sidebar-border: oklch(0.28 0.025 250 / 60%);
-  --sidebar-ring: oklch(0.78 0.16 190);
+  --background: oklch(0.215 0.016 252);
+  --foreground: oklch(0.93 0.011 115);
+  --card: oklch(0.262 0.018 252);
+  --card-foreground: oklch(0.93 0.011 115);
+  --popover: oklch(0.262 0.018 252);
+  --popover-foreground: oklch(0.93 0.011 115);
+  --primary: oklch(0.65 0.115 28);
+  --primary-foreground: oklch(0.185 0.015 252);
+  --cloth: oklch(0.26 0.085 25);
+  --cloth-foreground: oklch(0.975 0.008 115);
+  --secondary: oklch(0.315 0.018 252);
+  --secondary-foreground: oklch(0.93 0.011 115);
+  --muted: oklch(0.305 0.016 252);
+  --muted-foreground: oklch(0.735 0.014 250);
+  --accent: oklch(0.42 0.045 80);
+  --accent-foreground: oklch(0.93 0.02 100);
+  --destructive: oklch(0.7 0.16 25);
+  --border: oklch(0.36 0.018 252);
+  --input: oklch(0.4 0.018 252);
+  --ring: oklch(0.65 0.115 28);
+  --chart-1: oklch(0.65 0.115 28);
+  --chart-2: oklch(0.8 0.11 85);
+  --chart-3: oklch(0.66 0.05 130);
+  --chart-4: oklch(0.68 0.08 45);
+  --chart-5: oklch(0.6 0.02 250);
+  --foil: oklch(0.8 0.11 85);
+  --tape: oklch(0.45 0.032 80);
+  --graphite: oklch(0.735 0.014 250);
+  --hand: oklch(0.82 0.018 250);
+  --olive: oklch(0.66 0.05 130);
+  --sidebar: oklch(0.262 0.018 252);
+  --sidebar-foreground: oklch(0.93 0.011 115);
+  --sidebar-primary: oklch(0.65 0.115 28);
+  --sidebar-primary-foreground: oklch(0.185 0.015 252);
+  --sidebar-accent: oklch(0.42 0.045 80);
+  --sidebar-accent-foreground: oklch(0.93 0.02 100);
+  --sidebar-border: oklch(0.36 0.018 252);
+  --sidebar-ring: oklch(0.68 0.125 32);
 }
 
 @layer base {
@@ -124,13 +157,39 @@
   }
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 5.5rem;
     overflow-x: hidden;
   }
   body {
     @apply bg-background text-foreground;
     overflow-x: hidden;
     max-width: 100vw;
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+  /* Browser surfaces themed from the palette */
+  ::selection {
+    background-color: color-mix(in oklch, var(--primary) 22%, transparent);
+    color: var(--foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+  input,
+  textarea {
+    caret-color: var(--primary);
+  }
+  ::placeholder {
+    color: color-mix(in oklch, var(--muted-foreground) 72%, transparent);
   }
 }
 
@@ -140,343 +199,228 @@
   }
 }
 
+/* ==========================================================================
+   MATERIALS — quadrille paper, tape, photo prints, foil, hairlines
+   ========================================================================== */
 @layer utilities {
-  .tech-grid {
+  /* Quadrille grid: hairline rules, the notebook's own structure */
+  .quadrille {
     background-image:
-      linear-gradient(to right, color-mix(in oklch, var(--primary) 7%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklch, var(--primary) 7%, transparent) 1px, transparent 1px);
-    background-size: 2.25rem 2.25rem;
+      linear-gradient(to right, color-mix(in oklch, var(--graphite) 11%, transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in oklch, var(--graphite) 11%, transparent) 1px, transparent 1px);
+    background-size: 1.5rem 1.5rem;
+    background-position: center top;
   }
 
-  .tech-dots {
-    background-image: radial-gradient(color-mix(in oklch, var(--primary) 14%, transparent) 1px, transparent 1px);
-    background-size: 1.25rem 1.25rem;
-  }
-
-  .tech-border {
-    border-color: color-mix(in oklch, var(--primary) 22%, var(--border));
-  }
-
-  .glow-cyan {
-    box-shadow: 0 0 25px -5px color-mix(in oklch, var(--primary) 25%, transparent);
-  }
-
-  .glow-cyan-sm {
-    box-shadow: 0 0 12px -2px color-mix(in oklch, var(--primary) 20%, transparent);
-  }
-
-  .hud-bracket {
-    position: relative;
-  }
-  .hud-bracket::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    width: 8px;
-    height: 8px;
-    border-top: 2px solid var(--primary);
-    border-left: 2px solid var(--primary);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .hud-bracket::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    right: -1px;
-    width: 8px;
-    height: 8px;
-    border-bottom: 2px solid var(--primary);
-    border-right: 2px solid var(--primary);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .hud-bracket-expand {
-    position: relative;
-  }
-  .hud-bracket-expand::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    width: 8px;
-    height: 8px;
-    border-top: 2px solid var(--primary);
-    border-left: 2px solid var(--primary);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-    z-index: 10;
-  }
-  .hud-bracket-expand::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    right: -1px;
-    width: 8px;
-    height: 8px;
-    border-bottom: 2px solid var(--primary);
-    border-right: 2px solid var(--primary);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-    z-index: 10;
-  }
-  .hud-bracket-expand:hover::before,
-  .group:hover .hud-bracket-expand::before {
-    width: 14px;
-    height: 14px;
-    filter: drop-shadow(0 0 6px var(--primary));
-  }
-  .hud-bracket-expand:hover::after,
-  .group:hover .hud-bracket-expand::after {
-    width: 14px;
-    height: 14px;
-    filter: drop-shadow(0 0 6px var(--primary));
-  }
-
-  /* Cybernetic scanning laser line */
-  .scanline-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  .scanline-overlay::after {
-    content: '';
-    position: absolute;
-    inset-x: 0;
-    top: 0;
-    height: 120px;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      color-mix(in oklch, var(--primary) 12%, transparent) 50%,
-      color-mix(in oklch, var(--primary) 28%, transparent) 95%,
-      var(--primary) 100%
+  /* Ruled paper: horizontal rules only */
+  .ruled {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 1.4375rem,
+      color-mix(in oklch, var(--graphite) 13%, transparent) 1.4375rem,
+      color-mix(in oklch, var(--graphite) 13%, transparent) calc(1.4375rem + 1px),
+      transparent calc(1.4375rem + 1px)
     );
-    opacity: 0.35;
-    animation: laser-sweep 8s linear infinite;
-    pointer-events: none;
+    background-size: 100% 1.5rem;
   }
 
-  /* Card hover laser beam */
-  .card-laser-beam {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .group:hover .card-laser-beam,
-  .card-laser-beam.active {
-    opacity: 1;
-  }
-  .card-laser-beam::before {
-    content: '';
-    position: absolute;
-    top: -100%;
-    left: -50%;
-    width: 200%;
-    height: 50%;
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      color-mix(in oklch, var(--primary) 15%, transparent) 70%,
-      var(--primary) 100%
-    );
-    opacity: 0.6;
-    transform: translateY(0);
-    animation: beam-slide-vertical 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-  }
-
-  /* High-tech border glow */
-  .border-glow {
+  /* The notebook's margin rule — a maroon line down the left of a page */
+  .page-margin {
     position: relative;
-    background-clip: padding-box;
   }
-  .border-glow::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      135deg,
-      color-mix(in oklch, var(--primary) 50%, transparent) 0%,
-      transparent 40%,
-      transparent 60%,
-      color-mix(in oklch, var(--primary) 40%, transparent) 100%
-    );
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0.6;
-    transition: opacity 0.4s ease;
-  }
-  .group:hover .border-glow::before,
-  .border-glow:hover::before {
-    opacity: 1;
-  }
-
-  /* Beacon ring pulse */
-  .status-beacon {
-    animation: pulse-beacon 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* Terminal cursor blink */
-  .terminal-cursor {
-    display: inline-block;
-    width: 7px;
-    height: 14px;
-    background-color: var(--primary);
-    vertical-align: middle;
-    margin-left: 2px;
-    animation: terminal-caret 1s steps(2, start) infinite;
-  }
-
-  /* Cyber button sheen */
-  .cyber-sheen {
-    position: relative;
-    overflow: hidden;
-  }
-  .cyber-sheen::after {
+  .page-margin::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      color-mix(in oklch, var(--primary) 35%, white) 50%,
-      transparent 100%
-    );
-    transform: skewX(-22deg);
-    opacity: 0;
-    transition: none;
+    bottom: 0;
+    left: 0;
+    width: 1px;
+    background: color-mix(in oklch, var(--primary) 55%, transparent);
+  }
+
+  /* Masking tape strip */
+  .tape {
+    background:
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in oklch, var(--tape) 92%, transparent) 0 6px,
+        color-mix(in oklch, var(--tape) 78%, transparent) 6px 12px
+      ),
+      var(--tape);
+    box-shadow: 0 1px 2px color-mix(in oklch, var(--graphite) 22%, transparent);
+    opacity: 0.92;
+  }
+
+  /* Photo print: white border + soft offset shadow */
+  .photo-print {
+    background: var(--card);
+    box-shadow:
+      0 1px 1px color-mix(in oklch, var(--graphite) 16%, transparent),
+      0 10px 24px -12px color-mix(in oklch, var(--graphite) 32%, transparent);
+  }
+
+  /* Single hairline weight for every rule on the page (one line, one weight) */
+  .hairline {
+    border-width: 1px;
+    border-color: var(--border);
+  }
+
+  /* Gold foil stamping — solid, never gradient text */
+  .foil-stamp {
+    color: var(--foil);
+    text-shadow: 0 1px 0 color-mix(in oklch, var(--primary) 45%, transparent);
+  }
+
+  /* Tabular measurement figures — chalk-mark readings */
+  .measure {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* Margin annotation voice — the hand pressed a little harder, so thin
+     script strokes keep their mass on paper */
+  .marginalia {
+    font-family: var(--font-note);
+    color: var(--hand);
+    font-weight: 600;
+    letter-spacing: 0.005em;
+  }
+
+  /* …and in the binding's own ink where the hand writes on cloth */
+  .on-cloth {
+    color: color-mix(in oklch, var(--cloth-foreground) 92%, transparent);
+  }
+
+  /* Small tabular metadata: one step up from data so 12–13px figures
+     (ledger dates, counts, periods) stay readable */
+  .meta {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: color-mix(in oklch, var(--muted-foreground) 72%, var(--foreground));
+  }
+
+  /* Depth: offset + soft blur, always */
+  .shadow-page {
+    box-shadow:
+      0 1px 1px color-mix(in oklch, var(--graphite) 12%, transparent),
+      0 14px 32px -18px color-mix(in oklch, var(--graphite) 38%, transparent);
+  }
+  .shadow-lift {
+    box-shadow:
+      0 1px 1px color-mix(in oklch, var(--graphite) 14%, transparent),
+      0 22px 44px -20px color-mix(in oklch, var(--graphite) 42%, transparent);
+  }
+
+  /* Pencil underline drawn on hover / state */
+  .pencil-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 1px;
+    transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: 1px;
+  }
+  .pencil-underline:hover,
+  .group:hover .pencil-underline,
+  .pencil-underline[data-active='true'] {
+    background-size: 100% 1px;
+  }
+
+  /* Notebook divider tab */
+  .index-tab {
+    position: relative;
+  }
+  .index-tab[data-active='true']::after {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: -1px;
+    height: 2px;
+    background: var(--foil);
+  }
+
+  /* Horizontal strips that scroll on small screens: the edges fade instead
+     of cutting a row mid-word, so it reads as "there is more this way" */
+  .scroll-strip {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+  .scroll-strip > * {
+    scroll-snap-align: start;
+  }
+  @media (max-width: 1023.98px) {
+    .scroll-strip {
+      -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 20px,
+        #000 calc(100% - 20px),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to right,
+        transparent 0,
+        #000 20px,
+        #000 calc(100% - 20px),
+        transparent 100%
+      );
+      scrollbar-width: none;
+    }
+    .scroll-strip::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  /* Thumbnail stock: a theme-aware mount so any screenshot keeps an edge on
+     daylight paper and stops glaring under the lamp */
+  .thumb-mat {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--secondary);
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--graphite) 18%, transparent);
+  }
+  .thumb-mat::after {
+    content: '';
+    position: absolute;
+    inset: 0;
     pointer-events: none;
+    background: color-mix(in oklch, var(--olive) 8%, transparent);
+    mix-blend-mode: multiply;
   }
-  .cyber-sheen:hover::after {
-    opacity: 0.45;
-    left: 140%;
-    transition: all 0.75s ease-out;
+  .dark .thumb-mat::after {
+    background: color-mix(in oklch, var(--background) 18%, transparent);
+    mix-blend-mode: multiply;
   }
-}
-
-@keyframes laser-sweep {
-  0% {
-    transform: translateY(-120px);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.4;
-  }
-  90% {
-    opacity: 0.4;
-  }
-  100% {
-    transform: translateY(100vh);
-    opacity: 0;
+  .dark .thumb-mat img {
+    filter: brightness(0.93) saturate(0.98);
   }
 }
 
-@keyframes beam-slide-vertical {
-  0% {
-    transform: translateY(0);
-    opacity: 0;
-  }
-  20% {
-    opacity: 0.7;
-  }
-  80% {
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(400%);
-    opacity: 0;
-  }
-}
-
-@keyframes radar-sweep {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse-beacon {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 60%, transparent);
-  }
-  70% {
-    box-shadow: 0 0 0 8px color-mix(in oklch, var(--primary) 0%, transparent);
-  }
-  100% {
-    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 0%, transparent);
-  }
-}
-
-@keyframes terminal-caret {
-  0%, 49% {
-    opacity: 1;
-  }
-  50%, 100% {
-    opacity: 0;
-  }
-}
-
-@keyframes oscilloscope-scan {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(580px);
-    opacity: 0;
-  }
-}
-
-@keyframes waveform-flow {
-  0% {
-    stroke-dashoffset: 400;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes fade-up {
+/* ==========================================================================
+   MOTION — one grammar: paper settling into place
+   ========================================================================== */
+@keyframes settle {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(14px) rotate(var(--settle-rotate, 0deg));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotate(0deg);
   }
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide-up {
+@keyframes settle-soft {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -487,71 +431,63 @@
   }
 }
 
-@keyframes pulse-subtle {
+@keyframes tape-flex {
+  0% {
+    transform: rotate(var(--tape-rotate, -2deg)) scaleY(1);
+  }
+  40% {
+    transform: rotate(calc(var(--tape-rotate, -2deg) * 0.4)) scaleY(1.06);
+  }
+  100% {
+    transform: rotate(var(--tape-rotate, -2deg)) scaleY(1);
+  }
+}
+
+@keyframes lamp-breathe {
   0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+    opacity: 0.5;
   }
   50% {
-    opacity: 0.6;
-    transform: scale(0.97);
+    opacity: 0.72;
   }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+.animate-settle {
+  animation: settle 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out both;
+.animate-settle-soft {
+  animation: settle-soft 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.animate-slide-up {
-  animation: slide-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+.animate-tape-flex {
+  animation: tape-flex 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.dark .lamp-glow {
+  animation: lamp-breathe 9s ease-in-out infinite;
 }
 
-/* Selection styling */
-::selection {
-  background-color: color-mix(in oklch, var(--primary) 30%, transparent);
-  color: var(--foreground);
-}
-
-/* Scrollbar styling */
+/* Scrollbar — the notebook's page edge */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: color-mix(in oklch, var(--graphite) 8%, transparent);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in oklch, var(--primary) 25%, var(--border));
-  border-radius: 3px;
+  background: color-mix(in oklch, var(--graphite) 30%, transparent);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
+  background: color-mix(in oklch, var(--primary) 55%, transparent);
+  background-clip: content-box;
 }
 
-.radar-sweep-cone {
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg,
-    transparent 270deg,
-    color-mix(in oklch, var(--primary) 15%, transparent) 330deg,
-    color-mix(in oklch, var(--primary) 40%, transparent) 360deg
-  );
-  animation: radar-sweep 7s linear infinite;
-  transform-origin: center center;
-}
-
-/* Reduced motion accessibility */
+/* Reduced motion: everything lands already-settled */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -561,19 +497,15 @@
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .scanline-overlay::after,
-  .card-laser-beam::before,
-  .radar-sweep-cone {
+  .lamp-glow {
     animation: none !important;
-    display: none !important;
+    opacity: 0.6 !important;
   }
 }
 
 /* ==========================================================================
-   AI Companion Keyframes & Utilities
+   COMPANION — pocket notebook chat (position, safe area, touch targets)
    ========================================================================== */
-
-/* Pixel art image rendering */
 .pixelated {
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
@@ -610,22 +542,7 @@
   }
 }
 
-@keyframes companion-radar-ping {
-  0% {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
-  70% {
-    transform: scale(1.35);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1.4);
-    opacity: 0;
-  }
-}
-
-@keyframes companion-dot-bounce {
+@keyframes companion-dot-rise {
   0%, 80%, 100% {
     transform: translateY(0);
     opacity: 0.35;
@@ -650,7 +567,7 @@
 }
 
 .animate-companion-pop {
-  animation: companion-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: companion-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .animate-companion-blink {
@@ -658,26 +575,22 @@
   animation: companion-blink 4.5s ease-in-out infinite;
 }
 
-.animate-companion-radar-ping {
-  animation: companion-radar-ping 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-}
-
 .animate-companion-hint-float {
   animation: companion-hint-float 3s ease-in-out infinite;
 }
 
 .animate-companion-dot-1 {
-  animation: companion-dot-bounce 1.3s infinite;
+  animation: companion-dot-rise 1.3s ease-in-out infinite;
   animation-delay: 0ms;
 }
 
 .animate-companion-dot-2 {
-  animation: companion-dot-bounce 1.3s infinite;
+  animation: companion-dot-rise 1.3s ease-in-out infinite;
   animation-delay: 180ms;
 }
 
 .animate-companion-dot-3 {
-  animation: companion-dot-bounce 1.3s infinite;
+  animation: companion-dot-rise 1.3s ease-in-out infinite;
   animation-delay: 360ms;
 }
 
@@ -685,7 +598,6 @@
   .animate-companion-bob,
   .animate-companion-pop,
   .animate-companion-blink,
-  .animate-companion-radar-ping,
   .animate-companion-hint-float,
   .animate-companion-dot-1,
   .animate-companion-dot-2,
@@ -694,10 +606,6 @@
     transform: none !important;
   }
 }
-
-/* ==========================================================================
-   AI Companion Responsive, Safe Area & Touch Targets
-   ========================================================================== */
 
 .companion-launcher-bottom {
   bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
@@ -741,7 +649,6 @@
   }
 }
 
-/* Landscape / short viewports (height <= 520px) */
 @media (max-height: 520px) {
   .companion-panel-pos {
     bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
@@ -766,7 +673,6 @@
   }
 }
 
-/* Expanded touch target pseudo-element for mobile tap friendliness */
 .touch-target-expand {
   position: relative;
 }
@@ -782,4 +688,3 @@
   height: 100%;
   pointer-events: auto;
 }
-

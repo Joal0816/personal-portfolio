@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
-import { Award, ExternalLink, X, FileText, CheckCircle2, Terminal, GraduationCap, TrendingUp, Cpu } from 'lucide-react'
+import { ExternalLink, X, FileText, Award } from 'lucide-react'
 import { certifications } from '@/lib/portfolio-data'
 import { Reveal } from '@/components/reveal'
 import { cn } from '@/lib/utils'
-import { cyberAudio } from '@/lib/cyber-sound'
 
 type TrackFilter = 'ALL' | 'TECH' | 'ACADEMIC' | 'BUSINESS_DATA'
 
@@ -14,7 +13,7 @@ export function Certifications() {
   const [selected, setSelected] = useState<(typeof certifications)[number] | null>(null)
   const [activeTrack, setActiveTrack] = useState<TrackFilter>('ALL')
 
-  // Lock body scroll and handle Escape key when certificate modal is open
+  // Lock body scroll and handle Escape key when certificate viewer is open
   useEffect(() => {
     if (selected) {
       document.body.style.overflow = 'hidden'
@@ -54,168 +53,179 @@ export function Certifications() {
   }, [activeTrack])
 
   return (
-    <section id="certifications" className="relative border-t border-border/80 bg-card/30 py-24 md:py-32">
-      {/* Background accents */}
-      <div className="tech-dots pointer-events-none absolute inset-0 opacity-15" />
-
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <div className="flex items-center gap-2 font-mono text-xs text-primary mb-3">
-            <Terminal className="size-3.5" />
-            <span>[SYS_LOG // 04] CREDENTIALS, ACADEMIC MERIT &amp; EXHIBITIONS</span>
+    <section id="certifications" className="relative border-t border-border">
+      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-12 sm:px-8 md:pt-18 md:pb-14">
+        <div className="grid gap-10 lg:grid-cols-[10rem_1fr] lg:gap-14">
+          {/* Margin rail */}
+          <div>
+            <p className="marginalia text-2xl leading-tight lg:sticky lg:top-24">
+              the paper
+              <br />
+              trail
+            </p>
           </div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-              <h2 className="max-w-2xl text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-foreground">
-                Certifications &amp; Credentials
-              </h2>
-              <p className="mt-3 max-w-xl text-pretty text-muted-foreground text-sm sm:text-base">
-                Technical hackathons, RTOS symposiums, academic honors, research colloquiums, and statistics seminars.
-              </p>
-            </div>
-            <div className="font-mono text-xs text-muted-foreground bg-secondary/50 border border-border/80 px-3 py-1.5 rounded-lg w-fit">
-              LOGGED: <span className="text-primary font-bold">{filteredCerts.length}</span> / {certifications.length} RECORDS
-            </div>
-          </div>
-        </Reveal>
 
-        {/* Track Filter Tabs */}
-        <Reveal delay={60}>
-          <div className="mt-8 flex flex-wrap items-center gap-2 font-mono text-xs">
-            {[
-              { id: 'ALL', label: 'ALL CREDENTIALS', icon: Award },
-              { id: 'TECH', label: 'TECH & EMBEDDED', icon: Cpu },
-              { id: 'ACADEMIC', label: 'ACADEMIC & HONORS', icon: GraduationCap },
-              { id: 'BUSINESS_DATA', label: 'DATA & ENTREPRENEURSHIP', icon: TrendingUp },
-            ].map((track) => {
-              const Icon = track.icon
-              const isActive = activeTrack === track.id
-              return (
-                <button
-                  key={track.id}
-                  type="button"
-                  onClick={() => {
-                    setActiveTrack(track.id as TrackFilter)
-                    cyberAudio.click(0.02)
-                  }}
-                  className={cn(
-                    'flex items-center gap-1.5 rounded-lg border px-3 py-1.5 transition-all min-h-[36px]',
-                    isActive
-                      ? 'border-primary bg-primary text-primary-foreground font-bold shadow-md shadow-primary/20'
-                      : 'border-border/80 bg-secondary/30 text-muted-foreground hover:border-primary/40 hover:text-foreground'
-                  )}
-                >
-                  <Icon className="size-3.5" />
-                  <span>{track.label}</span>
-                </button>
-              )
-            })}
-          </div>
-        </Reveal>
-
-        {/* Certifications Grid */}
-        <div className="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredCerts.map((cert, i) => (
-            <Reveal key={cert.name} delay={i * 25}>
-              <button
-                type="button"
-                onClick={() => {
-                  cyberAudio.click(0.03)
-                  setSelected(cert)
-                }}
-                className="group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-card/60 p-4 sm:p-5 text-left backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 min-h-[44px] hud-bracket-expand border-glow"
-              >
-                <div className="card-laser-beam" />
+          <div className="min-w-0">
+            <Reveal>
+              <div className="flex flex-wrap items-end justify-between gap-6">
                 <div>
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary transition-all group-hover:bg-primary group-hover:text-primary-foreground">
-                      {cert.image.endsWith('.pdf') ? <FileText className="size-4" /> : <Award className="size-4" />}
-                    </span>
-                    {cert.category && (
-                      <span className="rounded bg-secondary/80 border border-border px-2 py-0.5 font-mono text-[10px] text-muted-foreground shrink-0">
-                        {cert.category}
-                      </span>
-                    )}
-                  </div>
-
-                  <h3 className="mt-3 text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors break-words">
-                    {cert.name}
-                  </h3>
-
-                  <p className="mt-2 font-mono text-[11px] text-muted-foreground leading-relaxed break-words">
-                    {cert.issuer}
+                  <h2 className="max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+                    Certificates &amp; the record.
+                  </h2>
+                  <p className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+                    Hackathons, symposiums, seminars, and academic recognition —
+                    every one of these is a scan of the real document. Tap a row
+                    to open it.
                   </p>
                 </div>
-
-                <div className="mt-4 pt-3 border-t border-border/50 flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-primary font-medium">{cert.date}</span>
-                  <span className="inline-flex items-center gap-1 text-muted-foreground group-hover:text-primary transition-colors">
-                    <span>VIEW</span>
-                    <ExternalLink className="size-3" />
-                  </span>
-                </div>
-              </button>
+                <p className="meta">
+                  {filteredCerts.length} of {certifications.length} entries
+                </p>
+              </div>
             </Reveal>
-          ))}
+
+            {/* Track filter — index tabs */}
+            <Reveal delay={60}>
+              <div
+                className="scroll-strip mt-9 flex border-b border-border"
+                role="tablist"
+                aria-label="Filter certificates by track"
+              >
+                {[
+                  { id: 'ALL', label: 'Everything' },
+                  { id: 'TECH', label: 'Tech & embedded' },
+                  { id: 'ACADEMIC', label: 'Academic & honors' },
+                  { id: 'BUSINESS_DATA', label: 'Data & entrepreneurship' },
+                ].map((track) => {
+                  const isActive = activeTrack === track.id
+                  return (
+                    <button
+                      key={track.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isActive}
+                      data-active={isActive}
+                      onClick={() => setActiveTrack(track.id as TrackFilter)}
+                      className={cn(
+                        'index-tab min-h-[42px] shrink-0 whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
+                        isActive
+                          ? 'text-primary font-semibold'
+                          : 'text-muted-foreground hover:text-foreground',
+                      )}
+                    >
+                      {track.label}
+                    </button>
+                  )
+                })}
+              </div>
+            </Reveal>
+
+            {/* The ledger */}
+            <ul className="mt-2">
+              {filteredCerts.map((cert) => (
+                <li key={cert.name}>
+                  <button
+                    type="button"
+                    onClick={() => setSelected(cert)}
+                    className="group flex w-full flex-col gap-2 border-b border-border py-5 text-left transition-colors hover:bg-card/70 sm:grid sm:grid-cols-[7.5rem_1fr_auto] sm:items-baseline sm:gap-x-4 sm:gap-y-1"
+                  >
+                    <span className="meta">{cert.date}</span>
+
+                    <span className="min-w-0">
+                      <span className="flex items-start gap-2">
+                        <span className="mt-0.5 shrink-0 text-primary">
+                          {cert.image.endsWith('.pdf') ? (
+                            <FileText className="size-4" />
+                          ) : (
+                            <Award className="size-4" />
+                          )}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-[15px] font-semibold leading-snug transition-colors group-hover:text-primary">
+                            {cert.name}
+                          </span>
+                          <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                            {cert.issuer}
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+
+                    <span className="flex flex-wrap items-center gap-x-3 gap-y-2 sm:flex-nowrap sm:justify-end">
+                      <span className="whitespace-nowrap rounded-sm border border-border bg-secondary/60 px-2 py-0.5 text-[11px] text-secondary-foreground">
+                        {cert.category}
+                      </span>
+                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-primary">
+                        <span className="pencil-underline">Open</span>
+                        <ExternalLink className="size-3" />
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 
-      {/* Certificate Modal */}
+      {/* Certificate viewer */}
       {selected && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background/85 backdrop-blur-md p-3 sm:p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/35 p-3 backdrop-blur-[2px] sm:p-4"
           onClick={() => setSelected(null)}
         >
           <div
-            className="relative flex max-h-[92dvh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-border/80 bg-card shadow-2xl"
+            className="relative flex max-h-[92dvh] w-full max-w-4xl flex-col overflow-hidden rounded-lg border border-border bg-card shadow-lift"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-border/70 px-4 sm:px-6 py-3.5 sm:py-4 bg-secondary/30 gap-3">
-              <div className="min-w-0 flex-1">
-                <h3 className="font-bold text-sm sm:text-base text-foreground leading-tight truncate">{selected.name}</h3>
-                <p className="font-mono text-xs text-primary mt-0.5 truncate">{selected.issuer} • {selected.date}</p>
+            <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3.5 sm:px-6">
+              <div className="min-w-0">
+                <h3 className="truncate text-[15px] font-semibold leading-tight sm:text-base">
+                  {selected.name}
+                </h3>
+                <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                  {selected.issuer} · {selected.date}
+                </p>
               </div>
               <button
                 type="button"
                 onClick={() => setSelected(null)}
                 aria-label="Close certificate viewer"
-                className="inline-flex size-10 sm:size-8 shrink-0 items-center justify-center rounded-lg border border-border bg-background/80 text-foreground transition-all hover:bg-accent active:scale-95"
+                className="inline-flex size-10 shrink-0 items-center justify-center rounded-md border border-border bg-secondary/60 text-foreground transition-colors hover:border-primary/50 hover:text-primary active:scale-95 sm:size-8"
               >
                 <X className="size-5 sm:size-4" />
               </button>
             </div>
 
-            {/* Content view */}
             <div className="flex-1 overflow-y-auto p-3 sm:p-6">
               {selected.image.endsWith('.pdf') ? (
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center justify-between rounded-lg border border-border bg-secondary/30 px-4 py-2 font-mono text-xs">
-                    <span className="text-muted-foreground truncate">{selected.name}</span>
+                  <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-secondary/40 px-4 py-2">
+                    <span className="truncate text-xs text-muted-foreground">{selected.name}</span>
                     <a
                       href={selected.image}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded bg-primary px-3 py-1 font-bold text-primary-foreground hover:bg-primary/90 transition-all shrink-0 ml-2"
+                      className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                       <ExternalLink className="size-3.5" />
-                      <span>OPEN FULL PDF</span>
+                      <span>Open the full PDF</span>
                     </a>
                   </div>
                   <iframe
                     src={selected.image}
                     title={selected.name}
-                    className="w-full h-[60vh] rounded-xl border border-border/80 bg-white"
+                    className="h-[60vh] w-full rounded-md border border-border bg-card"
                   />
                 </div>
               ) : (
-                <div className="relative overflow-hidden rounded-xl border border-border bg-black/40">
+                <div className="photo-print rounded-[3px] p-2.5">
                   <Image
                     src={selected.image}
                     alt={selected.name}
                     width={900}
                     height={650}
-                    className="w-full h-auto object-contain"
+                    className="h-auto w-full rounded-[2px] object-contain"
                     unoptimized
                   />
                 </div>

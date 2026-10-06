@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-06T12:00:00.000Z",
+  "title": "Design System: Joseph Vergara — Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Quadrille Paper",
+        "canonical": "oklch(0.945 0.012 120)",
+        "tonalRamp": ["oklch(0.15 0.012 120)", "oklch(0.25 0.012 120)", "oklch(0.35 0.012 120)", "oklch(0.45 0.012 120)", "oklch(0.55 0.012 120)", "oklch(0.7 0.012 120)", "oklch(0.85 0.012 120)", "oklch(0.945 0.012 120)"]
+      },
+      "paper-card": {
+        "role": "neutral",
+        "displayName": "Print Sheet",
+        "canonical": "oklch(0.985 0.006 115)",
+        "tonalRamp": ["oklch(0.2 0.006 115)", "oklch(0.3 0.006 115)", "oklch(0.4 0.006 115)", "oklch(0.5 0.006 115)", "oklch(0.6 0.006 115)", "oklch(0.75 0.006 115)", "oklch(0.9 0.006 115)", "oklch(0.985 0.006 115)"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Graphite Ink",
+        "canonical": "oklch(0.255 0.017 250)",
+        "tonalRamp": ["oklch(0.16 0.017 250)", "oklch(0.255 0.017 250)", "oklch(0.35 0.017 250)", "oklch(0.445 0.017 250)", "oklch(0.55 0.017 250)", "oklch(0.65 0.017 250)", "oklch(0.8 0.017 250)", "oklch(0.93 0.017 250)"]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Pencil",
+        "canonical": "oklch(0.445 0.018 250)",
+        "tonalRamp": ["oklch(0.2 0.018 250)", "oklch(0.3 0.018 250)", "oklch(0.445 0.018 250)", "oklch(0.55 0.018 250)", "oklch(0.65 0.018 250)", "oklch(0.735 0.018 250)", "oklch(0.85 0.018 250)", "oklch(0.93 0.018 250)"]
+      },
+      "maroon": {
+        "role": "primary",
+        "displayName": "Regalia Maroon",
+        "canonical": "oklch(0.435 0.135 25)",
+        "tonalRamp": ["oklch(0.15 0.135 25)", "oklch(0.25 0.135 25)", "oklch(0.35 0.135 25)", "oklch(0.435 0.135 25)", "oklch(0.55 0.135 25)", "oklch(0.65 0.115 28)", "oklch(0.75 0.1 28)", "oklch(0.85 0.08 30)"]
+      },
+      "cloth": {
+        "role": "primary",
+        "displayName": "Binding Cloth",
+        "canonical": "oklch(0.3 0.095 25)",
+        "tonalRamp": ["oklch(0.15 0.095 25)", "oklch(0.22 0.095 25)", "oklch(0.26 0.085 25)", "oklch(0.3 0.095 25)", "oklch(0.4 0.095 25)", "oklch(0.5 0.095 25)", "oklch(0.65 0.085 25)", "oklch(0.8 0.07 25)"]
+      },
+      "cloth-text": {
+        "role": "neutral",
+        "displayName": "Cloth Lettering",
+        "canonical": "oklch(0.975 0.008 115)",
+        "tonalRamp": ["oklch(0.2 0.008 115)", "oklch(0.3 0.008 115)", "oklch(0.4 0.008 115)", "oklch(0.5 0.008 115)", "oklch(0.6 0.008 115)", "oklch(0.75 0.008 115)", "oklch(0.88 0.008 115)", "oklch(0.975 0.008 115)"]
+      },
+      "foil": {
+        "role": "accent",
+        "displayName": "Gold Foil",
+        "canonical": "oklch(0.75 0.115 85)",
+        "tonalRamp": ["oklch(0.15 0.115 85)", "oklch(0.25 0.115 85)", "oklch(0.35 0.115 85)", "oklch(0.45 0.115 85)", "oklch(0.55 0.115 85)", "oklch(0.65 0.115 85)", "oklch(0.75 0.115 85)", "oklch(0.88 0.1 85)"]
+      },
+      "tape": {
+        "role": "neutral",
+        "displayName": "Masking Tape",
+        "canonical": "oklch(0.885 0.036 85)",
+        "tonalRamp": ["oklch(0.15 0.036 85)", "oklch(0.25 0.036 85)", "oklch(0.35 0.032 80)", "oklch(0.45 0.032 80)", "oklch(0.55 0.032 80)", "oklch(0.7 0.036 85)", "oklch(0.8 0.036 85)", "oklch(0.885 0.036 85)"]
+      },
+      "olive": {
+        "role": "neutral",
+        "displayName": "Studio Olive",
+        "canonical": "oklch(0.52 0.05 130)",
+        "tonalRamp": ["oklch(0.15 0.05 130)", "oklch(0.25 0.05 130)", "oklch(0.35 0.05 130)", "oklch(0.45 0.05 130)", "oklch(0.52 0.05 130)", "oklch(0.66 0.05 130)", "oklch(0.8 0.05 130)", "oklch(0.9 0.04 130)"]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline Rule",
+        "canonical": "oklch(0.822 0.014 118)",
+        "tonalRamp": ["oklch(0.15 0.014 118)", "oklch(0.25 0.014 118)", "oklch(0.36 0.018 252)", "oklch(0.45 0.014 118)", "oklch(0.55 0.014 118)", "oklch(0.68 0.014 118)", "oklch(0.822 0.014 118)", "oklch(0.92 0.012 118)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Stamped Display", "purpose": "Name, section headings, project titles only. Bricolage Grotesque 800." },
+      "heading": { "displayName": "Page Heading", "purpose": "Section openings. Bricolage Grotesque 800." },
+      "body": { "displayName": "Reading Text", "purpose": "All prose and controls. Schibsted Grotesk 400–600." },
+      "note": { "displayName": "Margin Hand", "purpose": "Five words or fewer in the margin. Caveat. Never body copy or controls." },
+      "data": { "displayName": "Measurement", "purpose": "Real figures and code only. Spline Sans Mono, tabular numerals." }
+    },
+    "shadows": [
+      { "name": "shadow-page", "value": "0 1px 1px color-mix(in oklch, var(--graphite) 12%, transparent), 0 14px 32px -18px color-mix(in oklch, var(--graphite) 38%, transparent)", "purpose": "A sheet resting on the page: photo prints, panels, the chat launcher." },
+      { "name": "shadow-lift", "value": "0 1px 1px color-mix(in oklch, var(--graphite) 14%, transparent), 0 22px 44px -20px color-mix(in oklch, var(--graphite) 42%, transparent)", "purpose": "Picked-up paper: dialogs, the chat panel, the scrolled header." },
+      { "name": "tape-shadow", "value": "0 1px 2px color-mix(in oklch, var(--graphite) 22%, transparent)", "purpose": "The thin shadow a tape strip casts." }
+    ],
+    "motion": [
+      { "name": "ease-settle", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The only easing: paper settling into place. Exponential ease-out." },
+      { "name": "settle", "value": "opacity 0→1, translateY(14px)→0, rotate(var(--settle-rotate))→0 over 0.8s", "purpose": "The hero's authored load moment: the taped portrait settles and the tape flexes." },
+      { "name": "tape-flex", "value": "rotate 100%→40%→0 with scaleY 1→1.06→1 over 0.9s", "purpose": "Tape strips flex as prints land." },
+      { "name": "lamp-breathe", "value": "opacity 0.5→0.72→0.5 over 9s ease-in-out", "purpose": "Dark theme only: the desk lamp's slow breath." },
+      { "name": "pencil-underline", "value": "background-size 0→100% over 0.35s", "purpose": "Hover/state: a pencil line drawn under a label." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action per view: see the work, get in touch, send.",
+      "html": "<button class=\"ds-btn-primary\">See the work</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 20px; border: 1px solid transparent; border-radius: 6px; background: oklch(0.435 0.135 25); color: oklch(0.975 0.008 115); font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 0.2s ease, transform 0.15s ease; } .ds-btn-primary:hover { background: oklch(0.38 0.135 25); } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:focus-visible { outline: 2px solid oklch(0.435 0.135 25); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action beside the primary: get in touch, open the repo.",
+      "html": "<button class=\"ds-btn-outline\">Get in touch</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 12px 20px; border: 1px solid oklch(0.822 0.014 118); border-radius: 6px; background: oklch(0.985 0.006 115); color: oklch(0.255 0.017 250); font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: border-color 0.2s ease, color 0.2s ease; } .ds-btn-outline:hover { border-color: oklch(0.435 0.135 25); color: oklch(0.435 0.135 25); } .ds-btn-outline:focus-visible { outline: 2px solid oklch(0.435 0.135 25); outline-offset: 2px; }"
+    },
+    {
+      "name": "Photo Print",
+      "kind": "custom",
+      "refersTo": "photo-print",
+      "description": "Evidence taped to the page: portrait, project screenshot, certificate scan.",
+      "html": "<figure class=\"ds-print\"><span class=\"ds-tape ds-tape-a\"></span><img alt=\"\" src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='160'%3E%3Crect width='240' height='160' fill='%23c9cbbf'/%3E%3C/svg%3E\" /><figcaption>graduation day, MSU-IIT</figcaption></figure>",
+      "css": ".ds-print { position: relative; width: 240px; margin: 0; padding: 8px 8px 32px; border-radius: 2px; background: oklch(0.985 0.006 115); box-shadow: 0 1px 1px color-mix(in oklch, oklch(0.445 0.018 250) 12%, transparent), 0 14px 32px -18px color-mix(in oklch, oklch(0.445 0.018 250) 38%, transparent); transform: rotate(-1.4deg); } .ds-print img { display: block; width: 100%; border-radius: 2px; } .ds-print figcaption { position: absolute; left: 12px; bottom: 8px; font-family: 'Caveat', cursive; font-size: 18px; color: oklch(0.445 0.018 250); } .ds-tape { position: absolute; height: 20px; border-radius: 2px; background: repeating-linear-gradient(90deg, oklch(0.885 0.036 85) 0 6px, oklch(0.86 0.036 85) 6px 12px), oklch(0.885 0.036 85); box-shadow: 0 1px 2px color-mix(in oklch, oklch(0.445 0.018 250) 22%, transparent); opacity: 0.92; } .ds-tape-a { top: -10px; left: 24px; width: 80px; transform: rotate(-2deg); }"
+    },
+    {
+      "name": "Cloth Band Navigation",
+      "kind": "nav",
+      "refersTo": "cloth-band",
+      "description": "The notebook binding: gold foil callsign and divider tabs. The active tab turns paper-colored with a foil underline.",
+      "html": "<nav class=\"ds-cloth\"><span class=\"ds-foil\">JOAL</span><span class=\"ds-brand\">Joseph Vergara</span><a class=\"ds-tab\" href=\"#\">About</a><a class=\"ds-tab ds-tab-active\" href=\"#\">The bench</a><a class=\"ds-tab\" href=\"#\">Projects</a></nav>",
+      "css": ".ds-cloth { display: flex; align-items: center; gap: 12px; padding: 12px 24px; background: oklch(0.3 0.095 25); color: oklch(0.975 0.008 115); font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-foil { font-family: 'Bricolage Grotesque', system-ui, sans-serif; font-size: 20px; font-weight: 800; color: oklch(0.75 0.115 85); text-shadow: 0 1px 0 color-mix(in oklch, oklch(0.3 0.095 25) 45%, transparent); } .ds-brand { font-size: 13px; opacity: 0.9; margin-right: auto; } .ds-tab { padding: 8px 12px; font-size: 13px; color: oklch(0.975 0.008 115); opacity: 0.85; text-decoration: none; border-radius: 6px 6px 0 0; transition: background-color 0.2s ease; } .ds-tab:hover { background: color-mix(in oklch, oklch(0.975 0.008 115) 10%, transparent); } .ds-tab-active { background: oklch(0.945 0.012 120); color: oklch(0.255 0.017 250); opacity: 1; font-weight: 600; box-shadow: inset 0 -2px 0 oklch(0.75 0.115 85); }"
+    },
+    {
+      "name": "Index Tab",
+      "kind": "chip",
+      "refersTo": "index-tab",
+      "description": "Tab strips that filter or switch views (projects, certificates, bench tools).",
+      "html": "<div class=\"ds-tabs\"><button class=\"ds-index-tab ds-index-tab-active\">Everything</button><button class=\"ds-index-tab\">Web Development</button><button class=\"ds-index-tab\">Embedded &amp; HMI</button></div>",
+      "css": ".ds-tabs { display: flex; border-bottom: 1px solid oklch(0.822 0.014 118); } .ds-index-tab { position: relative; min-height: 42px; padding: 10px 16px; border: none; background: transparent; color: oklch(0.445 0.018 250); font-family: 'Schibsted Grotesk', system-ui, sans-serif; font-size: 14px; cursor: pointer; transition: color 0.2s ease; } .ds-index-tab:hover { color: oklch(0.255 0.017 250); } .ds-index-tab-active { color: oklch(0.435 0.135 25); font-weight: 600; } .ds-index-tab-active::after { content: ''; position: absolute; left: 8px; right: 8px; bottom: -1px; height: 2px; background: oklch(0.75 0.115 85); } .ds-index-tab:focus-visible { outline: 2px solid oklch(0.435 0.135 25); outline-offset: -2px; }"
+    },
+    {
+      "name": "Ledger Row",
+      "kind": "card",
+      "refersTo": "ledger-row",
+      "description": "Hairline-separated evidence rows: certificate log, project contents, education entries.",
+      "html": "<div class=\"ds-ledger\"><div class=\"ds-ledger-row\"><span class=\"ds-date\">September 14, 2026</span><span class=\"ds-title\">IEEE Sumpai Hackathon 2026</span><span class=\"ds-action\">Open</span></div><div class=\"ds-ledger-row\"><span class=\"ds-date\">August 20, 2026</span><span class=\"ds-title\">AI Career Readiness Training</span><span class=\"ds-action\">Open</span></div></div>",
+      "css": ".ds-ledger { border-top: 1px solid oklch(0.822 0.014 118); font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-ledger-row { display: grid; grid-template-columns: 120px 1fr auto; align-items: baseline; gap: 16px; padding: 20px 4px; border-bottom: 1px solid oklch(0.822 0.014 118); transition: background-color 0.2s ease; } .ds-ledger-row:hover { background: color-mix(in oklch, oklch(0.985 0.006 115) 70%, transparent); } .ds-date { font-family: 'Spline Sans Mono', monospace; font-variant-numeric: tabular-nums; font-size: 12px; color: oklch(0.445 0.018 250); } .ds-title { font-size: 15px; font-weight: 600; color: oklch(0.255 0.017 250); } .ds-action { font-size: 12px; color: oklch(0.435 0.135 25); }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Form input on the reply slip. Errors name the problem in plain words.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Your email</span><input type=\"email\" placeholder=\"you@example.com\" /></label>",
+      "css": ".ds-field { display: block; font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: oklch(0.445 0.018 250); } .ds-field input { width: 100%; min-height: 46px; padding: 10px 14px; border: 1px solid oklch(0.795 0.016 118); border-radius: 6px; background: oklch(0.985 0.006 115); color: oklch(0.255 0.017 250); font-size: 15px; caret-color: oklch(0.435 0.135 25); transition: border-color 0.2s ease, box-shadow 0.2s ease; } .ds-field input:focus { outline: none; border-color: oklch(0.435 0.135 25); box-shadow: 0 0 0 3px color-mix(in oklch, oklch(0.435 0.135 25) 25%, transparent); }"
+    },
+    {
+      "name": "Chat Bubble",
+      "kind": "custom",
+      "refersTo": "chat-bubble",
+      "description": "Pocket-notebook chat: companion replies on a secondary sheet, the visitor's words in maroon.",
+      "html": "<div class=\"ds-chat\"><div class=\"ds-bubble ds-bubble-bot\">Hey there! I'm Joal's digital twin. Ask me anything.</div><div class=\"ds-bubble ds-bubble-user\">What do you build?</div></div>",
+      "css": ".ds-chat { display: flex; flex-direction: column; gap: 12px; font-family: 'Schibsted Grotesk', system-ui, sans-serif; } .ds-bubble { max-width: 85%; padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.65; box-shadow: 0 1px 1px color-mix(in oklch, oklch(0.445 0.018 250) 12%, transparent); } .ds-bubble-bot { align-self: flex-start; border: 1px solid oklch(0.822 0.014 118); background: color-mix(in oklch, oklch(0.905 0.015 118) 50%, transparent); color: oklch(0.255 0.017 250); } .ds-bubble-user { align-self: flex-end; background: oklch(0.435 0.135 25); color: oklch(0.975 0.008 115); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Hand-Kept Lab Notebook",
+    "overview": "This portfolio is one person's engineering notebook opened on the table: evidence taped in, margins annotated in plain language. It refuses the category-default developer portfolio and the previous cyber/terminal identity. The world is anchored in real material on hand — MSU-IIT maroon and gold regalia, the olive studio backdrop of the graduation portrait, and the quadrille paper every firmware engineer keeps on the bench. Light theme is the page in daylight; dark theme is the same notebook under a desk lamp. The interface recedes and the evidence leads, so a mixed audience meets a person first, proof second, and a contact route within seconds.",
+    "keyCharacteristics": [
+      "Pages and ruled lists, never grids of identical cards",
+      "Photo prints with white borders, slight rotation, and masking tape",
+      "One hairline rule weight; depth from offset, softly blurred shadows",
+      "Maroon rationed to action and identity; gold only as foil stamping",
+      "Handwriting (Caveat) in margins only; tabular mono only for real data"
+    ],
+    "rules": [
+      { "name": "One Rule Weight", "body": "Every separator on the page is the same 1px hairline. Hierarchy comes from size, weight, and placement — never from glow, gradient, or a heavier border.", "section": "elevation" },
+      { "name": "Rationed Maroon", "body": "Maroon appears where the visitor can act and where the identity lives (binding, buttons, links, active states). Gold foil is stamping only. Neither is decoration.", "section": "colors" },
+      { "name": "Margin Hand", "body": "The handwriting face is for five words or fewer in a margin. Body copy, controls, and data stay in their own faces.", "section": "typography" },
+      { "name": "Evidence First", "body": "Every claim points at something real: a screenshot, a scan, a repo, a measured figure. Data type is earned by real data.", "section": "typography" },
+      { "name": "Visible by Default", "body": "Content is never gated behind an entrance animation. Motion is one authored settle in the hero plus hover micro-motion.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do present lists as ruled ledger rows with tabular figures",
+      "Do present imagery as taped photo prints",
+      "Do design both themes as first-class (daylight paper, lamplit night)",
+      "Do write labels in plain, grounded language"
+    ],
+    "donts": [
+      "Don't bring back terminal chrome: HUD brackets, scanlines, neon, carets, ASCII logos, sound effects",
+      "Don't use same-size icon cards as page structure",
+      "Don't add kickers or numbered eyebrows above headings",
+      "Don't use gradient text, glass, glow borders, or hard offset shadows",
+      "Don't set body copy in mono or long text in the handwriting face"
+    ]
+  }
+}

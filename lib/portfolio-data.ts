@@ -12,7 +12,7 @@ export const profile = {
   callsign: 'JOAL',
   fullName: 'Joseph Alan B. Vergara',
   role: 'Embedded Systems & Edge AI Engineer',
-  subRole: 'Firmware // TinyML // Full-Stack Telemetry',
+  subRole: 'Firmware · TinyML · Full-stack telemetry',
   institution: 'Mindanao State University – Iligan Institute of Technology',
   department: 'College of Computer Studies • Dept. of Computer Applications',
   location: 'Iligan City, Philippines',
@@ -25,11 +25,11 @@ export const profile = {
   },
   phone: '+63 947-589-2995',
   website: 'https://joalvergs.tech',
-  status: 'OPERATIONAL // 4TH YEAR EMBEDDED SYS',
-  tagline: 'Engineering at the intersection of bare-metal silicon, real-time operating systems, and edge intelligence.',
+  status: 'Fourth year · BS Computer Applications (Major in Embedded Systems)',
+  tagline: 'I write the software that lives directly on hardware — firmware, real-time systems, and small AI models that run without the cloud.',
   intro:
     '4th-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT (CGPA: 1.96269). Architecting deterministic firmware in C/C++, FreeRTOS multitasking pipelines, TinyML edge inference (YOLOv8n / MediaPipe), and full-stack sensor telemetry.',
-  bio: "I'm Joseph Alan B. Vergara ('Joal') — an embedded systems developer and edge AI researcher based in Iligan City, Philippines. Currently completing my BS Computer Applications (Major in Embedded Systems) at MSU-IIT, I focus on low-level firmware engineering (STM32, ESP32, AVR, Renesas RA6M3), RTOS deterministic task scheduling (FreeRTOS, RT-Thread), edge computer vision with zero cloud latency, and full-stack telemetry dashboards.",
+  bio: "I'm Joseph Alan B. Vergara — 'Joal' — an embedded systems developer and edge AI researcher based in Iligan City, Philippines. I'm finishing my BS Computer Applications (Major in Embedded Systems) at MSU-IIT. Most of my work lives close to the hardware: firmware for small chips like the STM32, ESP32, AVR, and Renesas RA6M3, real-time scheduling with FreeRTOS and RT-Thread, computer vision that runs on the device itself instead of the cloud, and full-stack telemetry dashboards that make the readings easy to follow.",
   socials: {
     github: 'https://github.com/Joal0816',
     linkedin: 'https://www.linkedin.com/in/joseph-alan-vergara-638803348/',
@@ -56,7 +56,7 @@ export const education = [
     period: 'Aug 2023 – Present',
     location: 'Iligan City, Philippines',
     gpa: 'CGPA: 1.96269',
-    status: 'In Progress // 4th Year Senior',
+    status: 'In progress · 4th year',
     description:
       'Specialized curriculum in Microcontroller Programming, FreeRTOS & Real-Time Kernels, Edge AI & Computer Vision, Industrial PLC Automation (CODESYS), IoT Telemetry, and Digital Logic Design.',
     highlights: [
@@ -98,6 +98,13 @@ export const experiences = [
 ]
 
 export const certifications = [
+  {
+    name: 'MSU-IIT Official Certificate of Registration & Enrolment',
+    issuer: 'Office of the Institute Registrar, MSU-IIT',
+    date: '2023 – Present',
+    image: '/certificates/OTHERS/msuiit-certificate-of-registration.pdf',
+    category: 'Academic Records',
+  },
   {
     name: 'IEEE Sumpai Hackathon 2026',
     issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City',
@@ -148,18 +155,18 @@ export const certifications = [
     category: 'Professional Dev',
   },
   {
+    name: 'Statistics: Bridging Gaps For Every Juan in the Digital Age',
+    issuer: 'Department of Mathematics and Statistics, MSU-IIT',
+    date: 'October 2023',
+    image: '/certificates/OTHERS/statistics-bridging-gaps-digital-age.pdf',
+    category: 'Data & Analytics',
+  },
+  {
     name: 'Software Freedom Day 2023',
     issuer: 'CCS Building, MSU-IIT, Iligan City',
     date: 'September 16, 2023',
     image: '/certificates/TECH/Software Freedom Day 2023.png',
     category: 'Open Source',
-  },
-  {
-    name: 'Academic Honors Recognition (Grade 11)',
-    issuer: 'MSU-IIT Integrated Developmental School',
-    date: '2022 – 2023',
-    image: '/certificates/OTHERS/ids-academic-honor-g11.pdf',
-    category: 'Academic Honors',
   },
   {
     name: 'MSU-IIT SASE 2023 Official Admission & Acceptance',
@@ -176,20 +183,6 @@ export const certifications = [
     category: 'Research Colloquium',
   },
   {
-    name: 'TEENPRENEUR 2021 Business & Innovation Bootcamp',
-    issuer: 'Youth Entrepreneurship Program & Mentorship',
-    date: '2021',
-    image: '/certificates/OTHERS/teenpreneur-2021.pdf',
-    category: 'Technopreneurship',
-  },
-  {
-    name: 'Statistics: Bridging Gaps For Every Juan in the Digital Age',
-    issuer: 'Department of Mathematics and Statistics, MSU-IIT',
-    date: 'October 2023',
-    image: '/certificates/OTHERS/statistics-bridging-gaps-digital-age.pdf',
-    category: 'Data & Analytics',
-  },
-  {
     name: 'DMS National Statistics Month Webinar Series',
     issuer: 'Department of Mathematics & Statistics (DMS)',
     date: '2023',
@@ -197,11 +190,18 @@ export const certifications = [
     category: 'Data & Analytics',
   },
   {
-    name: 'MSU-IIT Official Certificate of Registration & Enrolment',
-    issuer: 'Office of the Institute Registrar, MSU-IIT',
-    date: '2023 – Present',
-    image: '/certificates/OTHERS/msuiit-certificate-of-registration.pdf',
-    category: 'Academic Records',
+    name: 'Academic Honors Recognition (Grade 11)',
+    issuer: 'MSU-IIT Integrated Developmental School',
+    date: '2022 – 2023',
+    image: '/certificates/OTHERS/ids-academic-honor-g11.pdf',
+    category: 'Academic Honors',
+  },
+  {
+    name: 'TEENPRENEUR 2021 Business & Innovation Bootcamp',
+    issuer: 'Youth Entrepreneurship Program & Mentorship',
+    date: '2021',
+    image: '/certificates/OTHERS/teenpreneur-2021.pdf',
+    category: 'Technopreneurship',
   },
 ]
 
@@ -223,7 +223,7 @@ export const leadership = [
 export const skillGroups = [
   {
     category: 'Embedded Systems & RTOS',
-    tag: 'FIRMWARE_CORE',
+    tag: 'Firmware core',
     skills: [
       'C',
       'C++',
@@ -241,7 +241,7 @@ export const skillGroups = [
   },
   {
     category: 'Edge AI & Computer Vision',
-    tag: 'TINYML_INFERENCE',
+    tag: 'On-device AI',
     skills: [
       'YOLOv8n / Ultralytics',
       'MediaPipe Pose Kinematics',
@@ -256,7 +256,7 @@ export const skillGroups = [
   },
   {
     category: 'Protocols & Hardware Design',
-    tag: 'BUS_&_CIRCUITS',
+    tag: 'Wires & circuits',
     skills: [
       'I2C',
       'SPI',
@@ -272,7 +272,7 @@ export const skillGroups = [
   },
   {
     category: 'Web & Telemetry Architecture',
-    tag: 'FULLSTACK_IOT',
+    tag: 'Web & telemetry',
     skills: [
       'TypeScript',
       'Next.js 15/16',
@@ -288,7 +288,7 @@ export const skillGroups = [
   },
   {
     category: 'Toolchains, DevOps & OS',
-    tag: 'SYS_ENVIRONMENT',
+    tag: 'Tools & systems',
     skills: [
       'Linux (Arch Linux, CachyOS)',
       'Git & GitHub CI/CD',
@@ -693,7 +693,7 @@ updateParticleTelemetryCount(particles.size)`,
     title: 'Sustainability in the Cup Web',
     category: 'Web Development',
     role: 'Frontend & Data Visualization Engineer',
-    badge: 'Latest Release // Production',
+    badge: 'Latest release',
     description:
       'Interactive research platform examining green marketing claims and consumer trust across Northern Mindanao cafés.',
     longDescription:
@@ -851,7 +851,7 @@ updateParticleTelemetryCount(particles.size)`,
 
 export const navLinks = [
   { label: 'About', href: '#about', code: '01' },
-  { label: 'Telemetry', href: '#telemetry', code: '02' },
+  { label: 'The bench', href: '#telemetry', code: '02' },
   { label: 'Projects', href: '#projects', code: '03' },
   { label: 'Certifications', href: '#certifications', code: '04' },
   { label: 'Contact', href: '#contact', code: '05' },

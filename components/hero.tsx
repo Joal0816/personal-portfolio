@@ -2,389 +2,349 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import {
-  ArrowDown,
-  Download,
-  Mail,
-  Cpu,
-  Activity,
-  Zap,
-  Radio,
-  Terminal as TerminalIcon,
-  Layers,
-  CheckCircle2,
-  ExternalLink,
-} from 'lucide-react'
+import { ArrowDown, Download, Mail, Gauge, Cpu, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { GithubIcon, LinkedinIcon } from '@/components/brand-icons'
-import { profile } from '@/lib/portfolio-data'
+import { profile, navLinks } from '@/lib/portfolio-data'
 import { HardwarePlayground } from '@/components/hardware-playground'
+import { HyphenSafe, EmailText } from '@/components/text-fixes'
 import { cn } from '@/lib/utils'
 
 export function Hero() {
-  const [activeTelemetryTab, setActiveTelemetryTab] = useState<'interactive' | 'specs' | 'pipeline'>('interactive')
+  const [activeTab, setActiveTab] = useState<'bench' | 'chips' | 'pipelines'>('bench')
 
   return (
-    <section
-      id="top"
-      className="relative flex min-h-svh items-center justify-center overflow-hidden pt-20 pb-16 md:py-24"
-    >
-      {/* Background Matrix & Lighting */}
-      <div className="tech-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)]" />
-      <div className="tech-dots pointer-events-none absolute inset-0 opacity-20" />
-      <div className="scanline-overlay pointer-events-none" />
+    <section id="top" className="relative overflow-hidden">
+      {/* The open notebook: quadrille paper and the page gutter */}
+      <div className="quadrille pointer-events-none absolute inset-0 opacity-70 [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 bg-[repeating-linear-gradient(to_bottom,color-mix(in_oklch,var(--graphite)_22%,transparent)_0_8px,transparent_8px_16px)] lg:block" />
+      {/* Desk lamp light in the dark theme */}
+      <div className="lamp-glow pointer-events-none absolute -top-24 right-[8%] size-[36rem] rounded-full opacity-60 blur-3xl [background:radial-gradient(circle,color-mix(in_oklch,var(--foil)_22%,transparent),transparent_68%)]" />
 
-      {/* Cyber Luminous Glows */}
-      <div
-        className="pointer-events-none absolute -top-48 right-0 size-[38rem] rounded-full opacity-25 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, var(--color-primary), transparent 65%)',
-        }}
-      />
-      <div
-        className="pointer-events-none absolute -bottom-48 -left-32 size-[32rem] rounded-full opacity-15 blur-3xl"
-        style={{
-          background: 'radial-gradient(circle, var(--color-primary), transparent 70%)',
-        }}
-      />
+      <div className="relative mx-auto w-full max-w-6xl px-5 pt-24 pb-12 sm:px-8 md:pt-28 lg:pb-16">
+        <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          {/* ── Left page: the person ─────────────────────────────────── */}
+          <div className="min-w-0">
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10">
+              {/* The taped-in photo print */}
+              <div className="relative mx-auto w-48 shrink-0 sm:mx-0 sm:w-52 lg:w-44 xl:w-52">
+                <div
+                  className="animate-settle photo-print relative rounded-[3px] p-2 pb-8"
+                  style={{ ['--settle-rotate' as string]: '-1.4deg' }}
+                >
+                  {/* tape strips */}
+                  <span
+                    aria-hidden
+                    className="animate-tape-flex tape absolute -top-3 left-6 h-6 w-20 rounded-[2px] [transform:rotate(-2deg)]"
+                    style={{ ['--tape-rotate' as string]: '-2deg', animationDelay: '260ms' }}
+                  />
+                  <span
+                    aria-hidden
+                    className="animate-tape-flex tape absolute -bottom-2 right-4 h-5 w-16 rounded-[2px] [transform:rotate(3deg)]"
+                    style={{ ['--tape-rotate' as string]: '3deg', animationDelay: '380ms' }}
+                  />
+                  <div className="relative overflow-hidden rounded-[2px]">
+                    <Image
+                      src="/profile.jpg"
+                      alt="Joseph Alan B. Vergara in his graduation toga"
+                      width={320}
+                      height={427}
+                      className="aspect-[3/4] w-full object-cover object-[50%_16%]"
+                      priority
+                    />
+                  </div>
+                  <p className="marginalia absolute bottom-1.5 left-3 text-lg leading-none">
+                    graduation day, MSU-IIT
+                  </p>
+                </div>
+              </div>
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6">
-        <div className="flex flex-col-reverse gap-10 lg:flex-row lg:items-center lg:gap-14">
-          {/* Main Column */}
-          <div className="flex-1 max-w-3xl">
-            {/* Top Status HUD Badge */}
-            <div className="animate-fade-up mb-4 sm:mb-5 inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 sm:px-3.5 py-1.5 font-mono text-xs text-foreground/90 backdrop-blur-md shadow-[0_0_15px_-3px_color-mix(in_oklch,var(--primary)_25%,transparent)] transition-all">
-              <span className="relative flex size-2.5 items-center justify-center">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="status-beacon relative inline-flex size-2 rounded-full bg-emerald-400" />
-              </span>
-              <span className="text-primary font-bold tracking-wider">STATUS:</span>
-              <span className="font-mono text-muted-foreground">{profile.status}</span>
-              <span className="hidden sm:inline-block text-border/80">•</span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-primary/80 font-mono">
-                <Activity className="size-3 animate-pulse" />
-                <span>SYS_ONLINE</span>
-              </span>
-            </div>
+              {/* Name, plain sentence, actions */}
+              <div className="min-w-0 flex-1">
+                <h1 className="text-[clamp(2.5rem,7vw,4.75rem)] font-extrabold leading-[0.95] tracking-[-0.035em]">
+                  <span className="block">{profile.name}</span>
+                  <span className="mt-2 block text-[0.36em] font-semibold uppercase tracking-[0.16em] text-primary dark:text-[oklch(0.72_0.11_28)]">
+                    {profile.role}
+                  </span>
+                </h1>
 
-            {/* Main Headline */}
-            <div className="animate-fade-up space-y-2" style={{ animationDelay: '80ms' }}>
-              <h1 className="text-balance text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12] sm:leading-[1.08] break-words">
-                <span>{profile.name}</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-cyan-400 to-emerald-400">
-                  {profile.role}
-                </span>
-              </h1>
-              <p className="font-mono text-xs sm:text-sm tracking-widest text-primary/80 uppercase">
-                {profile.subRole}
-              </p>
-            </div>
+                <p className="mt-6 max-w-[46ch] text-lg leading-relaxed text-foreground/85 sm:text-xl">
+                  {profile.tagline}
+                </p>
+                <p className="marginalia mt-3 max-w-[40ch] text-xl leading-snug">
+                  right now: finishing my degree at MSU-IIT and building sensors
+                  that watch, measure, and act on their own.
+                </p>
 
-            {/* Intro paragraph */}
-            <p
-              className="animate-fade-up mt-4 sm:mt-5 max-w-2xl text-pretty text-sm sm:text-lg leading-relaxed text-muted-foreground"
-              style={{ animationDelay: '160ms' }}
-            >
-              {profile.tagline}{' '}
-              <span className="text-foreground/85">
-                Specialized in FreeRTOS multithreading, STM32 & ESP32 bare metal, TinyML edge computer vision, and real-time sensor telemetry.
-              </span>
-            </p>
+                <div className="mt-8 flex flex-wrap items-center gap-2.5">
+                  <Button
+                    render={<a href="#projects" />}
+                    nativeButton={false}
+                    size="lg"
+                    className="min-h-[46px] gap-2 rounded-md bg-primary px-5 text-primary-foreground font-semibold hover:bg-primary/90"
+                  >
+                    <span>See the work</span>
+                    <ArrowDown className="size-4" />
+                  </Button>
+                  <Button
+                    render={<a href="#contact" />}
+                    nativeButton={false}
+                    size="lg"
+                    variant="outline"
+                    className="min-h-[46px] rounded-md px-5 font-semibold"
+                  >
+                    Get in touch
+                  </Button>
+                  <Button
+                    render={<a href="/resume.pdf" download />}
+                    nativeButton={false}
+                    size="lg"
+                    variant="ghost"
+                    className="min-h-[46px] gap-2 rounded-md px-4 text-muted-foreground hover:text-primary"
+                  >
+                    <Download className="size-4" />
+                    Résumé (PDF)
+                  </Button>
+                </div>
 
-            {/* CTA action cluster */}
-            <div
-              className="animate-fade-up mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3"
-              style={{ animationDelay: '240ms' }}
-            >
-              <Button
-                render={<a href="#projects" />}
-                nativeButton={false}
-                size="lg"
-                className="cyber-sheen w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm tracking-wider uppercase bg-primary text-primary-foreground font-bold shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all justify-center"
-              >
-                <span>View Projects</span>
-                <ArrowDown className="size-4" />
-              </Button>
-
-              <Button
-                render={<a href="#contact" />}
-                nativeButton={false}
-                size="lg"
-                variant="outline"
-                className="w-full sm:w-auto min-h-[44px] font-mono text-xs sm:text-sm tracking-wider uppercase border-border/80 hover:border-primary/60 hover:bg-secondary/40 justify-center"
-              >
-                Get In Touch
-              </Button>
-
-              <Button
-                render={<a href="/resume.pdf" download />}
-                nativeButton={false}
-                size="lg"
-                variant="ghost"
-                className="w-full sm:w-auto min-h-[44px] gap-2 font-mono text-xs sm:text-sm text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 justify-center"
-              >
-                <Download className="size-4" />
-                Resume PDF
-              </Button>
-            </div>
-
-            {/* Social channels with telemetry micro-labels */}
-            <div
-              className="animate-fade-up mt-6 sm:mt-8 flex flex-wrap items-center gap-2 sm:gap-3"
-              style={{ animationDelay: '300ms' }}
-            >
-              <SocialLink href={profile.socials.github} label="GitHub">
-                <GithubIcon className="size-4" />
-                <span className="text-xs font-mono">GitHub</span>
-              </SocialLink>
-              <SocialLink href={profile.socials.linkedin} label="LinkedIn">
-                <LinkedinIcon className="size-4" />
-                <span className="text-xs font-mono">LinkedIn</span>
-              </SocialLink>
-              <SocialLink href={profile.socials.email} label="Email">
-                <Mail className="size-4" />
-                <span className="text-xs font-mono">Email</span>
-              </SocialLink>
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+                  <SocialLink href={profile.socials.github} label="GitHub">
+                    <GithubIcon className="size-4" />
+                    <span>GitHub</span>
+                  </SocialLink>
+                  <SocialLink href={profile.socials.linkedin} label="LinkedIn">
+                    <LinkedinIcon className="size-4" />
+                    <span>LinkedIn</span>
+                  </SocialLink>
+                  <SocialLink href={profile.socials.email} label="Email">
+                    <Mail className="size-4" />
+                    <EmailText email={profile.email} />
+                  </SocialLink>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Column: HUD Profile Chassis & Live Silicon Specs */}
-          <div
-            className="animate-fade-up flex flex-col items-center lg:items-end shrink-0 max-w-full px-2 sm:px-0"
-            style={{ animationDelay: '200ms' }}
-          >
-            {/* Tech Frame with Corner Brackets & Hover Laser Beam */}
-            <div className="relative group max-w-full hud-bracket-expand">
-              {/* Outer decorative cyber chassis */}
-              <div className="absolute -inset-2.5 rounded-2xl border border-primary/20 bg-primary/5 -z-10 group-hover:border-primary/50 group-hover:shadow-[0_0_25px_-5px_color-mix(in_oklch,var(--primary)_30%,transparent)] transition-all duration-300" />
-
-              {/* Radar sweep background accent */}
-              <div className="pointer-events-none absolute -inset-6 -z-20 overflow-hidden rounded-full opacity-20 group-hover:opacity-35 transition-opacity">
-                <div className="size-full radar-sweep-cone" />
+          {/* ── Right page: the desk ──────────────────────────────────── */}
+          <div className="min-w-0 lg:pt-2">
+            {/* Taped index card: what I'm working on now */}
+            <div className="animate-settle-soft relative">
+              <span
+                aria-hidden
+                className="tape absolute -top-2.5 right-10 h-5 w-20 rounded-[2px] [transform:rotate(2deg)]"
+              />
+              <div className="rounded-[4px] border border-border bg-card p-5 shadow-page sm:p-6">
+                <p className="marginalia text-2xl leading-none">what I&apos;m working on now</p>
+                <ul className="mt-4 space-y-3.5">
+                  {[
+                    {
+                      title: 'Thermal fever watch for livestock',
+                      note: 'O.I.N.K. — an infrared array on an ESP32, streaming to a live dashboard.',
+                    },
+                    {
+                      title: 'Turning panic calls into dispatch data',
+                      note: 'Agap AI — built at the IEEE Sumpai Hackathon 2026.',
+                    },
+                    {
+                      title: 'Automated lab scoring on a microcontroller',
+                      note: 'Research collaboration — the ESP32-P4 grades the bench itself.',
+                    },
+                  ].map((item) => (
+                    <li key={item.title} className="flex gap-3">
+                      <span aria-hidden className="mt-[0.55rem] size-1.5 shrink-0 rounded-full bg-primary" />
+                      <div className="min-w-0">
+                        <p className="text-[15px] font-semibold leading-snug">{item.title}</p>
+                        <p className="mt-0.5 text-[13px] leading-relaxed text-muted-foreground">
+                          {item.note}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </div>
+            </div>
 
-              {/* Top coordinates label */}
-              <div className="absolute -top-6 left-1 flex items-center gap-1.5 text-[9px] font-mono text-muted-foreground truncate max-w-full">
-                <Radio className="size-3 text-primary animate-pulse shrink-0" />
-                <span className="truncate">ILIGAN CITY // 8.2280° N, 124.2452° E</span>
-              </div>
+            {/* Divider tabs */}
+            <nav aria-label="Page sections" className="mt-8">
+              <p className="marginalia mb-2 text-xl leading-none">tabs</p>
+              <ul className="space-y-1">
+                {navLinks.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className="group flex items-center justify-between rounded-md border-b border-border py-2.5 pr-1 text-[15px] text-foreground/85 transition-colors hover:text-primary"
+                    >
+                      <span className="pencil-underline">{link.label}</span>
+                      <span className="measure text-[11px] text-muted-foreground">{link.href}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-              {/* Image Container with Laser Beam on Hover */}
-              <div className="relative aspect-[3/4] w-56 sm:w-72 max-w-[calc(100vw-3.5rem)] overflow-hidden rounded-xl border border-border bg-card shadow-2xl">
-                <div className="card-laser-beam" />
-                <Image
-                  src="/profile.jpg"
-                  alt="Joseph Alan B. Vergara"
-                  width={320}
-                  height={427}
-                  className="h-full w-full object-cover object-[50%_18%] grayscale-[25%] transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:scale-105"
-                  priority
+            {/* The cats, taped in */}
+            <div className="animate-settle-soft mt-8 flex items-start gap-4">
+              <div className="photo-print relative shrink-0 rounded-[3px] p-2 pb-8 [transform:rotate(1.5deg)]">
+                <span
+                  aria-hidden
+                  className="tape absolute -top-2 left-4 h-4 w-12 rounded-[2px] [transform:rotate(-3deg)]"
                 />
-
-                {/* Overlaid scanline and corner HUD elements */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
-                <div className="absolute bottom-2 left-2 right-2 rounded bg-background/90 px-2.5 py-1.5 backdrop-blur-md border border-border/80 text-[11px] font-mono flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-foreground">
-                    <Zap className="size-3 text-primary animate-pulse" />
-                    <span>CGPA: {profile.telemetry.cgpa}</span>
-                  </div>
-                  <span className="text-[10px] text-emerald-400 font-semibold">SENIOR</span>
+                <div className="flex items-start gap-1">
+                  <img
+                    src="/companion/cat-orange.png"
+                    alt="Rera, an orange cat, as a brick mosaic"
+                    className="h-20 w-36 rounded-[2px] object-cover"
+                  />
+                  <img
+                    src="/companion/cat-tabby.png"
+                    alt="Area, a tabby cat, as a brick mosaic"
+                    className="h-20 w-14 rounded-[2px] object-cover object-[50%_28%]"
+                  />
                 </div>
+                <p className="marginalia absolute bottom-1 left-3 text-lg leading-none">
+                  Rera &amp; Area
+                </p>
               </div>
+              <p className="marginalia pt-2 text-xl leading-snug">
+                my two supervisors.
+                <br />
+                they answer in the chat.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Embedded Telemetry & Hardware Matrix Banner */}
-        <div
-          id="telemetry"
-          className="animate-fade-up mt-14 rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-6 backdrop-blur-xl shadow-xl"
-          style={{ animationDelay: '360ms' }}
-        >
-          {/* Header row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-4 border-b border-border/60">
-            <div className="flex items-center gap-2.5">
-              <div className="flex size-7 shrink-0 items-center justify-center rounded bg-primary/10 text-primary border border-primary/30 shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                <TerminalIcon className="size-3.5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-xs sm:text-sm font-mono font-bold tracking-wider text-foreground uppercase">
-                    SYSTEM_TELEMETRY // HARDWARE & STACK SPECIFICATION
-                  </h3>
-                  {/* Animated Oscilloscope / Digital Logic Indicator */}
-                  <div className="hidden lg:flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/60 border border-primary/30 shadow-inner">
-                    <span className="size-1.5 rounded-full bg-emerald-400 animate-ping" />
-                    <svg className="w-16 h-3.5 text-primary" viewBox="0 0 64 14" fill="none">
-                      <path
-                        d="M0 7 H12 L16 1 L20 13 L24 7 H36 L40 2 L44 12 L48 7 H64"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="[stroke-dasharray:120] [stroke-dashoffset:120] animate-[waveform-flow_3s_linear_infinite]"
-                      />
-                    </svg>
-                    <span className="text-[9px] font-mono text-emerald-400 font-bold">10 kHz</span>
-                  </div>
-                </div>
-                <p className="text-[11px] font-mono text-muted-foreground">
-                  Target Architectures, Deterministic Kernels & Edge Accelerators
-                </p>
-              </div>
+        {/* ── The bench: fold-out page ───────────────────────────────── */}
+        <div id="telemetry" className="mt-14 scroll-mt-24 lg:mt-20">
+          <div className="flex flex-col gap-6 border-t border-border pt-8 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h2 className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+                The bench: what I build on and with.
+              </h2>
+              <p className="mt-3 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Boards, chips, and edge-AI pipelines from real projects — plus a
+                little sandbox you can poke&nbsp;at.
+              </p>
             </div>
 
-            {/* Toggle tabs */}
-            <div className="grid grid-cols-3 sm:flex items-center rounded-lg border border-border bg-secondary/50 p-1 font-mono text-xs w-full sm:w-auto">
-              <button
-                type="button"
-                onClick={() => setActiveTelemetryTab('interactive')}
-                className={cn(
-                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
-                  activeTelemetryTab === 'interactive'
-                    ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground',
-                )}
+            <div className="w-full rounded-md border border-border bg-card p-1 md:w-auto">
+              <div
+                className="scroll-strip flex"
+                role="tablist"
+                aria-label="Bench views"
               >
-                INTERACTIVE RIG
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTelemetryTab('specs')}
-                className={cn(
-                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
-                  activeTelemetryTab === 'specs'
-                    ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground',
-                )}
-              >
-                ARCHITECTURES
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTelemetryTab('pipeline')}
-                className={cn(
-                  'rounded px-2.5 sm:px-3 py-2 sm:py-1 min-h-[36px] sm:min-h-0 text-center transition-all',
-                  activeTelemetryTab === 'pipeline'
-                    ? 'bg-primary text-primary-foreground font-semibold shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground',
-                )}
-              >
-                EDGE PIPELINES
-              </button>
+              {[
+                { id: 'bench', label: 'Play with the board', icon: Gauge },
+                { id: 'chips', label: 'The chips I work on', icon: Cpu },
+                { id: 'pipelines', label: 'Edge AI pipelines', icon: Sparkles },
+              ].map((tab) => {
+                const Icon = tab.icon
+                const isActive = activeTab === tab.id
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                    className={cn(
+                      'flex min-h-[40px] flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded px-3 py-2 text-[13px] transition-colors md:flex-none',
+                      isActive
+                        ? 'bg-primary font-semibold text-primary-foreground'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    <Icon className="size-3.5" />
+                    <span>{tab.label}</span>
+                  </button>
+                )
+              })}
+              </div>
             </div>
           </div>
 
-          {/* Tab content */}
-          {activeTelemetryTab === 'interactive' ? (
-            <div className="mt-4">
-              <HardwarePlayground />
-            </div>
-          ) : activeTelemetryTab === 'specs' ? (
-            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs font-mono">
-              {/* Architecture 1 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>SILICON_01</span>
-                  <span className="text-emerald-400">72 MHz</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">STM32 (ARM Cortex-M3)</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">FreeRTOS 5-Task Kernel</div>
-                <div className="mt-2 inline-block rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">
-                  Blue Pill • DMA • I2C/SPI
-                </div>
-              </div>
+          <div className="mt-8">
+            {activeTab === 'bench' && <HardwarePlayground />}
 
-              {/* Architecture 2 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>SILICON_02</span>
-                  <span className="text-emerald-400">240 MHz</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">ESP32 / ESP32-P4</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">Dual-Core RISC-V / Xtensa</div>
-                <div className="mt-2 inline-block rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">
-                  Thermal Telemetry • Edge Web
-                </div>
+            {activeTab === 'chips' && (
+              <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+                {[
+                  {
+                    name: 'STM32 (ARM Cortex-M3)',
+                    clock: '72 MHz',
+                    note: 'FreeRTOS five-task kernel',
+                    detail: 'Blue Pill · DMA · I2C/SPI',
+                  },
+                  {
+                    name: 'ESP32 / ESP32-P4',
+                    clock: '240 MHz',
+                    note: 'Dual-core RISC-V / Xtensa',
+                    detail: 'Thermal telemetry · edge web',
+                  },
+                  {
+                    name: 'Renesas RA6M3',
+                    clock: '120 MHz',
+                    note: 'RT-Thread RTOS + LVGL',
+                    detail: 'On-metal graphics · 60 FPS',
+                  },
+                  {
+                    name: 'AVR ATmega328P / 8051',
+                    clock: '16 MHz',
+                    note: 'Low-level assembly & C',
+                    detail: 'PWM timers · direct port I/O',
+                  },
+                ].map((chip) => (
+                  <div key={chip.name} className="bg-card p-5">
+                    <div className="measure text-xs text-muted-foreground">{chip.clock}</div>
+                    <div className="mt-1.5 text-[15px] font-semibold leading-snug">
+                      <HyphenSafe text={chip.name} />
+                    </div>
+                    <div className="mt-1 text-sm text-muted-foreground">
+                      <HyphenSafe text={chip.note} />
+                    </div>
+                    <div className="mt-3 text-xs text-primary">{chip.detail}</div>
+                  </div>
+                ))}
               </div>
+            )}
 
-              {/* Architecture 3 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>SILICON_03</span>
-                  <span className="text-emerald-400">120 MHz</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">Renesas RA6M3</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">RT-Thread RTOS + LVGL</div>
-                <div className="mt-2 inline-block rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">
-                  Bare-Metal HMI • 60 FPS
-                </div>
+            {activeTab === 'pipelines' && (
+              <div className="grid gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-3">
+                {[
+                  {
+                    model: 'YOLOv8n microplastic detection',
+                    figure: '22 ms per frame',
+                    note: 'A quantized model that counts particles on the phone itself, with no cloud round trip.',
+                    tags: 'TFLite · Edge Impulse',
+                  },
+                  {
+                    model: 'ARUGA fall & inactivity engine',
+                    figure: '30 FPS real time',
+                    note: 'Reads 33 body points from a camera and judges a fall from angles and speed alone.',
+                    tags: 'MediaPipe · OpenCV',
+                  },
+                  {
+                    model: 'O.I.N.K. thermal stream',
+                    figure: '8 Hz stream',
+                    note: 'A 768-pixel infrared array over Wi-Fi, with fever thresholds that fire on their own.',
+                    tags: 'MLX90640 · Flutter',
+                  },
+                ].map((pipe) => (
+                  <div key={pipe.model} className="bg-card p-5">
+                    <div className="measure text-xs text-primary">{pipe.figure}</div>
+                    <div className="mt-1.5 text-[15px] font-semibold leading-snug">{pipe.model}</div>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{pipe.note}</p>
+                    <div className="mt-3 text-xs text-muted-foreground">{pipe.tags}</div>
+                  </div>
+                ))}
               </div>
+            )}
+          </div>
 
-              {/* Architecture 4 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>SILICON_04</span>
-                  <span className="text-emerald-400">16 MHz</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">AVR ATmega328P / 8051</div>
-                <div className="mt-1 text-[11px] text-muted-foreground">Low-Level Assembly & C</div>
-                <div className="mt-2 inline-block rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">
-                  PWM Timers • Direct Port IO
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
-              {/* Pipeline 1 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>CV_MODEL // 01</span>
-                  <span className="text-emerald-400 font-bold">22ms LATENCY</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">YOLOv8n Microplastic Detection</div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  INT8 quantized neural inference on mobile Android/iOS without cloud roundtrips.
-                </p>
-                <div className="mt-2 flex gap-1.5">
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">TFLite</span>
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">Edge Impulse</span>
-                </div>
-              </div>
-
-              {/* Pipeline 2 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>CV_MODEL // 02</span>
-                  <span className="text-emerald-400 font-bold">30 FPS REAL-TIME</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">ARUGA 33-pt Kinematic Fall Engine</div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Zero-dataset biomechanical vectors tracking spine inclination and vertical drop velocity.
-                </p>
-                <div className="mt-2 flex gap-1.5">
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">MediaPipe</span>
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">OpenCV</span>
-                </div>
-              </div>
-
-              {/* Pipeline 3 */}
-              <div className="rounded-lg border border-border/60 bg-secondary/30 p-3 hover:border-primary/40 transition-colors">
-                <div className="flex items-center justify-between text-muted-foreground text-[10px]">
-                  <span>THERMAL_STREAM // 03</span>
-                  <span className="text-emerald-400 font-bold">8 Hz STREAM</span>
-                </div>
-                <div className="mt-1 font-bold text-foreground">O.I.N.K. Swine Febrile Telemetry</div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  MLX90640 768-pixel thermal arrays over ESP32 Wi-Fi with automated fever thresholds.
-                </p>
-                <div className="mt-2 flex gap-1.5">
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">MLX90640</span>
-                  <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary">Flutter Web</span>
-                </div>
-              </div>
-            </div>
-          )}
+          <p className="marginalia mt-6 text-xl leading-snug">
+            every number here is measured on real hardware — the same figures
+            appear in the project write-ups below.
+          </p>
         </div>
       </div>
     </section>
@@ -406,7 +366,7 @@ function SocialLink({
       target={href.startsWith('http') ? '_blank' : undefined}
       rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
       aria-label={label}
-      className="inline-flex min-h-[44px] items-center gap-2 rounded border border-border/80 bg-secondary/40 px-3.5 py-2 text-muted-foreground backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10 hover:text-primary hover:shadow-lg hover:shadow-primary/10 active:scale-95"
+      className="inline-flex min-h-[44px] items-center gap-2 text-muted-foreground transition-colors hover:text-primary"
     >
       {children}
     </a>

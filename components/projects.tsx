@@ -1,29 +1,20 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import Image from 'next/image'
 import {
   ArrowUpRight,
   ExternalLink,
-  Cpu,
-  Layers,
-  Terminal,
-  Activity,
-  Zap,
-  Code2,
   Search,
   X,
   Copy,
   Check,
-  ChevronDown,
-  ChevronUp,
-  Workflow,
-  Sparkles,
-  GitBranch,
+  Cpu,
 } from 'lucide-react'
 import { GithubIcon } from '@/components/brand-icons'
 import { Reveal } from '@/components/reveal'
 import { ProjectModal } from '@/components/project-modal'
+import { HyphenSafe } from '@/components/text-fixes'
 import {
   projects,
   projectCategories,
@@ -31,7 +22,6 @@ import {
   type ProjectCategory,
 } from '@/lib/portfolio-data'
 import { cn } from '@/lib/utils'
-import { cyberAudio } from '@/lib/cyber-sound'
 
 type Filter = 'All' | ProjectCategory
 type DrawerTab = 'specs' | 'code' | 'flow'
@@ -43,13 +33,24 @@ export function Projects() {
   const [selected, setSelected] = useState<Project | null>(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-  // Track expanded drawer tab per project title
-  const [cardDrawers, setCardDrawers] = useState<Record<string, DrawerTab | null>>({})
+  const [openDrawer, setOpenDrawer] = useState<string | null>(null)
   const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null)
+
+  // The search hint is shortened on small screens so it never clips mid-word.
+  const fullPlaceholder =
+    'Search the notebooks — a chip, a protocol, a name (STM32, FreeRTOS, YOLO, I2C…)'
+  const [searchPlaceholder, setSearchPlaceholder] = useState(fullPlaceholder)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const apply = () => setSearchPlaceholder(mq.matches ? 'Search the notebooks…' : fullPlaceholder)
+    apply()
+    mq.addEventListener('change', apply)
+    return () => mq.removeEventListener('change', apply)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const filters: Filter[] = ['All', ...projectCategories]
 
-  // Top popular tags for quick 1-click filtering
   const popularTags = [
     'FreeRTOS',
     'STM32',
@@ -89,72 +90,65 @@ export function Projects() {
     return map
   }, [])
 
+  const featured = visible[0]
+  const rest = visible.slice(1)
+
   function openProject(project: Project) {
-    cyberAudio.click(0.04)
     setSelected(project)
     setModalOpen(true)
   }
 
-  function toggleCardDrawer(projectTitle: string, tab: DrawerTab) {
-    cyberAudio.click(0.03)
-    setCardDrawers((prev) => ({
-      ...prev,
-      [projectTitle]: prev[projectTitle] === tab ? null : tab,
-    }))
+  function toggleDrawer(title: string, tab: DrawerTab) {
+    const key = `${title}::${tab}`
+    setOpenDrawer((prev) => (prev === key ? null : key))
   }
 
-  function copyCode(projectTitle: string, code: string) {
+  function copyCode(title: string, code: string) {
     navigator.clipboard.writeText(code)
-    cyberAudio.packetBurst(0.03)
-    setCopiedSnippet(projectTitle)
-    setTimeout(() => {
-      setCopiedSnippet(null)
-    }, 2000)
+    setCopiedSnippet(title)
+    setTimeout(() => setCopiedSnippet(null), 2000)
   }
 
   return (
-    <section id="projects" className="relative border-t border-border/80 bg-card/20 py-24 md:py-32">
-      {/* Background accents */}
-      <div className="tech-dots pointer-events-none absolute inset-0 opacity-15" />
+    <section id="projects" className="relative border-t border-border bg-secondary/25">
+      <div className="quadrille pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]" />
 
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-12 sm:px-8 md:pt-18 md:pb-14">
         {/* Header */}
         <Reveal>
-          <div className="flex items-center gap-2 font-mono text-xs text-primary mb-3">
-            <Terminal className="size-3.5" />
-            <span>[SYS_MODULE // 02] DEPLOYED WORK &amp; FIRMWARE REPOSITORIES</span>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <h2 className="max-w-2xl text-balance text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-foreground">
-                Engineering Projects &amp; Systems
+              <h2 className="max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">
+                Things I&apos;ve built.
               </h2>
-              <p className="mt-3 max-w-xl text-pretty text-muted-foreground text-sm sm:text-base">
-                Embedded firmware, real-time operating systems, quantized TinyML edge models, and hardware-integrated web platforms.
+              <p className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
+                Firmware, tiny AI models, hardware rigs, and the web apps that
+                make them useful. Every entry links to real code or a live build.
               </p>
             </div>
-            <div className="font-mono text-xs text-muted-foreground bg-secondary/50 border border-border/80 px-3 py-1.5 rounded-lg w-fit">
-              COUNT: <span className="text-primary font-bold">{visible.length}</span> / {projects.length} UNITS
-            </div>
+            <p className="meta">
+              showing {visible.length} of {projects.length}
+            </p>
           </div>
         </Reveal>
 
-        {/* Live Search and Tag Filter Bar */}
+        {/* Search */}
         <Reveal delay={60}>
-          <div className="mt-8 space-y-3">
+          <div className="mt-10 space-y-4">
             <div className="relative flex items-center">
               <Search className="absolute left-3.5 size-4 text-muted-foreground" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Filter by silicon, protocol, or tag (e.g. FreeRTOS, STM32, YOLO, I2C, ESP32)..."
-                className="w-full rounded-xl border border-border/80 bg-secondary/30 pl-10 pr-10 py-2.5 font-mono text-xs sm:text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-1 focus:ring-primary"
+                placeholder={searchPlaceholder}
+                className="min-h-[46px] w-full rounded-md border border-border bg-card pl-10 pr-10 py-2.5 text-sm text-foreground outline-none transition-colors focus:border-primary focus:ring-1 focus:ring-primary"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
                   className="absolute right-3 rounded p-1 text-muted-foreground hover:text-foreground"
                 >
                   <X className="size-4" />
@@ -162,27 +156,24 @@ export function Projects() {
               )}
             </div>
 
-            {/* Quick Tag Pills */}
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
-              <span className="text-[10px] text-muted-foreground mr-1">QUICK_TAGS:</span>
+            {/* Quick tags */}
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+              <span className="marginalia text-lg leading-none">by tag:</span>
               {popularTags.map((tag) => {
                 const isSelected = selectedTag?.toLowerCase() === tag.toLowerCase()
                 return (
                   <button
                     key={tag}
                     type="button"
-                    onClick={() => {
-                      setSelectedTag(isSelected ? null : tag)
-                      cyberAudio.click(0.02)
-                    }}
+                    onClick={() => setSelectedTag(isSelected ? null : tag)}
                     className={cn(
-                      'rounded-md px-2 py-0.5 text-[10px] transition-all border',
+                      'min-h-[32px] rounded-sm border px-2.5 py-1 text-xs transition-colors',
                       isSelected
-                        ? 'border-primary bg-primary text-primary-foreground font-bold shadow-sm'
-                        : 'border-border/70 bg-secondary/40 text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                        ? 'border-primary bg-primary text-primary-foreground font-semibold'
+                        : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground',
                     )}
                   >
-                    #{tag}
+                    {tag}
                   </button>
                 )
               })}
@@ -190,19 +181,20 @@ export function Projects() {
                 <button
                   type="button"
                   onClick={() => setSelectedTag(null)}
-                  className="text-[10px] text-primary underline ml-1 hover:text-primary/80"
+                  className="pencil-underline ml-1 text-xs text-primary"
+                  data-active="true"
                 >
-                  CLEAR TAG
+                  clear
                 </button>
               )}
             </div>
           </div>
         </Reveal>
 
-        {/* Filter Category Pills */}
+        {/* Category index tabs */}
         <Reveal delay={80}>
           <div
-            className="mt-6 -mx-4 px-4 sm:mx-0 sm:px-0 flex overflow-x-auto sm:flex-wrap gap-2 pb-2 sm:pb-0 scrollbar-none [scrollbar-width:none] [-ms-overflow-style:none]"
+            className="scroll-strip mt-8 -mx-5 flex border-b border-border px-5 sm:mx-0 sm:px-0"
             role="tablist"
             aria-label="Filter projects by domain"
           >
@@ -214,24 +206,17 @@ export function Projects() {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => {
-                    setFilter(f)
-                    cyberAudio.click(0.02)
-                  }}
+                  data-active={isActive}
+                  onClick={() => setFilter(f)}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-lg border px-3.5 py-2 sm:py-1.5 font-mono text-xs transition-all duration-200 flex items-center gap-1.5 min-h-[38px] sm:min-h-[34px]',
+                    'index-tab flex min-h-[42px] shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
                     isActive
-                      ? 'border-primary bg-primary text-primary-foreground font-semibold shadow-md shadow-primary/20'
-                      : 'border-border/80 bg-secondary/30 text-muted-foreground hover:border-primary/40 hover:text-foreground'
+                      ? 'text-primary font-semibold'
+                      : 'text-muted-foreground hover:text-foreground',
                   )}
                 >
-                  <span>{f.toUpperCase()}</span>
-                  <span
-                    className={cn(
-                      'text-[10px] px-1.5 py-0.5 rounded font-mono',
-                      isActive ? 'bg-primary-foreground/20 text-primary-foreground' : 'text-primary bg-primary/10'
-                    )}
-                  >
+                  <span>{f === 'All' ? 'Everything' : f}</span>
+                  <span className="measure text-[10px] text-muted-foreground">
                     {counts[f] || 0}
                   </span>
                 </button>
@@ -240,287 +225,348 @@ export function Projects() {
           </div>
         </Reveal>
 
-        {/* Project Grid */}
-        <div className="mt-10 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
-          {visible.map((project, i) => {
-            const activeDrawer = cardDrawers[project.title] || null
-            const isSnippetCopied = copiedSnippet === project.title
-
-            return (
-              <Reveal as="article" key={project.title} delay={i * 40}>
-                <div className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card/70 backdrop-blur-md transition-all duration-300 hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/10 hud-bracket-expand border-glow">
-                  {/* Image Section with Cyan Vignette & Laser Beam on Hover */}
-                  <div
-                    onClick={() => openProject(project)}
-                    className="relative aspect-[16/10] overflow-hidden border-b border-border/60 bg-muted cursor-pointer"
+        {/* Featured entry — the big taped print */}
+        {featured && (
+          <Reveal as="article" className="mt-12" tilt={-0.4}>
+            <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+              <div className="group">
+                <div className="photo-print relative rounded-[3px] p-2.5">
+                  <span
+                    aria-hidden
+                    className="tape absolute -top-2.5 left-8 h-5 w-20 rounded-[2px] [transform:rotate(-2deg)]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => openProject(featured)}
+                    className="thumb-mat block w-full"
+                    aria-label={`Open ${featured.title}`}
                   >
                     <Image
-                      src={project.image || '/placeholder.svg'}
-                      alt={`${project.title} telemetry preview`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      src={featured.image || '/placeholder.svg'}
+                      alt={`${featured.title} — project screenshot`}
+                      width={640}
+                      height={420}
+                      className="aspect-[3/2] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      sizes="(max-width: 1024px) 100vw, 40vw"
                     />
+                  </button>
+                </div>
+              </div>
 
-                    {/* Cybernetic scanning laser beam on hover */}
-                    <div className="card-laser-beam" />
+              <div className="min-w-0 lg:pt-2">
+                <p className="marginalia text-xl leading-none">
+                  {featured.category}
+                  {featured.badge ? ` · ${featured.badge}` : ''}
+                </p>
+                <h3
+                  className="mt-2 cursor-pointer text-3xl font-extrabold leading-tight tracking-tight transition-colors hover:text-primary sm:text-4xl"
+                  onClick={() => openProject(featured)}
+                >
+                  {featured.title}
+                </h3>
+                <p className="mt-1 text-sm text-muted-foreground">{featured.role}</p>
+                <p className="mt-4 max-w-[54ch] text-pretty text-base leading-relaxed text-foreground/85">
+                  {featured.description}
+                </p>
 
-                    {/* Cyan vignette overlay on hover */}
-                    <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(ellipse_at_center,transparent_30%,color-mix(in_oklch,var(--primary)_25%,transparent)_100%)]" />
-
-                    {/* Gradient bottom overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-transparent to-transparent opacity-60" />
-
-                    {/* Top Category Badge */}
-                    <span className="absolute left-3 top-3 rounded bg-background/90 px-2 py-0.5 font-mono text-[10px] font-semibold text-primary border border-border backdrop-blur-md">
-                      {project.category}
-                    </span>
-
-                    {/* Badge if present */}
-                    {project.badge && (
-                      <span className="absolute right-3 top-3 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 font-mono text-[10px] font-bold backdrop-blur-md">
-                        {project.badge}
-                      </span>
-                    )}
-
-                    {/* Quick specs pill on bottom of image */}
-                    {project.telemetrySpec && (
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:left-3 sm:right-3 flex items-center justify-between rounded bg-background/90 px-2.5 py-1 text-[10px] sm:text-[11px] font-mono border border-border/80 text-muted-foreground backdrop-blur-md">
-                        <div className="flex items-center gap-1.5 truncate">
-                          <Cpu className="size-3 text-primary shrink-0" />
-                          <span className="truncate text-foreground font-medium">
-                            {project.telemetrySpec.target}
-                          </span>
-                        </div>
-                        {project.telemetrySpec.latency && (
-                          <span className="text-[10px] text-emerald-400 font-bold shrink-0 ml-2">
-                            {project.telemetrySpec.latency}
-                          </span>
-                        )}
+                {featured.telemetrySpec && (
+                  <dl className="measure mt-6 grid grid-cols-2 gap-x-6 gap-y-2 border-t border-border pt-4 text-xs sm:grid-cols-4">
+                    <div>
+                      <dt className="text-muted-foreground">board</dt>
+                      <dd className="mt-0.5 font-semibold text-foreground">
+                        <HyphenSafe text={featured.telemetrySpec.target} />
+                      </dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground">link</dt>
+                      <dd className="mt-0.5 font-semibold text-foreground">
+                        <HyphenSafe text={featured.telemetrySpec.protocol} />
+                      </dd>
+                    </div>
+                    {featured.telemetrySpec.latency && (
+                      <div>
+                        <dt className="text-muted-foreground">timing</dt>
+                        <dd className="mt-0.5 font-semibold text-primary">
+                          <HyphenSafe text={featured.telemetrySpec.latency} />
+                        </dd>
                       </div>
                     )}
-                  </div>
+                    {featured.telemetrySpec.clockSpeed && (
+                      <div>
+                        <dt className="text-muted-foreground">clock</dt>
+                        <dd className="mt-0.5 font-semibold text-foreground">
+                          <HyphenSafe text={featured.telemetrySpec.clockSpeed} />
+                        </dd>
+                      </div>
+                    )}
+                  </dl>
+                )}
 
-                  {/* Content Section */}
-                  <div className="flex flex-1 flex-col p-4 sm:p-6">
-                    {/* Title & Click to Inspect */}
-                    <div onClick={() => openProject(project)} className="cursor-pointer">
-                      <h3 className="text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
-                        {project.title}
-                      </h3>
-                      <p className="mt-2 text-pretty text-xs sm:text-sm leading-relaxed text-muted-foreground">
+                <ul className="mt-5 flex flex-wrap gap-x-2 gap-y-1.5">
+                  {featured.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-sm border border-border bg-card px-2 py-0.5 text-xs text-muted-foreground"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <button
+                    type="button"
+                    onClick={() => openProject(featured)}
+                    className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-semibold text-primary"
+                  >
+                    <span className="pencil-underline" data-active="true">
+                      Read the full note
+                    </span>
+                    <ArrowUpRight className="size-4" />
+                  </button>
+                  {featured.demo && featured.demo !== '#' && (
+                    <a
+                      href={featured.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-[40px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <ExternalLink className="size-4" />
+                      {featured.demoLabel || 'Open it live'}
+                    </a>
+                  )}
+                  {featured.repo && featured.repo !== '#' && (
+                    <a
+                      href={featured.repo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-[40px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      <GithubIcon className="size-4" />
+                      {featured.repoLabel || 'Source code'}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        )}
+
+        {/* The contents list */}
+        {rest.length > 0 && (
+          <ul className="mt-16 border-t border-border">
+            {rest.map((project) => {
+              const drawerKey =
+                openDrawer && openDrawer.startsWith(`${project.title}::`)
+                  ? openDrawer.split('::')[1]
+                  : null
+
+              return (
+                <li key={project.title} className="border-b border-border">
+                  <div className="group grid gap-x-6 gap-y-4 py-7 sm:grid-cols-[7.5rem_1fr_auto] sm:items-start">
+                    {/* Small taped thumbnail */}
+                    <div className="photo-print hidden rounded-[2px] p-1 sm:block">
+                      <button
+                        type="button"
+                        onClick={() => openProject(project)}
+                        className="thumb-mat block w-full"
+                        aria-label={`Open ${project.title}`}
+                      >
+                        <Image
+                          src={project.image || '/placeholder.svg'}
+                          alt={`${project.title} thumbnail`}
+                          width={220}
+                          height={140}
+                          className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </button>
+                    </div>
+
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                        <h3
+                          className="cursor-pointer text-xl font-bold leading-snug tracking-tight transition-colors hover:text-primary"
+                          onClick={() => openProject(project)}
+                        >
+                          {project.title}
+                        </h3>
+                        <span className="text-xs text-muted-foreground">
+                          {project.category}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm text-muted-foreground">{project.role}</p>
+                      <p className="mt-2.5 max-w-[62ch] text-pretty text-sm leading-relaxed text-foreground/85">
                         {project.description}
                       </p>
-                    </div>
 
-                    {/* Technical Tags */}
-                    <div className="mt-4 flex flex-wrap gap-1.5">
-                      {project.tags.map((tag) => (
-                        <button
-                          key={tag}
-                          type="button"
-                          onClick={() => {
-                            setSelectedTag(tag)
-                            cyberAudio.click(0.015)
-                          }}
-                          className="rounded border border-border/70 bg-secondary/40 px-2 py-0.5 font-mono text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-                        >
-                          {tag}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* Interactive Telemetry / Code Drawer Trigger Toolbar */}
-                    <div className="mt-5 pt-3 border-t border-border/50 flex flex-wrap items-center justify-between gap-1.5 font-mono text-[11px]">
-                      <span className="text-[10px] text-muted-foreground">TELEMETRY_DRAWER:</span>
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => toggleCardDrawer(project.title, 'specs')}
-                          className={cn(
-                            'rounded px-2 py-1 transition-all border',
-                            activeDrawer === 'specs'
-                              ? 'border-primary bg-primary/20 text-primary font-bold'
-                              : 'border-border/60 bg-secondary/30 text-muted-foreground hover:text-foreground'
-                          )}
-                        >
-                          [SPECS]
-                        </button>
+                      {/* Margin drawer: specs / code / flow — only the
+                          sections this note actually has */}
+                      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                        {project.telemetrySpec && (
+                          <button
+                            type="button"
+                            onClick={() => toggleDrawer(project.title, 'specs')}
+                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            data-active={drawerKey === 'specs'}
+                          >
+                            Specs
+                          </button>
+                        )}
                         {project.codeSnippet && (
                           <button
                             type="button"
-                            onClick={() => toggleCardDrawer(project.title, 'code')}
-                            className={cn(
-                              'rounded px-2 py-1 transition-all border',
-                              activeDrawer === 'code'
-                                ? 'border-primary bg-primary/20 text-primary font-bold'
-                                : 'border-border/60 bg-secondary/30 text-muted-foreground hover:text-foreground'
-                            )}
+                            onClick={() => toggleDrawer(project.title, 'code')}
+                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            data-active={drawerKey === 'code'}
                           >
-                            [CODE]
+                            Code
                           </button>
                         )}
                         {project.architectureFlow && (
                           <button
                             type="button"
-                            onClick={() => toggleCardDrawer(project.title, 'flow')}
-                            className={cn(
-                              'rounded px-2 py-1 transition-all border',
-                              activeDrawer === 'flow'
-                                ? 'border-primary bg-primary/20 text-primary font-bold'
-                                : 'border-border/60 bg-secondary/30 text-muted-foreground hover:text-foreground'
-                            )}
+                            onClick={() => toggleDrawer(project.title, 'flow')}
+                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            data-active={drawerKey === 'flow'}
                           >
-                            [FLOW]
+                            How it flows
                           </button>
                         )}
                       </div>
+
+                      {drawerKey && (
+                        <div className="animate-settle-soft mt-3 rounded-md border border-border bg-card p-4">
+                          {drawerKey === 'specs' && project.telemetrySpec && (
+                            <dl className="measure grid grid-cols-2 gap-x-6 gap-y-2.5 text-xs sm:grid-cols-4">
+                              <div>
+                                <dt className="text-muted-foreground">board</dt>
+                                <dd className="mt-0.5 font-semibold text-foreground">
+                                  <HyphenSafe text={project.telemetrySpec.target} />
+                                </dd>
+                              </div>
+                              <div>
+                                <dt className="text-muted-foreground">link</dt>
+                                <dd className="mt-0.5 font-semibold text-foreground">
+                                  <HyphenSafe text={project.telemetrySpec.protocol} />
+                                </dd>
+                              </div>
+                              {project.telemetrySpec.latency && (
+                                <div>
+                                  <dt className="text-muted-foreground">timing</dt>
+                                  <dd className="mt-0.5 font-semibold text-primary">
+                                    <HyphenSafe text={project.telemetrySpec.latency} />
+                                  </dd>
+                                </div>
+                              )}
+                              {project.telemetrySpec.clockSpeed && (
+                                <div>
+                                  <dt className="text-muted-foreground">clock</dt>
+                                  <dd className="mt-0.5 font-semibold text-foreground">
+                                    <HyphenSafe text={project.telemetrySpec.clockSpeed} />
+                                  </dd>
+                                </div>
+                              )}
+                            </dl>
+                          )}
+
+                          {drawerKey === 'code' && project.codeSnippet && (
+                            <div>
+                              <div className="flex items-center justify-between gap-3">
+                                <span className="measure text-xs text-muted-foreground">
+                                  {project.codeSnippet.filename}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    copyCode(project.title, project.codeSnippet!.code)
+                                  }
+                                  className="inline-flex min-h-[32px] items-center gap-1.5 rounded-sm border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                                >
+                                  {copiedSnippet === project.title ? (
+                                    <>
+                                      <Check className="size-3 text-primary" />
+                                      <span>Copied</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy className="size-3" />
+                                      <span>Copy</span>
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                              <pre className="mt-2.5 max-h-44 overflow-y-auto rounded-sm bg-secondary/60 p-3 text-xs leading-relaxed text-foreground/90">
+                                <code>{project.codeSnippet.code}</code>
+                              </pre>
+                            </div>
+                          )}
+
+                          {drawerKey === 'flow' && project.architectureFlow && (
+                            <ol className="flex flex-wrap items-center gap-x-2 gap-y-2 text-xs">
+                              {project.architectureFlow.map((step, idx) => (
+                                <li key={idx} className="flex items-center gap-2">
+                                  <span className="rounded-sm border border-border bg-secondary/60 px-2 py-1 text-foreground/90">
+                                    {step}
+                                  </span>
+                                  {idx < project.architectureFlow!.length - 1 && (
+                                    <span aria-hidden className="text-muted-foreground">
+                                      →
+                                    </span>
+                                  )}
+                                </li>
+                              ))}
+                            </ol>
+                          )}
+                        </div>
+                      )}
                     </div>
 
-                    {/* Expandable Quick Drawer Panel */}
-                    {activeDrawer && (
-                      <div className="mt-3 rounded-xl border border-primary/30 bg-black/80 p-3 font-mono text-xs animate-fade-in space-y-2">
-                        {/* Drawer View: SPECS */}
-                        {activeDrawer === 'specs' && (
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between text-[10px] text-primary border-b border-border/40 pb-1">
-                              <span>HARDWARE SPECIFICATION INSIGHTS</span>
-                              <span>TARGET_MCU</span>
-                            </div>
-                            <div className="grid grid-cols-2 gap-2 text-[11px]">
-                              <div className="rounded bg-secondary/30 p-1.5 border border-border/40">
-                                <span className="text-[9px] text-muted-foreground block">SILICON</span>
-                                <span className="font-bold text-foreground">
-                                  {project.telemetrySpec?.target || 'Custom Architecture'}
-                                </span>
-                              </div>
-                              <div className="rounded bg-secondary/30 p-1.5 border border-border/40">
-                                <span className="text-[9px] text-muted-foreground block">PROTOCOL</span>
-                                <span className="font-bold text-primary">
-                                  {project.telemetrySpec?.protocol || 'SPI / I2C / Serial'}
-                                </span>
-                              </div>
-                              <div className="rounded bg-secondary/30 p-1.5 border border-border/40">
-                                <span className="text-[9px] text-muted-foreground block">LATENCY / TIMING</span>
-                                <span className="font-bold text-emerald-400">
-                                  {project.telemetrySpec?.latency || 'Real-time Deterministic'}
-                                </span>
-                              </div>
-                              <div className="rounded bg-secondary/30 p-1.5 border border-border/40">
-                                <span className="text-[9px] text-muted-foreground block">CLOCK / SPEED</span>
-                                <span className="font-bold text-cyan-400">
-                                  {project.telemetrySpec?.clockSpeed || 'Nominal Clock'}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Drawer View: CODE */}
-                        {activeDrawer === 'code' && project.codeSnippet && (
-                          <div className="space-y-1.5">
-                            <div className="flex items-center justify-between text-[10px] text-muted-foreground border-b border-border/40 pb-1">
-                              <span className="text-cyan-400">{project.codeSnippet.filename}</span>
-                              <button
-                                type="button"
-                                onClick={() => copyCode(project.title, project.codeSnippet!.code)}
-                                className="flex items-center gap-1 rounded bg-secondary/60 px-1.5 py-0.5 text-primary hover:bg-primary hover:text-primary-foreground transition-all"
-                              >
-                                {isSnippetCopied ? (
-                                  <>
-                                    <Check className="size-3 text-emerald-400" />
-                                    <span className="text-emerald-400">COPIED</span>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Copy className="size-3" />
-                                    <span>COPY</span>
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                            <pre className="max-h-40 overflow-y-auto rounded bg-black/60 p-2 text-[10px] text-foreground/90 font-mono leading-relaxed whitespace-pre-wrap">
-                              {project.codeSnippet.code}
-                            </pre>
-                          </div>
-                        )}
-
-                        {/* Drawer View: FLOW */}
-                        {activeDrawer === 'flow' && project.architectureFlow && (
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between text-[10px] text-muted-foreground border-b border-border/40 pb-1">
-                              <span className="text-emerald-400">PIPELINE DATA FLOW</span>
-                              <span>{project.architectureFlow.length} STAGES</span>
-                            </div>
-                            <div className="space-y-1.5">
-                              {project.architectureFlow.map((step, idx) => (
-                                <div
-                                  key={idx}
-                                  className="flex items-center gap-2 rounded bg-secondary/20 px-2 py-1 text-[11px]"
-                                >
-                                  <span className="size-4 shrink-0 rounded-full bg-primary/20 text-primary flex items-center justify-center text-[9px] font-bold">
-                                    {idx + 1}
-                                  </span>
-                                  <span className="text-foreground/90">{step}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Bottom Action Footer */}
-                    <div className="mt-6 pt-4 border-t border-border/60 flex items-center justify-between text-xs font-mono">
+                    <div className="flex items-center gap-3 sm:flex-col sm:items-end sm:gap-2">
+                      {project.demo && project.demo !== '#' && (
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[36px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <ExternalLink className="size-3.5" />
+                          <span>{project.demoLabel || 'Live'}</span>
+                        </a>
+                      )}
+                      {project.repo && project.repo !== '#' && (
+                        <a
+                          href={project.repo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[36px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
+                        >
+                          <GithubIcon className="size-3.5" />
+                          <span>{project.repoLabel || 'Source code'}</span>
+                        </a>
+                      )}
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex min-h-[36px] items-center gap-1 text-primary font-bold hover:underline py-1 px-1.5 rounded transition-colors"
+                        className="inline-flex min-h-[36px] items-center gap-1 text-xs font-semibold text-primary"
                       >
-                        <span>INSPECT_SPECS</span>
-                        <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        <span className="pencil-underline">Open note</span>
+                        <ArrowUpRight className="size-3.5" />
                       </button>
-
-                      <div className="flex items-center gap-1.5">
-                        {project.demo && project.demo !== '#' && (
-                          <a
-                            href={project.demo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1.5 rounded border border-transparent hover:border-border/60 hover:bg-secondary/40"
-                            title={project.demoLabel || 'Live Demo'}
-                          >
-                            <ExternalLink className="size-3.5" />
-                            <span className="text-[11px]">{project.demoLabel ? 'DEMO' : 'LIVE'}</span>
-                          </a>
-                        )}
-                        {project.repo && project.repo !== '#' && (
-                          <a
-                            href={project.repo}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex min-h-[36px] min-w-[36px] items-center justify-center gap-1 text-muted-foreground hover:text-primary transition-colors p-1.5 rounded border border-transparent hover:border-border/60 hover:bg-secondary/40"
-                            title="View Repository"
-                          >
-                            <GithubIcon className="size-3.5" />
-                            <span className="text-[11px]">CODE</span>
-                          </a>
-                        )}
-                      </div>
                     </div>
                   </div>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
+                </li>
+              )
+            })}
+          </ul>
+        )}
 
         {visible.length === 0 && (
-          <div className="mt-12 rounded-2xl border border-dashed border-border/80 p-12 text-center font-mono">
-            <Cpu className="mx-auto size-8 text-muted-foreground/40 mb-3" />
-            <div className="text-sm font-bold text-foreground">NO MATCHING SYSTEMS FOUND</div>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Try adjusting your query or resetting the tag filters.
+          <div className="mt-14 rounded-md border border-dashed border-border bg-card/60 p-12 text-center">
+            <Cpu className="mx-auto size-7 text-muted-foreground/50" />
+            <p className="mt-3 text-base font-semibold">Nothing on this page yet.</p>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              No project matches that search. Try a different word, or clear the
+              filters.
             </p>
             <button
               type="button"
@@ -529,9 +575,9 @@ export function Projects() {
                 setSelectedTag(null)
                 setSearchQuery('')
               }}
-              className="mt-4 rounded-lg bg-primary/10 border border-primary/30 px-3 py-1.5 text-xs text-primary font-bold hover:bg-primary hover:text-primary-foreground transition-all"
+              className="mt-5 min-h-[40px] rounded-md border border-border bg-secondary/60 px-4 py-2 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary"
             >
-              RESET ALL FILTERS
+              Reset everything
             </button>
           </div>
         )}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Moon, Sun } from 'lucide-react'
+import { Lamp, Sun } from 'lucide-react'
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<'light' | 'dark'>('dark')
@@ -26,7 +26,7 @@ export function ThemeToggle() {
   // Prevent hydration mismatch by rendering nothing until mounted
   if (!mounted) {
     return (
-      <div className="inline-flex size-10 sm:size-9 items-center justify-center rounded-lg border border-border bg-secondary/40" />
+      <div className="inline-flex size-10 sm:size-9 items-center justify-center rounded-md border border-border bg-secondary/40" />
     )
   }
 
@@ -34,13 +34,18 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-      className="inline-flex size-10 sm:size-9 items-center justify-center rounded-lg border border-border bg-secondary/40 text-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      aria-label={
+        theme === 'dark'
+          ? 'Switch to daylight page (light mode)'
+          : 'Switch to lamp light (dark mode)'
+      }
+      title={theme === 'dark' ? 'Daylight page' : 'Under the lamp'}
+      className="inline-flex size-10 sm:size-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-all duration-200 hover:border-primary/50 hover:text-primary active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {theme === 'dark' ? (
         <Sun className="size-4 transition-transform duration-200" />
       ) : (
-        <Moon className="size-4 transition-transform duration-200" />
+        <Lamp className="size-4 transition-transform duration-200" />
       )}
     </button>
   )

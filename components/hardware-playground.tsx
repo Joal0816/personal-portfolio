@@ -1,30 +1,21 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import {
-  Terminal as TerminalIcon,
+  NotebookPen,
   Cpu,
   Activity,
   Zap,
-  Volume2,
-  VolumeX,
   Play,
-  RotateCcw,
-  Send,
-  Radio,
   Sliders,
-  CheckCircle2,
-  AlertTriangle,
-  Flame,
   Gauge,
-  Layers,
   Sparkles,
-  Info,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { cyberAudio } from '@/lib/cyber-sound'
 
 type PlaygroundTab = 'cli' | 'pinout' | 'protocol' | 'ai_bench' | 'telemetry'
+
+type NoteKind = 'board' | 'pins' | 'tasks' | 'ai' | 'sensors' | 'who'
 
 type GpioPin = {
   id: string
@@ -33,41 +24,26 @@ type GpioPin = {
   mode: 'OUTPUT' | 'INPUT' | 'PWM' | 'I2C' | 'UART'
   state: boolean
   voltage: string
-  color: string
 }
 
 export function HardwarePlayground() {
   const [activeTab, setActiveTab] = useState<PlaygroundTab>('cli')
-  const [audioEnabled, setAudioEnabled] = useState(false)
   const [clockFreq, setClockFreq] = useState<'8MHz' | '16MHz' | '72MHz' | '240MHz'>('72MHz')
   const [pwmDuty, setPwmDuty] = useState(65)
   const [selectedProtocol, setSelectedProtocol] = useState<'I2C' | 'SPI' | 'UART'>('I2C')
   const [baudRate, setBaudRate] = useState<number>(115200)
   const [streamingActive, setStreamingActive] = useState(true)
 
-  // Audio helper
-  function playClick() {
-    if (audioEnabled) cyberAudio.click()
-  }
-
-  function toggleAudio() {
-    const next = !audioEnabled
-    setAudioEnabled(next)
-    if (next) {
-      cyberAudio.systemEngaged()
-    }
-  }
-
   // Pin state
   const [pins, setPins] = useState<GpioPin[]>([
-    { id: 'pa5', name: 'PA5', label: 'USER_LED_01', mode: 'OUTPUT', state: true, voltage: '3.3V', color: 'emerald' },
-    { id: 'pc13', name: 'PC13', label: 'BOARD_STATUS', mode: 'OUTPUT', state: false, voltage: '0.0V', color: 'cyan' },
-    { id: 'pa8', name: 'PA8', label: 'TIM1_CH1_PWM', mode: 'PWM', state: true, voltage: '2.14V', color: 'amber' },
-    { id: 'pb6', name: 'PB6', label: 'I2C1_SCL', mode: 'I2C', state: true, voltage: '3.3V', color: 'blue' },
-    { id: 'pb7', name: 'PB7', label: 'I2C1_SDA', mode: 'I2C', state: false, voltage: '0.0V', color: 'blue' },
-    { id: 'pa9', name: 'PA9', label: 'USART1_TX', mode: 'UART', state: true, voltage: '3.3V', color: 'purple' },
-    { id: 'pa10', name: 'PA10', label: 'USART1_RX', mode: 'UART', state: false, voltage: '0.0V', color: 'purple' },
-    { id: 'pb12', name: 'PB12', label: 'SPI2_NSS', mode: 'OUTPUT', state: true, voltage: '3.3V', color: 'pink' },
+    { id: 'pa5', name: 'PA5', label: 'USER_LED_01', mode: 'OUTPUT', state: true, voltage: '3.3V' },
+    { id: 'pc13', name: 'PC13', label: 'BOARD_STATUS', mode: 'OUTPUT', state: false, voltage: '0.0V' },
+    { id: 'pa8', name: 'PA8', label: 'TIM1_CH1_PWM', mode: 'PWM', state: true, voltage: '2.14V' },
+    { id: 'pb6', name: 'PB6', label: 'I2C1_SCL', mode: 'I2C', state: true, voltage: '3.3V' },
+    { id: 'pb7', name: 'PB7', label: 'I2C1_SDA', mode: 'I2C', state: false, voltage: '0.0V' },
+    { id: 'pa9', name: 'PA9', label: 'USART1_TX', mode: 'UART', state: true, voltage: '3.3V' },
+    { id: 'pa10', name: 'PA10', label: 'USART1_RX', mode: 'UART', state: false, voltage: '0.0V' },
+    { id: 'pb12', name: 'PB12', label: 'SPI2_NSS', mode: 'OUTPUT', state: true, voltage: '3.3V' },
   ])
 
   function togglePin(id: string) {
@@ -75,7 +51,6 @@ export function HardwarePlayground() {
       prev.map((pin) => {
         if (pin.id === id) {
           const nextState = !pin.state
-          if (audioEnabled) cyberAudio.pinToggle(nextState)
           return {
             ...pin,
             state: nextState,
@@ -87,137 +62,29 @@ export function HardwarePlayground() {
     )
   }
 
-  // CLI State
-  const [commandInput, setCommandInput] = useState('')
-  const [terminalLogs, setTerminalLogs] = useState<Array<{ text: string; type?: 'info' | 'success' | 'warn' | 'dim' | 'accent' }>>([
-    { text: 'SYSTEM_BOOT: FreeRTOS v10.5.1 on STM32F103C8T6 (ARM Cortex-M3 @ 72MHz)', type: 'accent' },
-    { text: 'TELEMETRY: Hardware buses configured. Type "help" or click quick commands below.', type: 'dim' },
+  // Bench notes — the fold-out notebook page for this board. Poke a reading
+  // and it gets written down here: measurements on ruled paper, no console.
+  const [notes, setNotes] = useState<Array<{ id: number; kind: NoteKind }>>([
+    { id: 1, kind: 'board' },
   ])
-  const terminalBottomRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    terminalBottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [terminalLogs])
+  function writeNote(kind: NoteKind) {
+    setNotes((prev) => [{ id: Date.now(), kind }, ...prev.filter((n) => n.kind !== kind)])
+  }
 
-  function handleCliSubmit(e?: React.FormEvent, manualCmd?: string) {
-    if (e) e.preventDefault()
-    const raw = manualCmd !== undefined ? manualCmd : commandInput
-    const cmd = raw.trim().toLowerCase()
-    if (!cmd) return
-
-    playClick()
-
-    const newLogs = [...terminalLogs, { text: `joal@stm32-freertos:~$ ${cmd}`, type: 'accent' as const }]
-
-    switch (cmd) {
-      case 'help':
-        newLogs.push(
-          { text: 'AVAILABLE FIRMWARE COMMANDS:', type: 'info' },
-          { text: '  status     - Query MCU silicon status, clock speed & FreeRTOS heap', type: 'dim' },
-          { text: '  pins       - Dump current GPIO pinout states and voltage levels', type: 'dim' },
-          { text: '  rtos       - Print FreeRTOS Task Control Block (TCB) schedule', type: 'dim' },
-          { text: '  benchmark  - Execute simulated INT8 edge AI TinyML inference test', type: 'dim' },
-          { text: '  sensors    - Read MLX90640 thermal array & telemetry bus sensors', type: 'dim' },
-          { text: '  neofetch   - Display engineering profile & silicon summary', type: 'dim' },
-          { text: '  clear      - Clear terminal screen buffer', type: 'dim' }
-        )
-        break
-
-      case 'status':
-        newLogs.push(
-          { text: `[SYS_HEALTH] MCU: STM32F103C8T6 | CORE: Cortex-M3 @ ${clockFreq}`, type: 'success' },
-          { text: `[RTOS_HEAP] Free: 48,240 bytes / 65,536 bytes (73.6% headroom)`, type: 'info' },
-          { text: `[UPTIME] Tick Count: 284,912 ms | Scheduling: Preemptive Priority`, type: 'dim' },
-          { text: `[POWER_STATE] Active Run Mode | Bus Voltage: 3.308V | Temp: 38.6°C`, type: 'info' }
-        )
-        break
-
-      case 'pins':
-        newLogs.push(
-          { text: '--- GPIO REGISTER DUMP (PORT A & B) ---', type: 'info' }
-        )
-        pins.forEach((p) => {
-          newLogs.push({
-            text: `  [${p.name.padEnd(5)}] ${p.label.padEnd(16)} | ${p.mode.padEnd(7)} | STATE: ${p.state ? 'HIGH (1)' : 'LOW  (0)'} | ${p.voltage}`,
-            type: p.state ? 'success' : 'dim',
-          })
-        })
-        break
-
-      case 'rtos':
-        newLogs.push(
-          { text: 'Task Name       | State   | Prio | Stack Rem | CPU Load', type: 'info' },
-          { text: '----------------+---------+------+-----------+---------', type: 'dim' },
-          { text: 'vSensThermal    | Running |  4   | 348 words |  28.4%', type: 'success' },
-          { text: 'vEdgeInference  | Ready   |  3   | 512 words |  42.1%', type: 'success' },
-          { text: 'vOledRender     | Blocked |  2   | 180 words |   8.2%', type: 'info' },
-          { text: 'vTelemetryMqtt  | Blocked |  2   | 220 words |  14.5%', type: 'info' },
-          { text: 'IDLE            | Ready   |  0   |  64 words |   6.8%', type: 'dim' }
-        )
-        break
-
-      case 'benchmark':
-        newLogs.push(
-          { text: '>> INITIATING TINYML EDGE AI INFERENCE BENCHMARK...', type: 'info' },
-          { text: '   Target: INT8 Quantized YOLOv8n (3.2M params) on ESP32-P4 / Edge NPU', type: 'dim' },
-          { text: '   Frame Size: 192x192 Grayscale | Kernel: Edge Impulse / CMSIS-NN', type: 'dim' },
-          { text: '   [==========] Inference completed in 18.2 ms (54.9 FPS)', type: 'success' },
-          { text: '   Peak RAM: 4.1 MB | Zero-Copy DMA: ENABLED | Quantization Loss: < 0.8%', type: 'info' }
-        )
-        if (audioEnabled) cyberAudio.benchmarkSuccess()
-        break
-
-      case 'sensors':
-        newLogs.push(
-          { text: '[MLX90640 IR MATRIX] 32x24 (768 pixels) @ 4Hz stream: Core Max 38.6°C', type: 'success' },
-          { text: '[DS18B20 1-WIRE] Substrate Temp: 29.35°C (±0.06°C resolution)', type: 'info' },
-          { text: '[MPU6050 6-AXIS] Accel: [X:+0.02g, Y:-0.01g, Z:+0.99g] | Gyro: [0.0°/s]', type: 'dim' }
-        )
-        break
-
-      case 'neofetch':
-        newLogs.push(
-          { text: '     ██╗  ██████╗  ██████╗ ██╗     ', type: 'accent' },
-          { text: '     ██║ ██╔══██╗ ██╔══██╗ ██║     ', type: 'accent' },
-          { text: '     ██║ ██║  ██║ ██║  ██║ ██║     ', type: 'accent' },
-          { text: '     ██║ ██║  ██║ ███████║ ██║     ', type: 'accent' },
-          { text: '███████╗ ██║  ██║ ██║  ██║ ███████╗', type: 'accent' },
-          { text: '╚══════╝ ╚██████╝ ╚═╝  ╚═╝ ╚══════╝', type: 'accent' },
-          { text: '', type: 'dim' },
-          { text: '  JOSEPH ALAN B. VERGARA // JOAL', type: 'info' },
-          { text: '  ROLE: Embedded Systems & Edge AI Engineer', type: 'success' },
-          { text: '  INSTITUTION: MSU-IIT (BS Computer Applications)', type: 'dim' },
-          { text: '  STACK: C/C++, FreeRTOS, TinyML, STM32, ESP32, Python, Next.js', type: 'info' }
-        )
-        break
-
-      case 'clear':
-        setTerminalLogs([])
-        setCommandInput('')
-        return
-
-      default:
-        newLogs.push({
-          text: `Command not recognized: "${raw}". Type "help" for valid firmware commands.`,
-          type: 'warn',
-        })
-        break
-    }
-
-    setTerminalLogs(newLogs)
-    setCommandInput('')
+  function freshPage() {
+    setNotes([{ id: Date.now(), kind: 'board' }])
   }
 
   // Protocol Packet State
   const [packetLog, setPacketLog] = useState<Array<{ id: number; proto: string; hex: string; desc: string; time: string }>>([
-    { id: 1, proto: 'I2C', hex: '0x33 0x02 0x1A 0xFF [ACK]', desc: 'MLX90640 Subpage 0 Frame Read', time: '12:00:01.204' },
-    { id: 2, proto: 'UART', hex: '$GPGGA,120002.00,0813.68,N,12414.71,E,1,08,1.0*42', desc: 'NMEA GPS Telemetry Packet', time: '12:00:02.100' },
+    { id: 1, proto: 'I2C', hex: '0x33 0x02 0x1A 0xFF [ACK]', desc: 'MLX90640 subpage 0 frame read', time: '12:00:01.204' },
+    { id: 2, proto: 'UART', hex: '$GPGGA,120002.00,0813.68,N,12414.71,E,1,08,1.0*42', desc: 'NMEA GPS telemetry packet', time: '12:00:02.100' },
   ])
   const [isInjecting, setIsInjecting] = useState(false)
 
   function injectPacket() {
     setIsInjecting(true)
-    if (audioEnabled) cyberAudio.packetBurst()
 
     const id = Date.now()
     const now = new Date()
@@ -229,15 +96,15 @@ export function HardwarePlayground() {
     if (selectedProtocol === 'I2C') {
       const randVal = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')
       hex = `[START] 0x33 0x04 0x${randVal} 0xAA [ACK] [STOP]`
-      desc = `I2C Read Register 0x04 -> Sensor byte: 0x${randVal}`
+      desc = `I2C read register 0x04 → sensor byte 0x${randVal}`
     } else if (selectedProtocol === 'SPI') {
       const b1 = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')
       const b2 = Math.floor(Math.random() * 256).toString(16).toUpperCase().padStart(2, '0')
       hex = `MOSI: [0x40 0x${b1} 0x${b2}] | MISO: [0x00 0xFF 0x12]`
-      desc = `SPI SSD1306 Display DMA Frame Sync`
+      desc = 'SPI SSD1306 display DMA frame sync'
     } else {
       hex = `[SOF] 0x55 0xAA [LEN:08] [TEMP:38.2C] [CRC:OK]`
-      desc = `UART Serial Telemetry Frame @ ${baudRate} bps`
+      desc = `UART serial telemetry frame @ ${baudRate} bps`
     }
 
     setTimeout(() => {
@@ -270,14 +137,12 @@ export function HardwarePlayground() {
   function runAiBenchmark() {
     setBenchRunning(true)
     setBenchProgress(0)
-    if (audioEnabled) cyberAudio.click()
 
     const interval = setInterval(() => {
       setBenchProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval)
           setBenchRunning(false)
-          if (audioEnabled) cyberAudio.benchmarkSuccess()
           setBenchResults({
             latency: +(17 + Math.random() * 6).toFixed(1),
             fps: +(42 + Math.random() * 12).toFixed(1),
@@ -300,7 +165,6 @@ export function HardwarePlayground() {
     freeHeap: 48.2,
   })
 
-  // Dynamic telemetry logic spectrum bars
   const [spectrumBars, setSpectrumBars] = useState<number[]>([
     25, 40, 65, 80, 50, 30, 45, 75, 90, 60, 40, 70, 85, 55, 35, 60, 70, 45, 30, 50, 65, 40, 25, 35,
   ])
@@ -315,7 +179,6 @@ export function HardwarePlayground() {
         freeHeap: +(48.0 + Math.random() * 0.4).toFixed(1),
       }))
 
-      // Fluctuating logic waveform amplitudes
       setSpectrumBars((bars) =>
         bars.map((_, i) => Math.floor(20 + Math.abs(Math.sin((Date.now() / 700) + i * 0.4) * 65) + Math.random() * 15))
       )
@@ -328,61 +191,36 @@ export function HardwarePlayground() {
   const isFallWarning = (fallPitch > 45 || fallDropVel > 1.8) && !isFallAlert
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-card/75 backdrop-blur-xl shadow-2xl">
-      {/* Decorative Top Cyber Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 bg-secondary/40 px-4 py-3 sm:px-6">
-        <div className="flex items-center gap-2.5">
-          <div className="relative flex size-7 shrink-0 items-center justify-center rounded border border-primary/40 bg-primary/10 text-primary">
-            <Cpu className="size-4 animate-pulse" />
-            <span className="absolute -top-0.5 -right-0.5 size-1.5 rounded-full bg-emerald-400" />
+    <div className="overflow-hidden rounded-lg border border-border bg-card shadow-page">
+      {/* Header — a tape label on the fold-out sheet */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border bg-secondary/40 px-4 py-3.5 sm:px-6">
+        <div className="flex items-center gap-3">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-card text-primary">
+            <Cpu className="size-4" />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-foreground">
-                SILICON_TELEMETRY // HARDWARE LAB
-              </span>
-              <span className="hidden sm:inline-block rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[9px] text-primary border border-primary/20">
-                ACTIVE RIG
-              </span>
-            </div>
-            <p className="font-mono text-[10px] text-muted-foreground hidden sm:block">
-              Interactive Microcontroller, FreeRTOS CLI & Edge AI Protocol Sandbox
+            <p className="text-[15px] font-semibold leading-tight">
+              A little hardware bench you can poke at
+            </p>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              A simulated microcontroller board — same interfaces as the real
+              thing, nothing to break.
             </p>
           </div>
         </div>
 
-        {/* Global Controls: Audio & Telemetry Stream */}
-        <div className="flex items-center gap-2 font-mono text-xs">
-          {/* Audio Synthesizer Toggle */}
-          <button
-            type="button"
-            onClick={toggleAudio}
-            title={audioEnabled ? 'Audio Synthesizer Engaged (Click to Mute)' : 'Enable Web Audio Synth Chirps'}
-            className={cn(
-              'flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] transition-all',
-              audioEnabled
-                ? 'border-emerald-500/60 bg-emerald-500/15 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.25)]'
-                : 'border-border/80 bg-secondary/50 text-muted-foreground hover:border-primary/40 hover:text-foreground'
-            )}
-          >
-            {audioEnabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
-            <span>AUDIO: {audioEnabled ? 'ENGAGED' : 'MUTED'}</span>
-          </button>
-
-          {/* Clock Rate Selector */}
-          <div className="hidden md:flex items-center rounded-lg border border-border/80 bg-secondary/30 p-0.5 text-[10px]">
+        <div className="flex items-center gap-2">
+          <span className="hidden text-xs text-muted-foreground sm:inline">clock</span>
+          <div className="flex items-center rounded-md border border-border bg-card p-0.5">
             {(['8MHz', '16MHz', '72MHz', '240MHz'] as const).map((freq) => (
               <button
                 key={freq}
                 type="button"
-                onClick={() => {
-                  setClockFreq(freq)
-                  playClick()
-                }}
+                onClick={() => setClockFreq(freq)}
                 className={cn(
-                  'rounded px-1.5 py-0.5 transition-colors',
+                  'measure min-h-[32px] rounded px-2 py-1 text-[11px] transition-colors',
                   clockFreq === freq
-                    ? 'bg-primary text-primary-foreground font-bold'
+                    ? 'bg-primary text-primary-foreground font-semibold'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
@@ -393,14 +231,18 @@ export function HardwarePlayground() {
         </div>
       </div>
 
-      {/* Main Tab Navigation */}
-      <div className="flex overflow-x-auto border-b border-border/60 bg-secondary/20 px-3 sm:px-6 pt-2 scrollbar-none gap-1.5">
+      {/* Tabs */}
+      <div
+        className="scroll-strip flex border-b border-border px-2 pt-1 sm:px-4"
+        role="tablist"
+        aria-label="Bench tools"
+      >
         {[
-          { id: 'cli', label: 'UART // CLI TERMINAL', icon: TerminalIcon },
-          { id: 'pinout', label: 'CHIP PINOUT & GPIO', icon: Sliders },
-          { id: 'protocol', label: 'PROTOCOL ANALYZER', icon: Activity },
-          { id: 'ai_bench', label: 'EDGE AI BENCHMARK', icon: Sparkles },
-          { id: 'telemetry', label: 'LIVE SENSOR STREAM', icon: Gauge },
+          { id: 'cli', label: 'Bench notes', icon: NotebookPen },
+          { id: 'pinout', label: 'Pins & PWM', icon: Sliders },
+          { id: 'protocol', label: 'Wire traffic', icon: Activity },
+          { id: 'ai_bench', label: 'AI benchmarks', icon: Sparkles },
+          { id: 'telemetry', label: 'Live readings', icon: Gauge },
         ].map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -408,189 +250,146 @@ export function HardwarePlayground() {
             <button
               key={tab.id}
               type="button"
-              onClick={() => {
-                setActiveTab(tab.id as PlaygroundTab)
-                playClick()
-              }}
+              role="tab"
+              aria-selected={isActive}
+              data-active={isActive}
+              onClick={() => setActiveTab(tab.id as PlaygroundTab)}
               className={cn(
-                'group flex items-center gap-1.5 whitespace-nowrap rounded-t-lg border-t border-x px-3 py-2 font-mono text-xs transition-all',
+                'index-tab flex min-h-[42px] shrink-0 items-center gap-1.5 whitespace-nowrap px-3.5 py-2 text-[13px] transition-colors',
                 isActive
-                  ? 'border-border/80 bg-card text-primary font-bold shadow-sm -mb-px border-b-card'
-                  : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-secondary/40'
+                  ? 'text-primary font-semibold'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              <Icon className={cn('size-3.5', isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground')} />
+              <Icon className="size-3.5" />
               <span>{tab.label}</span>
             </button>
           )
         })}
       </div>
 
-      {/* Interactive Tab Body */}
-      <div className="p-4 sm:p-6 min-h-[360px]">
-        {/* TAB 1: FIRMWARE CLI TERMINAL */}
+      {/* Tab body */}
+      <div className="min-h-[360px] p-4 sm:p-6">
+        {/* TAB 1: BENCH NOTES */}
         {activeTab === 'cli' && (
           <div className="space-y-4">
-            {/* Quick command buttons */}
-            <div className="flex flex-wrap items-center gap-1.5 font-mono text-[11px]">
-              <span className="text-muted-foreground text-[10px] mr-1">QUICK_COMMANDS:</span>
-              {['help', 'status', 'pins', 'rtos', 'benchmark', 'sensors', 'neofetch', 'clear'].map((cmd) => (
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="marginalia mr-1 text-lg leading-none">poke a reading:</span>
+              {[
+                { kind: 'board' as const, label: 'What’s on the board' },
+                { kind: 'pins' as const, label: 'Pin register' },
+                { kind: 'tasks' as const, label: 'Task load' },
+                { kind: 'ai' as const, label: 'AI timing' },
+                { kind: 'sensors' as const, label: 'Sensor log' },
+                { kind: 'who' as const, label: 'Who built this' },
+              ].map((spot) => (
                 <button
-                  key={cmd}
+                  key={spot.kind}
                   type="button"
-                  onClick={() => handleCliSubmit(undefined, cmd)}
-                  className="rounded border border-primary/30 bg-primary/5 px-2 py-1 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-sm transition-all"
+                  onClick={() => writeNote(spot.kind)}
+                  className="min-h-[32px] rounded-sm border border-border bg-secondary/50 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
                 >
-                  [{cmd}]
+                  {spot.label}
                 </button>
               ))}
+              {notes.length > 1 && (
+                <button
+                  type="button"
+                  onClick={freshPage}
+                  className="pencil-underline ml-1 text-xs text-muted-foreground"
+                  data-active="true"
+                >
+                  fresh page
+                </button>
+              )}
             </div>
 
-            {/* Terminal Screen Container */}
-            <div className="relative rounded-xl border border-border/80 bg-black/90 p-4 font-mono text-xs text-emerald-400 shadow-inner min-h-[240px] max-h-[300px] overflow-y-auto">
-              <div className="space-y-1.5">
-                {terminalLogs.map((log, idx) => (
-                  <div
-                    key={idx}
-                    className={cn(
-                      'leading-relaxed whitespace-pre-wrap font-mono text-[11px] sm:text-xs',
-                      log.type === 'accent' && 'text-cyan-400 font-bold',
-                      log.type === 'info' && 'text-foreground/90',
-                      log.type === 'success' && 'text-emerald-400',
-                      log.type === 'warn' && 'text-amber-400',
-                      log.type === 'dim' && 'text-muted-foreground'
-                    )}
-                  >
-                    {log.text}
-                  </div>
-                ))}
-                <div className="flex items-center text-[11px] sm:text-xs text-primary/90 font-mono pt-1">
-                  <span>joal@stm32-freertos:~$ {commandInput}</span>
-                  <span className="terminal-cursor" />
-                </div>
-                <div ref={terminalBottomRef} />
-              </div>
+            <div className="quadrille max-h-[320px] min-h-[240px] space-y-3 overflow-y-auto rounded-md border border-border bg-secondary/30 p-3.5">
+              {notes.map((note) => (
+                <BenchNote key={note.id} kind={note.kind} clockFreq={clockFreq} pins={pins} />
+              ))}
             </div>
-
-            {/* Terminal Input Line */}
-            <form onSubmit={handleCliSubmit} className="flex gap-2">
-              <div className="relative flex-1 flex items-center">
-                <span className="absolute left-3 font-mono text-xs text-primary font-bold">
-                  $&gt;
-                </span>
-                <input
-                  type="text"
-                  value={commandInput}
-                  onChange={(e) => {
-                    setCommandInput(e.target.value)
-                    if (audioEnabled) cyberAudio.keyTap(0.015)
-                  }}
-                  placeholder="Enter firmware command (e.g. status, pins, rtos, benchmark, help)..."
-                  className="w-full rounded-lg border border-border/80 bg-secondary/40 pl-8 pr-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 font-mono text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-all shrink-0"
-              >
-                <Send className="size-3.5" />
-                <span className="hidden sm:inline">EXECUTE</span>
-              </button>
-            </form>
           </div>
         )}
 
-        {/* TAB 2: CHIP PINOUT & GPIO TESTER */}
+        {/* TAB 2: PINS & PWM */}
         {activeTab === 'pinout' && (
           <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono text-muted-foreground border-b border-border/60 pb-3">
-              <div>
-                <span className="text-foreground font-bold">STM32F103 LQFP-48 / GPIO MATRIX</span>
-                <span className="ml-2 text-primary">Target: 3.3V Logic Level</span>
-              </div>
-              <div className="text-[11px] text-muted-foreground">
-                Click any pin card to toggle logic state (HIGH/LOW) with audio feedback.
-              </div>
+            <div className="flex flex-col gap-2 border-b border-border pb-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-medium">
+                STM32F103 — the pins and what they&apos;re doing
+                <span className="ml-2 text-xs font-normal text-muted-foreground">3.3 V logic</span>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Tap a pin to flip it high or low.
+              </p>
             </div>
 
-            {/* GPIO Pins Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 font-mono">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {pins.map((pin) => (
                 <button
                   key={pin.id}
                   type="button"
                   onClick={() => togglePin(pin.id)}
+                  aria-pressed={pin.state}
                   className={cn(
-                    'group relative rounded-xl border p-3 text-left transition-all hover:scale-[1.02] active:scale-[0.99]',
+                    'rounded-md border p-3 text-left transition-colors',
                     pin.state
-                      ? 'border-emerald-500/60 bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
-                      : 'border-border/70 bg-secondary/30 opacity-70 hover:opacity-100'
+                      ? 'border-primary/50 bg-primary/8'
+                      : 'border-border bg-secondary/30 hover:border-primary/30'
                   )}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-foreground">{pin.name}</span>
+                    <span className="measure text-xs font-semibold">{pin.name}</span>
                     <span
+                      aria-hidden
                       className={cn(
-                        'size-2.5 rounded-full transition-all',
-                        pin.state
-                          ? 'bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse'
-                          : 'bg-muted-foreground/30'
+                        'size-2.5 rounded-full transition-colors',
+                        pin.state ? 'bg-primary' : 'bg-muted-foreground/25'
                       )}
                     />
                   </div>
-                  <div className="mt-1 text-[11px] font-semibold text-primary truncate">
-                    {pin.label}
-                  </div>
-                  <div className="mt-2 flex items-center justify-between text-[10px]">
-                    <span className="rounded bg-secondary/80 px-1.5 py-0.5 text-muted-foreground">
+                  <div className="mt-1 truncate text-xs text-primary">{pin.label}</div>
+                  <div className="mt-2 flex items-center justify-between text-[11px]">
+                    <span className="rounded-sm bg-secondary/70 px-1.5 py-0.5 text-muted-foreground">
                       {pin.mode}
                     </span>
-                    <span className={cn('font-bold', pin.state ? 'text-emerald-400' : 'text-muted-foreground')}>
-                      {pin.state ? 'HIGH (3.3V)' : 'LOW (0.0V)'}
+                    <span className={cn('measure', pin.state ? 'text-primary' : 'text-muted-foreground')}>
+                      {pin.state ? 'HIGH 3.3 V' : 'LOW 0.0 V'}
                     </span>
                   </div>
                 </button>
               ))}
             </div>
 
-            {/* PWM Duty Cycle & Oscilloscope Simulator */}
-            <div className="rounded-xl border border-border/80 bg-secondary/20 p-4 font-mono">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
-                <div className="flex items-center gap-2 text-xs">
-                  <Zap className="size-4 text-amber-400" />
-                  <span className="font-bold text-foreground">TIM1_CH1 PWM GENERATOR & OSCILLOSCOPE TRACE</span>
+            {/* PWM generator */}
+            <div className="rounded-md border border-border bg-secondary/20 p-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-2 text-sm">
+                  <Zap className="size-4 text-primary" />
+                  <span className="font-medium">PWM generator &amp; scope trace</span>
                 </div>
-                <div className="text-xs text-amber-400 font-bold">
-                  DUTY CYCLE: {pwmDuty}% | FREQ: 10.0 kHz
-                </div>
+                <p className="measure text-xs text-primary">
+                  duty {pwmDuty}% · 10.0 kHz
+                </p>
               </div>
 
-              {/* Slider */}
-              <div className="flex items-center gap-3">
-                <span className="text-[10px] text-muted-foreground">0%</span>
+              <div className="mt-3 flex items-center gap-3">
+                <span className="measure text-[11px] text-muted-foreground">0%</span>
                 <input
                   type="range"
                   min="0"
                   max="100"
                   value={pwmDuty}
-                  onChange={(e) => {
-                    setPwmDuty(Number(e.target.value))
-                    if (audioEnabled) cyberAudio.click(0.015)
-                  }}
-                  className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+                  aria-label="PWM duty cycle"
+                  onChange={(e) => setPwmDuty(Number(e.target.value))}
+                  className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
                 />
-                <span className="text-[10px] text-muted-foreground">100%</span>
+                <span className="measure text-[11px] text-muted-foreground">100%</span>
               </div>
 
-              {/* Animated SVG Square Wave based on duty cycle with Oscilloscope beam scan */}
-              <div className="relative mt-3 h-20 w-full rounded-lg border border-border/60 bg-black/85 p-2 overflow-hidden flex items-center shadow-inner">
-                {/* Oscilloscope Grid Background */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#00ffcc08_1px,transparent_1px),linear-gradient(to_bottom,#00ffcc08_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
-
-                {/* Oscilloscope Phosphor Scan Beam */}
-                <div className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-primary/20 to-primary/60 blur-[1px] pointer-events-none animate-[oscilloscope-scan_3s_linear_infinite]" />
-
-                <svg className="w-full h-full relative z-10" viewBox="0 0 600 60" preserveAspectRatio="none">
+              <div className="quadrille relative mt-3 flex h-20 w-full items-center overflow-hidden rounded-md border border-border bg-card p-2">
+                <svg className="relative z-10 h-full w-full" viewBox="0 0 600 60" preserveAspectRatio="none">
                   <path
                     d={`M 0 50 L ${100 * (1 - pwmDuty / 100)} 50 L ${100 * (1 - pwmDuty / 100)} 10 L 100 10 L 100 50 L ${200 - 100 * (pwmDuty / 100)} 50 L ${200 - 100 * (pwmDuty / 100)} 10 L 200 10 L 200 50 L ${300 - 100 * (pwmDuty / 100)} 50 L ${300 - 100 * (pwmDuty / 100)} 10 L 300 10 L 300 50 L ${400 - 100 * (pwmDuty / 100)} 50 L ${400 - 100 * (pwmDuty / 100)} 10 L 400 10 L 400 50 L ${500 - 100 * (pwmDuty / 100)} 50 L ${500 - 100 * (pwmDuty / 100)} 10 L 500 10 L 500 50 L 600 50`}
                     fill="none"
@@ -598,7 +397,6 @@ export function HardwarePlayground() {
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="filter drop-shadow-[0_0_8px_var(--primary)]"
                   />
                 </svg>
               </div>
@@ -606,26 +404,22 @@ export function HardwarePlayground() {
           </div>
         )}
 
-        {/* TAB 3: PROTOCOL ANALYZER */}
+        {/* TAB 3: WIRE TRAFFIC */}
         {activeTab === 'protocol' && (
-          <div className="space-y-5 font-mono">
-            {/* Control Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-3">
+          <div className="space-y-5">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-3">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">PROTOCOL:</span>
+                <span className="text-xs text-muted-foreground">bus:</span>
                 {(['I2C', 'SPI', 'UART'] as const).map((proto) => (
                   <button
                     key={proto}
                     type="button"
-                    onClick={() => {
-                      setSelectedProtocol(proto)
-                      playClick()
-                    }}
+                    onClick={() => setSelectedProtocol(proto)}
                     className={cn(
-                      'rounded-lg px-2.5 py-1 text-xs transition-all',
+                      'measure min-h-[32px] rounded-md px-2.5 py-1 text-xs transition-colors',
                       selectedProtocol === proto
-                        ? 'bg-primary text-primary-foreground font-bold shadow-sm'
-                        : 'border border-border/70 bg-secondary/40 text-muted-foreground hover:text-foreground'
+                        ? 'bg-primary text-primary-foreground font-semibold'
+                        : 'border border-border bg-secondary/40 text-muted-foreground hover:text-foreground'
                     )}
                   >
                     {proto}
@@ -634,11 +428,14 @@ export function HardwarePlayground() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">BAUD:</span>
+                <label className="text-xs text-muted-foreground" htmlFor="baud-select">
+                  speed
+                </label>
                 <select
+                  id="baud-select"
                   value={baudRate}
                   onChange={(e) => setBaudRate(Number(e.target.value))}
-                  className="rounded-lg border border-border/70 bg-secondary/50 px-2 py-1 text-xs text-foreground outline-none"
+                  className="min-h-[32px] rounded-md border border-border bg-card px-2 py-1 text-xs text-foreground outline-none"
                 >
                   <option value={9600}>9600 bps</option>
                   <option value={115200}>115200 bps</option>
@@ -650,36 +447,33 @@ export function HardwarePlayground() {
                   type="button"
                   onClick={injectPacket}
                   disabled={isInjecting}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-3 py-1 text-xs font-bold hover:bg-emerald-500/30 transition-all active:scale-95"
+                  className="inline-flex min-h-[32px] items-center gap-1.5 rounded-md border border-primary/40 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground active:scale-95"
                 >
                   <Play className={cn('size-3.5', isInjecting && 'animate-spin')} />
-                  <span>INJECT_PACKET</span>
+                  <span>Send a packet</span>
                 </button>
               </div>
             </div>
 
-            {/* Packet Log Inspector */}
-            <div className="rounded-xl border border-border/80 bg-black/85 p-3.5 space-y-2 text-xs">
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground border-b border-border/40 pb-2">
-                <span>TIME & PROTOCOL</span>
-                <span>PACKET HEX DUMP / BUS TRACE</span>
+            <div className="rounded-md border border-border bg-secondary/20 p-3.5">
+              <div className="flex items-center justify-between border-b border-border pb-2 text-[11px] text-muted-foreground">
+                <span>time &amp; bus</span>
+                <span>bytes on the wire</span>
               </div>
-              <div className="space-y-2 max-h-[220px] overflow-y-auto">
+              <div className="max-h-[240px] space-y-2 overflow-y-auto pt-2">
                 {packetLog.map((pkt) => (
                   <div
                     key={pkt.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 rounded bg-secondary/20 p-2 border border-border/40 hover:border-primary/40 transition-colors"
+                    className="flex flex-col gap-1 rounded-md border border-border bg-card p-2.5 transition-colors hover:border-primary/40 sm:flex-row sm:items-center sm:justify-between"
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-muted-foreground">{pkt.time}</span>
-                      <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[9px] font-bold text-primary">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span className="measure text-[11px] text-muted-foreground">{pkt.time}</span>
+                      <span className="measure rounded-sm bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary">
                         {pkt.proto}
                       </span>
-                      <span className="text-[11px] text-foreground font-medium truncate max-w-xs">
-                        {pkt.desc}
-                      </span>
+                      <span className="truncate text-xs text-foreground">{pkt.desc}</span>
                     </div>
-                    <code className="text-[11px] text-emerald-400 font-mono bg-black/50 px-2 py-0.5 rounded break-all">
+                    <code className="measure break-all rounded-sm bg-secondary/60 px-2 py-1 text-[11px] text-foreground/85">
                       {pkt.hex}
                     </code>
                   </div>
@@ -689,29 +483,32 @@ export function HardwarePlayground() {
           </div>
         )}
 
-        {/* TAB 4: EDGE AI BENCHMARK */}
+        {/* TAB 4: AI BENCHMARKS */}
         {activeTab === 'ai_bench' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
-            {/* Benchmark 1: YOLOv8n INT8 Microplastics */}
-            <div className="rounded-xl border border-border/80 bg-secondary/20 p-4 space-y-3">
-              <div className="flex items-center justify-between">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* YOLO benchmark */}
+            <div className="space-y-3 rounded-md border border-border bg-secondary/20 p-4">
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h4 className="font-bold text-foreground">YOLOv8n Microplastic Detection</h4>
-                  <span className="text-[10px] text-muted-foreground">Mobile & Edge NPU Inference</span>
+                  <h4 className="text-[15px] font-semibold leading-snug">
+                    Counting microplastics through a microscope
+                  </h4>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    YOLOv8n, shrunk to fit on a phone
+                  </p>
                 </div>
-                <span className="text-emerald-400 text-[10px] font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  INT8 QUANT
+                <span className="measure shrink-0 rounded-sm border border-primary/30 bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                  INT8
                 </span>
               </div>
 
-              {/* Progress bar when running */}
               {benchRunning && (
                 <div className="space-y-1">
-                  <div className="flex justify-between text-[10px] text-muted-foreground">
-                    <span>INFERENCING 50 VALIDATION FRAMES...</span>
-                    <span>{benchProgress}%</span>
+                  <div className="flex justify-between text-[11px] text-muted-foreground">
+                    <span>running 50 validation frames…</span>
+                    <span className="measure">{benchProgress}%</span>
                   </div>
-                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
                     <div
                       className="h-full bg-primary transition-all duration-100"
                       style={{ width: `${benchProgress}%` }}
@@ -720,84 +517,91 @@ export function HardwarePlayground() {
                 </div>
               )}
 
-              {/* Results grid */}
               {benchResults && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-border/60">
-                  <div className="rounded bg-background/60 p-2 border border-border/60">
-                    <div className="text-[9px] text-muted-foreground">LATENCY</div>
-                    <div className="text-emerald-400 font-bold text-sm">{benchResults.latency} ms</div>
+                <dl className="measure grid grid-cols-2 gap-2 border-t border-border pt-3 text-xs sm:grid-cols-4">
+                  <div>
+                    <dt className="text-muted-foreground">speed</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-primary">
+                      {benchResults.latency} ms
+                    </dd>
                   </div>
-                  <div className="rounded bg-background/60 p-2 border border-border/60">
-                    <div className="text-[9px] text-muted-foreground">THROUGHPUT</div>
-                    <div className="text-primary font-bold text-sm">{benchResults.fps} FPS</div>
+                  <div>
+                    <dt className="text-muted-foreground">frames</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-primary">
+                      {benchResults.fps} FPS
+                    </dd>
                   </div>
-                  <div className="rounded bg-background/60 p-2 border border-border/60">
-                    <div className="text-[9px] text-muted-foreground">CONFIDENCE</div>
-                    <div className="text-cyan-400 font-bold text-sm">{benchResults.confidence}%</div>
+                  <div>
+                    <dt className="text-muted-foreground">confidence</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-foreground">
+                      {benchResults.confidence}%
+                    </dd>
                   </div>
-                  <div className="rounded bg-background/60 p-2 border border-border/60">
-                    <div className="text-[9px] text-muted-foreground">MEM USE</div>
-                    <div className="text-foreground font-bold text-sm">{benchResults.memory}</div>
+                  <div>
+                    <dt className="text-muted-foreground">memory</dt>
+                    <dd className="mt-0.5 text-sm font-semibold text-foreground">
+                      {benchResults.memory}
+                    </dd>
                   </div>
-                </div>
+                </dl>
               )}
 
               <button
                 type="button"
                 onClick={runAiBenchmark}
                 disabled={benchRunning}
-                className="w-full rounded-lg bg-primary py-2 text-primary-foreground font-bold hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5"
+                className="min-h-[40px] w-full rounded-md bg-primary py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"
               >
-                <Sparkles className="size-3.5" />
-                <span>{benchRunning ? 'RUNNING BENCHMARK...' : 'RUN INFERENCE BENCHMARK'}</span>
+                {benchRunning ? 'Running…' : 'Run the benchmark'}
               </button>
             </div>
 
-            {/* Benchmark 2: ARUGA Kinematic Fall Simulator */}
-            <div className="rounded-xl border border-border/80 bg-secondary/20 p-4 space-y-3">
-              <div className="flex items-center justify-between">
+            {/* Fall detector simulator */}
+            <div className="space-y-3 rounded-md border border-border bg-secondary/20 p-4">
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h4 className="font-bold text-foreground">ARUGA 33-pt Kinematic Fall Engine</h4>
-                  <span className="text-[10px] text-muted-foreground">Biomechanical Vector Classifier</span>
+                  <h4 className="text-[15px] font-semibold leading-snug">
+                    Spotting a fall from body angles
+                  </h4>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    ARUGA — the rules the camera runs
+                  </p>
                 </div>
                 <span
                   className={cn(
-                    'text-[10px] font-bold px-2 py-0.5 rounded border',
+                    'shrink-0 rounded-sm border px-2 py-0.5 text-[10px] font-semibold',
                     isFallAlert
-                      ? 'border-destructive bg-destructive/20 text-destructive animate-pulse'
+                      ? 'border-destructive bg-destructive/15 text-destructive'
                       : isFallWarning
-                      ? 'border-amber-500 bg-amber-500/20 text-amber-400'
-                      : 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
+                      ? 'border-primary/40 bg-primary/10 text-primary'
+                      : 'border-border bg-secondary/60 text-muted-foreground'
                   )}
                 >
-                  {isFallAlert ? 'FALL_EVENT_TRIGGERED' : isFallWarning ? 'UNSTABLE_GAIT' : 'AMBULATION_NORMAL'}
+                  {isFallAlert ? 'Fall detected' : isFallWarning ? 'Unsteady' : 'Walking normally'}
                 </span>
               </div>
 
-              {/* Sliders for kinematic pitch and velocity */}
-              <div className="space-y-3 pt-2">
+              <div className="space-y-3">
                 <div>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span className="text-muted-foreground">Torso Pitch Angle:</span>
-                    <span className="font-bold text-foreground">{fallPitch}°</span>
+                  <div className="mb-1 flex justify-between text-xs">
+                    <span className="text-muted-foreground">Torso pitch angle</span>
+                    <span className="measure font-semibold">{fallPitch}°</span>
                   </div>
                   <input
                     type="range"
                     min="0"
                     max="90"
                     value={fallPitch}
-                    onChange={(e) => {
-                      setFallPitch(Number(e.target.value))
-                      if (audioEnabled) cyberAudio.click(0.01)
-                    }}
-                    className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+                    aria-label="Torso pitch angle in degrees"
+                    onChange={(e) => setFallPitch(Number(e.target.value))}
+                    className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
                   />
                 </div>
 
                 <div>
-                  <div className="flex justify-between text-[11px] mb-1">
-                    <span className="text-muted-foreground">Vertical Drop Accel:</span>
-                    <span className="font-bold text-foreground">{fallDropVel.toFixed(1)} G</span>
+                  <div className="mb-1 flex justify-between text-xs">
+                    <span className="text-muted-foreground">Vertical drop acceleration</span>
+                    <span className="measure font-semibold">{fallDropVel.toFixed(1)} G</span>
                   </div>
                   <input
                     type="range"
@@ -805,166 +609,114 @@ export function HardwarePlayground() {
                     max="4.0"
                     step="0.1"
                     value={fallDropVel}
-                    onChange={(e) => {
-                      setFallDropVel(Number(e.target.value))
-                      if (audioEnabled) cyberAudio.click(0.01)
-                    }}
-                    className="w-full h-1.5 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+                    aria-label="Vertical drop acceleration in G"
+                    onChange={(e) => setFallDropVel(Number(e.target.value))}
+                    className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-secondary accent-primary"
                   />
                 </div>
               </div>
 
-              <div className="rounded bg-background/70 p-2.5 border border-border/70 text-[11px] text-muted-foreground">
-                <span className="text-foreground font-semibold">ALGORITHM LOGIC:</span> Triggers alert when Spine Angle &gt; 60° and Vertical Accel &gt; 2.5G simultaneously without cloud dependence.
-              </div>
+              <p className="rounded-md border border-border bg-card p-2.5 text-xs leading-relaxed text-muted-foreground">
+                <span className="font-medium text-foreground">The rule: </span>
+                the alarm fires when the spine tilts past 60° <em>and</em> the
+                drop exceeds 2.5 G at the same time — all on the device, no
+                server involved.
+              </p>
             </div>
           </div>
         )}
 
-        {/* TAB 5: LIVE SENSOR STREAM */}
+        {/* TAB 5: LIVE READINGS */}
         {activeTab === 'telemetry' && (
-          <div className="space-y-5 font-mono">
-            <div className="flex items-center justify-between border-b border-border/60 pb-3">
-              <div className="flex items-center gap-2 text-xs">
-                <Radio className="size-4 text-emerald-400 animate-pulse" />
-                <span className="font-bold text-foreground">CONTINUOUS TELEMETRY STREAM</span>
-              </div>
+          <div className="space-y-5">
+            <div className="flex items-center justify-between gap-3 border-b border-border pb-3">
+              <p className="text-sm font-medium">Live readings from the board</p>
               <button
                 type="button"
                 onClick={() => setStreamingActive((v) => !v)}
+                aria-pressed={streamingActive}
                 className={cn(
-                  'rounded px-2.5 py-1 text-xs border font-bold transition-all',
+                  'min-h-[32px] rounded-md border px-2.5 py-1 text-xs font-medium transition-colors',
                   streamingActive
-                    ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-400'
-                    : 'border-border/70 bg-secondary text-muted-foreground'
+                    ? 'border-primary/40 bg-primary/10 text-primary'
+                    : 'border-border bg-secondary text-muted-foreground'
                 )}
               >
-                STREAM: {streamingActive ? 'RUNNING' : 'PAUSED'}
+                {streamingActive ? 'Streaming — pause' : 'Paused — resume'}
               </button>
             </div>
 
-            {/* Live Sensor Metrics Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
-                <div className="text-[10px] text-muted-foreground">CORE_TEMPERATURE</div>
-                <div className="mt-1 text-xl font-bold text-foreground">{sensorValues.coreTemp}°C</div>
-                <div className="mt-1 text-[10px] text-emerald-400">Nominal thermal band</div>
-              </div>
-
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
-                <div className="text-[10px] text-muted-foreground">BUS_VOLTAGE_VCC</div>
-                <div className="mt-1 text-xl font-bold text-cyan-400">{sensorValues.busVoltage} V</div>
-                <div className="mt-1 text-[10px] text-muted-foreground">Regulated 3.3V rail</div>
-              </div>
-
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
-                <div className="text-[10px] text-muted-foreground">FREERTOS_TICK</div>
-                <div className="mt-1 text-xl font-bold text-primary">{sensorValues.freeRtosTick}</div>
-                <div className="mt-1 text-[10px] text-muted-foreground">1 kHz SysTick timer</div>
-              </div>
-
-              <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 transition-colors hover:border-primary/40">
-                <div className="text-[10px] text-muted-foreground">HEAP_AVAILABLE</div>
-                <div className="mt-1 text-xl font-bold text-emerald-400">{sensorValues.freeHeap} KB</div>
-                <div className="mt-1 text-[10px] text-muted-foreground">heap_4 allocator</div>
-              </div>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { label: 'Core temperature', value: `${sensorValues.coreTemp} °C`, note: 'within the normal band' },
+                { label: 'Bus voltage', value: `${sensorValues.busVoltage} V`, note: 'regulated 3.3 V rail' },
+                { label: 'Kernel ticks', value: `${sensorValues.freeRtosTick}`, note: '1 kHz system timer' },
+                { label: 'Free memory', value: `${sensorValues.freeHeap} KB`, note: 'of 64 KB total' },
+              ].map((m) => (
+                <div key={m.label} className="rounded-md border border-border bg-secondary/25 p-3.5">
+                  <div className="text-[11px] text-muted-foreground">{m.label}</div>
+                  <div className="measure mt-1 text-xl font-semibold">{m.value}</div>
+                  <div className="mt-1 text-[11px] text-muted-foreground">{m.note}</div>
+                </div>
+              ))}
             </div>
 
-            {/* Dynamic Logic Bars Spectrum Waveform */}
-            <div className="rounded-xl border border-border/80 bg-black/85 p-3.5 space-y-2 shadow-inner">
-              <div className="flex items-center justify-between text-[10px] text-muted-foreground border-b border-border/40 pb-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="size-2 rounded-full bg-primary animate-ping" />
-                  <span className="text-primary font-bold">LIVE TELEMETRY BUS LOGIC SPECTRUM // 24 CHANNELS</span>
-                </div>
-                <span className="text-emerald-400 font-bold">100 kSa/s SAMPLING</span>
+            <div className="rounded-md border border-border bg-card p-3.5">
+              <div className="flex items-center justify-between border-b border-border pb-2 text-[11px]">
+                <span className="text-muted-foreground">signal on the bus — 24 channels</span>
+                <span className="measure text-primary">100 kSa/s</span>
               </div>
-              <div className="flex items-end justify-between gap-1 h-14 pt-2">
+              <div className="flex h-16 items-end justify-between gap-1 pt-3">
                 {spectrumBars.map((height, i) => (
                   <div
                     key={i}
-                    className="flex-1 bg-gradient-to-t from-primary/30 via-primary to-emerald-400 rounded-t transition-all duration-300 shadow-[0_0_6px_var(--primary)]"
+                    className="flex-1 rounded-t-sm bg-primary/70 transition-all duration-300"
                     style={{ height: `${height}%` }}
                   />
                 ))}
               </div>
             </div>
 
-            {/* RTOS Task Loads & Heap Allocation Meters */}
-            <div className="rounded-xl border border-border/80 bg-secondary/20 p-4 space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-border/40 pb-2">
-                <span className="text-xs font-bold text-foreground">
-                  FREERTOS DETERMINISTIC TASK LOADS &amp; HEAP ALLOCATION
+            <div className="rounded-md border border-border bg-secondary/20 p-4">
+              <div className="flex flex-col gap-1 border-b border-border pb-2 text-xs sm:flex-row sm:items-center sm:justify-between">
+                <span className="font-medium">How busy each task is</span>
+                <span className="measure text-muted-foreground">
+                  FreeRTOS v10.5.1 · preemptive priority
                 </span>
-                <span className="text-[10px] text-emerald-400">KERNEL v10.5.1 // PREEMPTIVE PRIORITY</span>
               </div>
 
-              {/* Task load progress bars */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-foreground">vEdgeInference (TinyML INT8)</span>
-                    <span className="text-primary font-bold">42.1%</span>
+              <div className="mt-4 grid grid-cols-1 gap-3 text-xs sm:grid-cols-2">
+                {[
+                  { name: 'Edge inference (tiny AI)', load: 42.1 },
+                  { name: 'Thermal sensor read', load: 28.4 },
+                  { name: 'Telemetry over Wi-Fi', load: 14.5 },
+                  { name: 'Display drawing', load: 8.2 },
+                ].map((task) => (
+                  <div key={task.name} className="space-y-1">
+                    <div className="flex justify-between">
+                      <span>{task.name}</span>
+                      <span className="measure font-semibold text-primary">{task.load}%</span>
+                    </div>
+                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
+                      <div
+                        className="h-full rounded-full bg-primary transition-all duration-700"
+                        style={{ width: `${task.load}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-primary transition-all duration-700 ease-out shadow-[0_0_8px_var(--primary)]"
-                      style={{ width: '42.1%' }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-foreground">vSensThermal (MLX90640 DMA)</span>
-                    <span className="text-emerald-400 font-bold">28.4%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-emerald-400 transition-all duration-700 ease-out shadow-[0_0_8px_#34d399]"
-                      style={{ width: '28.4%' }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-foreground">vTelemetryMqtt (WiFi Queue)</span>
-                    <span className="text-cyan-400 font-bold">14.5%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-cyan-400 transition-all duration-700 ease-out shadow-[0_0_8px_#22d3ee]"
-                      style={{ width: '14.5%' }}
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex justify-between">
-                    <span className="text-foreground">vOledRender (HMI Framebuffer)</span>
-                    <span className="text-amber-400 font-bold">8.2%</span>
-                  </div>
-                  <div className="h-1.5 w-full bg-secondary rounded-full overflow-hidden">
-                    <div
-                      className="h-full bg-amber-400 transition-all duration-700 ease-out shadow-[0_0_8px_#fbbf24]"
-                      style={{ width: '8.2%' }}
-                    />
-                  </div>
-                </div>
+                ))}
               </div>
 
-              {/* RAM heap meter bar */}
-              <div className="pt-2 border-t border-border/40 space-y-1.5">
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-muted-foreground">FreeRTOS Dynamic Heap (heap_4 allocator):</span>
-                  <span className="text-emerald-400 font-bold">
-                    {sensorValues.freeHeap} KB Free / 64 KB (75.3% Headroom)
+              <div className="mt-4 border-t border-border pt-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-muted-foreground">Free memory</span>
+                  <span className="measure text-primary">
+                    {sensorValues.freeHeap} KB of 64 KB
                   </span>
                 </div>
-                <div className="h-2 w-full bg-secondary rounded-full overflow-hidden p-0.5 border border-border/60">
+                <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-secondary">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-primary to-cyan-400 transition-all duration-1000 shadow-[0_0_10px_rgba(52,211,153,0.3)]"
+                    className="h-full rounded-full bg-primary transition-all duration-1000"
                     style={{ width: `${(sensorValues.freeHeap / 64) * 100}%` }}
                   />
                 </div>
@@ -973,6 +725,106 @@ export function HardwarePlayground() {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/* ── A bench note: one ruled reading written on the fold-out page ───────── */
+function BenchNote({
+  kind,
+  clockFreq,
+  pins,
+}: {
+  kind: NoteKind
+  clockFreq: string
+  pins: GpioPin[]
+}) {
+  const heading = {
+    board: ['What’s on the board', 'FreeRTOS v10.5.1'],
+    pins: ['Pin register — ports A & B', '3.3 V logic'],
+    tasks: ['How busy each task is', 'preemptive priority'],
+    ai: ['Edge-AI timing', 'INT8 · CMSIS-NN'],
+    sensors: ['Sensor log', 'core max 38.6 °C'],
+    who: ['Who built this bench', 'MSU-IIT'],
+  }[kind]
+
+  const rows: Array<[string, string]> =
+    kind === 'board'
+      ? [
+          ['chip', `STM32F103C8T6 · Cortex-M3 @ ${clockFreq}`],
+          ['memory', '48,240 bytes free of 65,536 (73.6% headroom)'],
+          ['uptime', '284,912 ms · preemptive priority scheduling'],
+          ['power', 'run mode · bus 3.308 V · 38.6 °C'],
+        ]
+      : kind === 'tasks'
+      ? [
+          ['vSensThermal', 'running · prio 4 · 348 words left · 28.4% load'],
+          ['vEdgeInference', 'ready · prio 3 · 512 words left · 42.1% load'],
+          ['vOledRender', 'blocked · prio 2 · 180 words left · 8.2% load'],
+          ['vTelemetryMqtt', 'blocked · prio 2 · 220 words left · 14.5% load'],
+          ['IDLE', 'ready · prio 0 · 64 words left · 6.8% load'],
+        ]
+      : kind === 'ai'
+      ? [
+          ['target', 'INT8 YOLOv8n (3.2M params) on ESP32-P4 / edge NPU'],
+          ['frame', '192×192 grayscale · Edge Impulse / CMSIS-NN'],
+          ['speed', '18.2 ms per frame — 54.9 FPS'],
+          ['memory', 'peak RAM 4.1 MB · zero-copy DMA on'],
+          ['loss', 'quantization loss < 0.8%'],
+        ]
+      : kind === 'sensors'
+      ? [
+          ['MLX90640', '32×24 IR matrix (768 pixels) @ 4 Hz — core max 38.6 °C'],
+          ['DS18B20', 'substrate 29.35 °C (±0.06 °C)'],
+          ['MPU6050', 'accel [X:+0.02g, Y:-0.01g, Z:+0.99g] · gyro 0.0 °/s'],
+        ]
+      : [
+          ['name', 'Joseph Alan B. Vergara — “Joal”'],
+          ['role', 'embedded systems & edge AI engineer'],
+          ['school', 'MSU-IIT, BS Computer Applications'],
+          ['stack', 'C/C++, FreeRTOS, TinyML, STM32, ESP32, Python, Next.js'],
+          ['home', 'Iligan City, Philippines'],
+        ]
+
+  // Measurement earns the mono face; plain words stay in the reading face.
+  const mono = kind !== 'who'
+
+  return (
+    <div className="animate-settle-soft rounded-md border border-border bg-card p-3.5">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-border pb-2">
+        <p className="text-sm font-semibold">{heading[0]}</p>
+        <p className="meta">{heading[1]}</p>
+      </div>
+
+      {kind === 'pins' ? (
+        <ul className="mt-2.5 space-y-1.5">
+          {pins.map((p) => (
+            <li key={p.id} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5 text-xs">
+              <span className="measure w-11 shrink-0 font-semibold">{p.name}</span>
+              <span className="min-w-0 flex-1 truncate text-muted-foreground">{p.label}</span>
+              <span className="shrink-0 rounded-sm bg-secondary/70 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                {p.mode}
+              </span>
+              <span
+                className={cn('measure shrink-0', p.state ? 'text-primary' : 'text-muted-foreground')}
+              >
+                {p.state ? `HIGH ${p.voltage}` : `LOW ${p.voltage}`}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <dl className="mt-2.5 space-y-1.5">
+          {rows.map(([label, value]) => (
+            <div key={label} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5 text-xs">
+              <dt className="w-24 shrink-0 text-muted-foreground">{label}</dt>
+              <dd className={cn('min-w-0 flex-1 text-foreground/90', mono && 'measure')}>
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
     </div>
   )
 }

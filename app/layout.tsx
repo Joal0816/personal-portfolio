@@ -1,19 +1,36 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Space_Grotesk, Geist_Mono } from 'next/font/google'
+import {
+  Bricolage_Grotesque,
+  Schibsted_Grotesk,
+  Caveat,
+  Spline_Sans_Mono,
+} from 'next/font/google'
 import { SwRegister } from './sw-register'
 import { AiCompanion } from '@/components/ai-companion'
 import './globals.css'
 
-const spaceGrotesk = Space_Grotesk({
+const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-bricolage',
   display: 'swap',
 })
 
-const geistMono = Geist_Mono({
+const schibsted = Schibsted_Grotesk({
   subsets: ['latin'],
-  variable: '--font-geist-mono',
+  variable: '--font-schibsted',
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  variable: '--font-caveat',
+  display: 'swap',
+})
+
+const splineMono = Spline_Sans_Mono({
+  subsets: ['latin'],
+  variable: '--font-spline-mono',
   display: 'swap',
 })
 
@@ -60,10 +77,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'dark light',
+  colorScheme: 'light dark',
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f7f8fa' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d1117' },
+    { media: '(prefers-color-scheme: light)', color: '#eceee5' },
+    { media: '(prefers-color-scheme: dark)', color: '#141a21' },
   ],
   viewportFit: 'cover',
   interactiveWidget: 'resizes-content',
@@ -77,7 +94,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark bg-background ${spaceGrotesk.variable} ${geistMono.variable}`}
+      className={`dark bg-background ${bricolage.variable} ${schibsted.variable} ${caveat.variable} ${splineMono.variable}`}
       suppressHydrationWarning
     >
       <body className="font-sans antialiased">
@@ -85,6 +102,12 @@ export default function RootLayout({
         <AiCompanion />
         <SwRegister />
         {process.env.NODE_ENV === 'production' && <Analytics />}
+        <script
+          defer
+          src="https://pulse.joalvergs.tech/p.js"
+          data-site="root"
+        />
+
       </body>
     </html>
   )

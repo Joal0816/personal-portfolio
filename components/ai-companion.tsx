@@ -1,23 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState, useCallback } from 'react'
-import {
-  X,
-  SendHorizonal,
-  Sparkles,
-  Bot,
-  Radio,
-  Terminal,
-  Volume2,
-  VolumeX,
-} from 'lucide-react'
+import { X, SendHorizonal, Sparkles } from 'lucide-react'
 import {
   CHARACTERS,
   CHARACTER_ORDER,
   getReply,
   type CharacterId,
 } from '@/lib/companion-data'
-import { cyberAudio } from '@/lib/cyber-sound'
 import { cn } from '@/lib/utils'
 
 interface ChatMessage {
@@ -28,66 +18,34 @@ interface ChatMessage {
 }
 
 interface CharacterTheme {
-  accentColor: string
-  glowColor: string
-  borderColor: string
-  badgeBorder: string
-  badgeBg: string
-  badgeText: string
-  botBubbleBg: string
-  botBubbleBorder: string
-  botBubbleText: string
+  accent: string
   avatarCrop: string
   typingLabel: string
-  statusCallsign: string
+  roleNote: string
   inputPlaceholder: string
 }
 
 const CHARACTER_THEMES: Record<CharacterId, CharacterTheme> = {
   joal: {
-    accentColor: '#06b6d4', // cyan-500
-    glowColor: 'rgba(6, 182, 212, 0.35)',
-    borderColor: 'border-cyan-500/40',
-    badgeBorder: 'border-cyan-500/30',
-    badgeBg: 'bg-cyan-500/10',
-    badgeText: 'text-cyan-400',
-    botBubbleBg: 'bg-[#061822]/90',
-    botBubbleBorder: 'border-cyan-500/35',
-    botBubbleText: 'text-cyan-50',
+    accent: 'text-primary',
     avatarCrop: '50% 20%',
-    typingLabel: 'Joal is analyzing...',
-    statusCallsign: 'JOAL // EMBEDDED_SYS',
-    inputPlaceholder: 'Ask Joal about firmware, Edge AI...',
+    typingLabel: 'Joal is thinking…',
+    roleNote: 'the engineer himself',
+    inputPlaceholder: 'Ask Joal about firmware, edge AI…',
   },
   rera: {
-    accentColor: '#f59e0b', // amber-500
-    glowColor: 'rgba(245, 158, 11, 0.35)',
-    borderColor: 'border-amber-500/40',
-    badgeBorder: 'border-amber-500/30',
-    badgeBg: 'bg-amber-500/10',
-    badgeText: 'text-amber-400',
-    botBubbleBg: 'bg-[#211304]/90',
-    botBubbleBorder: 'border-amber-500/35',
-    botBubbleText: 'text-amber-50',
+    accent: 'text-[#885629] dark:text-amber-300',
     avatarCrop: '32% 40%',
-    typingLabel: 'Rera is batting at keys...',
-    statusCallsign: 'RERA // ORANGE_CHAOS',
-    inputPlaceholder: 'Offer Rera tuna, treats, or say hi...',
+    typingLabel: 'Rera is batting at the keys…',
+    roleNote: 'orange, chaos, no thoughts',
+    inputPlaceholder: 'Offer Rera treats, or say hi…',
   },
   area: {
-    accentColor: '#10b981', // emerald-500
-    glowColor: 'rgba(16, 185, 129, 0.35)',
-    borderColor: 'border-emerald-500/40',
-    badgeBorder: 'border-emerald-500/30',
-    badgeBg: 'bg-emerald-500/10',
-    badgeText: 'text-emerald-400',
-    botBubbleBg: 'bg-[#041a13]/90',
-    botBubbleBorder: 'border-emerald-500/35',
-    botBubbleText: 'text-emerald-50',
+    accent: 'text-olive dark:text-olive',
     avatarCrop: '50% 24%',
-    typingLabel: 'Area is contemplating...',
-    statusCallsign: 'AREA // TABBY_SUPERVISOR',
-    inputPlaceholder: 'Inquire politely with Area...',
+    typingLabel: 'Area is considering it…',
+    roleNote: 'tabby, naps, judgment',
+    inputPlaceholder: 'Ask Area politely…',
   },
 }
 
@@ -114,8 +72,7 @@ export function AiCompanion() {
   const [isTyping, setIsTyping] = useState(false)
   const [avatarReaction, setAvatarReaction] = useState(false)
   const [inputValue, setInputValue] = useState('')
-  const [showHint, setShowHint] = useState(true)
-  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [showHint, setShowHint] = useState(false)
   const [hasPwaPrompt, setHasPwaPrompt] = useState(false)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -123,6 +80,25 @@ export function AiCompanion() {
   const panelRef = useRef<HTMLDivElement>(null)
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const reactionTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const hintDismissedRef = useRef(false)
+
+  // The greeting note waits until the opening spread has scrolled away
+  // entirely — at every window size — so it can never settle on the hero's
+  // reading matter, and it steps away again the moment the hero returns.
+  useEffect(() => {
+    const onScroll = () => {
+      if (hintDismissedRef.current || isOpen) return
+      const hero = document.getElementById('top')
+      if (hero) {
+        setShowHint(hero.getBoundingClientRect().bottom < 8)
+      } else {
+        setShowHint(window.scrollY > 600)
+      }
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [isOpen])
 
   // Listen for PWA prompt banner to dynamically adjust bottom offsets and avoid collision
   useEffect(() => {
@@ -140,33 +116,21 @@ export function AiCompanion() {
   const currentTheme = CHARACTER_THEMES[activeId]
   const currentMessages = threads[activeId] || []
 
-  // Safe audio trigger
-  const playSound = useCallback(
-    (action: 'click' | 'tap') => {
-      if (!soundEnabled) return
-      try {
-        if (action === 'click') cyberAudio.click(0.03)
-        if (action === 'tap') cyberAudio.keyTap(0.025)
-      } catch {
-        // Audio API may be restricted
-      }
-    },
-    [soundEnabled],
-  )
-
-  // Auto-scroll to newest message
-  const scrollToBottom = useCallback((smooth = true) => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({
-        behavior: smooth ? 'smooth' : 'auto',
-        block: 'end',
-      })
-    }
+  // Auto-scroll to newest message — inside the thread's own scroll area only,
+  // never the page (and never on mount).
+  const scrollToBottom = useCallback(() => {
+    const box = messagesEndRef.current?.parentElement
+    if (box) box.scrollTop = box.scrollHeight
   }, [])
 
+  const hasScrolledRef = useRef(false)
   useEffect(() => {
-    scrollToBottom()
-  }, [currentMessages, isTyping, scrollToBottom])
+    if (!hasScrolledRef.current) {
+      hasScrolledRef.current = true
+      return
+    }
+    if (isOpen) scrollToBottom()
+  }, [currentMessages, isTyping, scrollToBottom, isOpen])
 
   // Trigger initial greeting when character is first viewed in open panel
   const triggerGreetingIfNeeded = useCallback(
@@ -191,7 +155,6 @@ export function AiCompanion() {
         setHasGreeted((prev) => ({ ...prev, [charId]: true }))
         setIsTyping(false)
 
-        // Trigger bot avatar pop reaction
         setAvatarReaction(true)
         if (reactionTimeoutRef.current) clearTimeout(reactionTimeoutRef.current)
         reactionTimeoutRef.current = setTimeout(() => setAvatarReaction(false), 400)
@@ -200,7 +163,7 @@ export function AiCompanion() {
     [hasGreeted],
   )
 
-  // When panel opens: trigger Joal greeting if not yet greeted & focus input
+  // When panel opens: trigger greeting if needed & focus input
   useEffect(() => {
     if (isOpen) {
       setShowHint(false)
@@ -216,12 +179,11 @@ export function AiCompanion() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
         setIsOpen(false)
-        playSound('click')
       }
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, playSound])
+  }, [isOpen])
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -231,20 +193,16 @@ export function AiCompanion() {
     }
   }, [])
 
-  // Character switch handler
   const handleSwitchCharacter = (targetId: CharacterId) => {
     if (targetId === activeId) return
-    playSound('click')
     setActiveId(targetId)
     triggerGreetingIfNeeded(targetId)
   }
 
-  // Send message
   const handleSendMessage = (textToSend?: string) => {
     const text = (textToSend ?? inputValue).trim()
     if (!text || isTyping) return
 
-    playSound('tap')
     setInputValue('')
 
     const userMsg: ChatMessage = {
@@ -262,7 +220,6 @@ export function AiCompanion() {
     setIsTyping(true)
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current)
 
-    // AI typing delay: 500ms - 850ms
     const delay = 500 + Math.floor(Math.random() * 350)
 
     typingTimeoutRef.current = setTimeout(() => {
@@ -280,7 +237,6 @@ export function AiCompanion() {
       }))
       setIsTyping(false)
 
-      // Pop avatar reaction
       setAvatarReaction(true)
       if (reactionTimeoutRef.current) clearTimeout(reactionTimeoutRef.current)
       reactionTimeoutRef.current = setTimeout(() => setAvatarReaction(false), 400)
@@ -289,10 +245,7 @@ export function AiCompanion() {
 
   return (
     <>
-      {/* ====================================================================
-          LAUNCHER BUTTON & FLOATING HINT (Safe Area & PWA-aware Offsets)
-          Mobile: bottom-20 (or bottom-48 with PWA), Desktop: bottom-6
-          ==================================================================== */}
+      {/* Launcher — a photo print taped to the corner of the page */}
       <div
         className={cn(
           'fixed z-50 transition-all duration-300 ease-out select-none',
@@ -300,253 +253,128 @@ export function AiCompanion() {
           isOpen ? 'pointer-events-none opacity-0 scale-90' : 'pointer-events-auto opacity-100 scale-100',
         )}
       >
-        {/* Floating Unread / Welcome Hint Bubble (Responsive & width-capped) */}
+        {/* Welcome note — compact, hugging the corner, and gone near the top */}
         {showHint && (
           <aside
             role="status"
             aria-live="polite"
-            className="animate-companion-hint-float pointer-events-auto absolute -top-13 right-0 sm:right-1 flex max-w-[calc(100vw-2.5rem)] sm:max-w-xs items-center gap-2 rounded-xl border border-cyan-500/40 bg-[#0a0e17]/95 px-3 py-1.5 text-xs text-foreground shadow-[0_0_18px_rgba(6,182,212,0.25)] backdrop-blur-xl"
+            className="animate-companion-hint-float pointer-events-auto absolute bottom-full right-0 mb-2 flex w-max max-w-[15rem] items-center gap-2 rounded-md border border-border bg-card px-3 py-2 shadow-page sm:max-w-xs"
           >
-            <div className="flex items-center gap-1.5 min-w-0">
-              <span className="relative flex size-2 shrink-0">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
-              </span>
-              <span className="font-mono text-[11px] font-bold tracking-wider text-cyan-400 shrink-0">
-                AI UPLINK:
-              </span>
-              <span className="font-sans text-[11px] text-muted-foreground truncate">
-                Chat with Joal & cats
-              </span>
-            </div>
-
+            <p className="marginalia min-w-0 text-base leading-tight">
+              Joal &amp; the cats are in — tap the portrait
+            </p>
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation()
+                hintDismissedRef.current = true
                 setShowHint(false)
-                playSound('click')
               }}
-              aria-label="Dismiss AI companion hint"
-              className="relative ml-1 inline-flex size-6 sm:size-4 shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:text-foreground hover:bg-secondary/60 touch-target-expand"
+              aria-label="Dismiss the companion hint"
+              className="relative ml-1 inline-flex size-6 sm:size-4 shrink-0 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground touch-target-expand"
             >
               <X className="size-3" />
             </button>
-
-            {/* Downward triangle pointer */}
-            <span className="absolute -bottom-1.5 right-6 size-0 border-x-4 border-x-transparent border-t-4 border-t-cyan-500/40" />
           </aside>
         )}
 
-        {/* Circular Floating Launcher Button (Touch target >= 44px, 56px size) */}
+        {/* Launcher button */}
         <button
           type="button"
-          onClick={() => {
-            playSound('click')
-            setIsOpen(true)
-          }}
-          aria-label="Open AI virtual companion chat"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open the chat with Joal and his cats"
           aria-expanded={isOpen}
           className={cn(
-            'group relative flex size-14 items-center justify-center rounded-full',
-            'border bg-[#0a0e17]/90 backdrop-blur-xl transition-all duration-300',
-            'hover:-translate-y-0.5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400',
+            'photo-print group relative flex size-16 items-center justify-center rounded-md p-1.5',
+            'transition-all duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
           )}
-          style={{
-            borderColor: currentTheme.accentColor,
-            boxShadow: `0 0 20px -2px ${currentTheme.glowColor}, 0 4px 14px rgba(0,0,0,0.5)`,
-          }}
         >
-          {/* Subtle radar ping pulse ring */}
           <span
-            className="animate-companion-radar-ping pointer-events-none absolute inset-0 rounded-full border opacity-50"
-            style={{ borderColor: currentTheme.accentColor }}
+            aria-hidden
+            className="tape absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 rounded-[2px] [transform:rotate(-2deg)]"
           />
-
-          {/* Avatar thumbnail preview */}
-          <div className="relative size-11 overflow-hidden rounded-full border border-background/60">
+          <div className="relative size-full overflow-hidden rounded-[2px]">
             <img
               src={activeChar.photo}
               alt={activeChar.name}
               className={cn(
-                'size-full object-cover transition-transform duration-300 group-hover:scale-110',
+                'size-full object-cover transition-transform duration-300 group-hover:scale-105',
                 (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
               )}
               style={{ objectPosition: currentTheme.avatarCrop }}
             />
           </div>
-
-          {/* Online green indicator badge */}
-          <span className="absolute bottom-0 right-0 flex size-3.5 items-center justify-center rounded-full bg-background border border-border">
-            <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_6px_#10b981]" />
-          </span>
-
-          {/* AI Uplink Mini Label Tag */}
-          <span
-            className="absolute -top-1.5 -left-1 rounded-full border bg-[#0a0e17] px-1.5 py-0.2 font-mono text-[9px] font-bold tracking-wider"
-            style={{
-              borderColor: currentTheme.accentColor,
-              color: currentTheme.accentColor,
-            }}
-          >
-            AI
-          </span>
         </button>
       </div>
 
-      {/* ====================================================================
-          EXPANDED COMPANION CHAT PANEL
-          Position:
-            Mobile: fixed bottom-20 left-3 right-3 (sits cleanly above bottom dock)
-            Desktop: fixed bottom-6 right-6 w-[390px] h-[570px]
-          ==================================================================== */}
+      {/* The chat — a pocket notebook in the corner */}
       <section
         ref={panelRef}
         role="dialog"
         aria-modal="false"
-        aria-label="AI Virtual Companion Chat"
+        aria-label="Chat with Joal and his cats"
         className={cn(
-          'fixed z-50 flex flex-col overflow-hidden rounded-2xl',
-          'border bg-[#0a0e17]/95 backdrop-blur-2xl transition-all duration-300 ease-out',
+          'fixed z-50 flex flex-col overflow-hidden rounded-lg border border-border bg-card transition-all duration-300 ease-out shadow-lift',
           'companion-panel-pos',
           isOpen
             ? 'pointer-events-auto opacity-100 scale-100 origin-bottom-right'
             : 'pointer-events-none opacity-0 scale-95 origin-bottom-right',
         )}
-        style={{
-          borderColor: currentTheme.accentColor,
-          boxShadow: `0 0 35px -5px ${currentTheme.glowColor}, 0 20px 40px rgba(0,0,0,0.85)`,
-        }}
       >
-        {/* HUD Corner Tech Accents (4 crisp bracket corners matching active character) */}
-        <span
-          className="pointer-events-none absolute -top-px -left-px h-3.5 w-3.5 border-t-2 border-l-2 transition-colors duration-300"
-          style={{ borderColor: currentTheme.accentColor }}
-        />
-        <span
-          className="pointer-events-none absolute -top-px -right-px h-3.5 w-3.5 border-t-2 border-r-2 transition-colors duration-300"
-          style={{ borderColor: currentTheme.accentColor }}
-        />
-        <span
-          className="pointer-events-none absolute -bottom-px -left-px h-3.5 w-3.5 border-b-2 border-l-2 transition-colors duration-300"
-          style={{ borderColor: currentTheme.accentColor }}
-        />
-        <span
-          className="pointer-events-none absolute -bottom-px -right-px h-3.5 w-3.5 border-b-2 border-r-2 transition-colors duration-300"
-          style={{ borderColor: currentTheme.accentColor }}
-        />
+        {/* Header */}
+        <header className="relative shrink-0 border-b border-border bg-secondary/40 px-3.5 pb-2.5 pt-3 companion-header-compact">
+          <span
+            aria-hidden
+            className="tape absolute -top-1 left-1/2 h-3.5 w-16 -translate-x-1/2 rounded-[2px] [transform:rotate(-1deg)]"
+          />
 
-        {/* Ambient Top Glow Laser Gradient */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-24 opacity-25 transition-opacity"
-          style={{
-            background: `radial-gradient(ellipse at 50% 0%, ${currentTheme.accentColor} 0%, transparent 70%)`,
-          }}
-        />
-
-        {/* ==================================================================
-            HEADER: Status Line, Telemetry, Active Avatar & Character Switcher
-            ================================================================== */}
-        <header className="relative z-10 shrink-0 border-b border-border/70 bg-card/40 px-3.5 pt-3 pb-2.5 backdrop-blur-md companion-header-compact">
-          {/* Top Telemetry & Controls Row */}
-          <div className="flex items-center justify-between pb-2 border-b border-border/40 text-[10px] font-mono">
-            <div className="flex items-center gap-1.5 text-muted-foreground min-w-0">
-              <span className="relative flex size-2 shrink-0">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
-              </span>
-              <span className="font-bold text-foreground truncate">LINK ESTABLISHED</span>
-              <span className="text-border shrink-0 hidden sm:inline">•</span>
-              <span className="hidden sm:inline truncate" style={{ color: currentTheme.accentColor }}>
-                LOW_LATENCY // 12ms
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1 shrink-0">
-              {/* Audio toggle button (≥44px effective touch target) */}
-              <button
-                type="button"
-                onClick={() => {
-                  setSoundEnabled((v) => !v)
-                  playSound('click')
-                }}
-                aria-label={soundEnabled ? 'Mute companion sound effects' : 'Enable companion sound effects'}
-                className="relative inline-flex size-8 sm:size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary touch-target-expand"
-              >
-                {soundEnabled ? <Volume2 className="size-3.5" /> : <VolumeX className="size-3.5" />}
-              </button>
-
-              {/* Close Button (≥44px effective touch target) */}
-              <button
-                type="button"
-                onClick={() => {
-                  playSound('click')
-                  setIsOpen(false)
-                }}
-                aria-label="Close AI virtual companion"
-                className="relative inline-flex size-8 sm:size-7 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary touch-target-expand"
-              >
-                <X className="size-4" />
-              </button>
-            </div>
-          </div>
-
-          {/* Active Character Profile Row */}
-          <div className="mt-2.5 flex items-center justify-between gap-2.5 min-w-0">
-            <div className="flex items-center gap-2.5 min-w-0 flex-1">
-              {/* Circular Avatar with Idle Bob & Pop Reaction */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2.5">
               <div
                 className={cn(
-                  'relative size-12 shrink-0 rounded-full border-2 p-0.5 transition-all duration-300 companion-avatar-compact',
+                  'relative size-11 shrink-0 overflow-hidden rounded-full border border-border companion-avatar-compact',
                   avatarReaction ? 'animate-companion-pop' : 'animate-companion-bob',
                 )}
-                style={{
-                  borderColor: currentTheme.accentColor,
-                  boxShadow: `0 0 14px -1px ${currentTheme.glowColor}`,
-                }}
               >
-                <div className="size-full overflow-hidden rounded-full bg-background">
-                  <img
-                    src={activeChar.photo}
-                    alt={activeChar.name}
-                    className={cn(
-                      'size-full object-cover transition-transform duration-300',
-                      (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
-                    )}
-                    style={{ objectPosition: currentTheme.avatarCrop }}
-                  />
-                </div>
+                <img
+                  src={activeChar.photo}
+                  alt={activeChar.name}
+                  className={cn(
+                    'size-full object-cover transition-transform duration-300',
+                    (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
+                  )}
+                  style={{ objectPosition: currentTheme.avatarCrop }}
+                />
               </div>
-
-              {/* Character Identity & Callsign */}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 min-w-0">
-                  <h3 className="text-sm font-bold tracking-tight text-foreground truncate shrink-0 max-w-[80px] sm:max-w-none">
+              <div className="min-w-0">
+                <div className="flex items-baseline gap-2">
+                  <h3 className="truncate text-[15px] font-bold leading-tight">
                     {activeChar.name}
                   </h3>
-                  <span
-                    className={cn(
-                      'rounded px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider shrink-0 truncate max-w-[130px] sm:max-w-none',
-                      currentTheme.badgeBg,
-                      currentTheme.badgeText,
-                    )}
-                  >
+                  <span className={cn('truncate text-xs', currentTheme.accent)}>
                     {activeChar.species}
                   </span>
                 </div>
-                <div className="mt-0.5 flex items-center gap-1 font-mono text-[10px] text-muted-foreground truncate">
-                  <Terminal className="size-2.5 shrink-0" style={{ color: currentTheme.accentColor }} />
-                  <span className="truncate">{currentTheme.statusCallsign}</span>
-                </div>
+                <p className="marginalia truncate text-base leading-tight">
+                  {currentTheme.roleNote}
+                </p>
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close the chat"
+              className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring touch-target-expand"
+            >
+              <X className="size-4" />
+            </button>
           </div>
 
-          {/* Character Switcher Tabs */}
-          <div className="mt-2.5 flex items-center gap-1 sm:gap-1.5 rounded-lg border border-border/60 bg-background/60 p-1">
+          {/* Character switcher */}
+          <div className="mt-3 flex items-center gap-1 rounded-md border border-border bg-card p-1">
             {CHARACTER_ORDER.map((id) => {
               const char = CHARACTERS[id]
-              const theme = CHARACTER_THEMES[id]
               const isActive = activeId === id
 
               return (
@@ -555,114 +383,73 @@ export function AiCompanion() {
                   type="button"
                   onClick={() => handleSwitchCharacter(id)}
                   aria-selected={isActive}
-                  aria-label={`Switch companion to ${char.name} (${char.species})`}
+                  aria-label={`Switch to ${char.name} (${char.species})`}
                   className={cn(
-                    'flex flex-1 min-w-0 items-center justify-center gap-1 sm:gap-1.5 rounded-md px-1.5 sm:px-2 py-2 sm:py-1.5 min-h-[38px] sm:min-h-[32px] text-xs font-mono transition-all',
+                    'flex min-h-[38px] flex-1 items-center justify-center gap-1.5 rounded px-2 py-1.5 text-xs transition-colors',
                     isActive
-                      ? 'bg-secondary text-foreground font-semibold shadow-sm'
-                      : 'text-muted-foreground hover:bg-secondary/40 hover:text-foreground',
+                      ? 'bg-secondary font-semibold text-foreground'
+                      : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground',
                   )}
-                  style={{
-                    border: isActive ? `1px solid ${theme.accentColor}` : '1px solid transparent',
-                  }}
                 >
-                  <div
-                    className="relative size-4 sm:size-4.5 shrink-0 overflow-hidden rounded-full border"
-                    style={{ borderColor: isActive ? theme.accentColor : 'transparent' }}
-                  >
+                  <span className="relative size-5 shrink-0 overflow-hidden rounded-full">
                     <img
                       src={char.photo}
-                      alt={char.name}
+                      alt=""
                       className="size-full object-cover"
-                      style={{ objectPosition: theme.avatarCrop }}
+                      style={{ objectPosition: CHARACTER_THEMES[id].avatarCrop }}
                     />
-                  </div>
-                  <span className="text-[10px] sm:text-[11px] truncate">{char.name}</span>
+                  </span>
+                  <span className="truncate">{char.name}</span>
                 </button>
               )
             })}
           </div>
         </header>
 
-        {/* ==================================================================
-            MESSAGES CONTAINER
-            role="log", aria-live="polite", character-themed bubbles
-            ================================================================== */}
+        {/* Messages */}
         <div
           role="log"
           aria-live="polite"
           aria-label={`Conversation with ${activeChar.name}`}
-          className="flex-1 min-h-[70px] sm:min-h-[100px] overflow-y-auto px-3.5 py-3 space-y-3 tech-grid overscroll-contain"
-          style={{ backgroundSize: '1.75rem 1.75rem' }}
+          className="ruled flex-1 min-h-[70px] overflow-y-auto overscroll-contain px-3.5 py-3 sm:min-h-[100px]"
         >
-          {/* Welcome telemetry notice */}
-          <div className="flex justify-center">
-            <span className="inline-flex items-center gap-1 rounded border border-border/60 bg-secondary/30 px-2 py-0.5 font-mono text-[10px] text-muted-foreground/80">
-              <Radio className="size-2.5" style={{ color: currentTheme.accentColor }} />
-              <span>THREAD_ID: {activeId.toUpperCase()}_SESSION</span>
-            </span>
-          </div>
-
-          {/* Render Thread Messages */}
           {currentMessages.map((msg) => {
             const isBot = msg.sender === 'bot'
 
             return (
               <div
                 key={msg.id}
-                className={cn('flex flex-col', isBot ? 'items-start' : 'items-end')}
+                className={cn('mb-3 flex flex-col', isBot ? 'items-start' : 'items-end')}
               >
-                {/* Message Bubble */}
                 <div
                   className={cn(
-                    'max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs sm:text-sm leading-relaxed transition-all shadow-sm',
+                    'max-w-[85%] rounded-md px-3.5 py-2.5 text-[13px] leading-relaxed shadow-[0_1px_1px_color-mix(in_oklch,var(--graphite)_12%,transparent)]',
                     isBot
-                      ? cn('rounded-tl-xs border', currentTheme.botBubbleBg, currentTheme.botBubbleBorder, currentTheme.botBubbleText)
-                      : 'rounded-tr-xs border border-border/80 bg-secondary/80 text-foreground',
+                      ? 'border border-border bg-secondary/50 text-foreground'
+                      : 'bg-primary text-primary-foreground',
                   )}
                 >
                   <p className="whitespace-pre-line break-words">{msg.text}</p>
                 </div>
 
-                {/* Subtitle / Timestamp */}
-                <div className="mt-1 flex items-center gap-1 px-1 font-mono text-[9px] text-muted-foreground/70">
-                  <span>{isBot ? activeChar.name.toUpperCase() : 'YOU'}</span>
-                  <span>•</span>
-                  <span>{msg.time}</span>
+                <div className="mt-1 flex items-center gap-1.5 px-1 text-[10px] text-muted-foreground">
+                  <span>{isBot ? activeChar.name : 'You'}</span>
+                  <span aria-hidden>·</span>
+                  <span className="measure">{msg.time}</span>
                 </div>
               </div>
             )
           })}
 
-          {/* Typing Indicator Bubble */}
           {isTyping && (
-            <div className="flex flex-col items-start animate-fade-in">
-              <div
-                className={cn(
-                  'flex items-center gap-2 rounded-2xl rounded-tl-xs border px-3.5 py-2.5 text-xs shadow-sm',
-                  currentTheme.botBubbleBg,
-                  currentTheme.botBubbleBorder,
-                  currentTheme.botBubbleText,
-                )}
-              >
-                {/* 3 Animated Bouncing Dots */}
+            <div className="animate-settle-soft mb-3 flex flex-col items-start">
+              <div className="flex items-center gap-2 rounded-md border border-border bg-secondary/50 px-3.5 py-2.5">
                 <div className="flex items-center gap-1">
-                  <span
-                    className="size-1.5 rounded-full animate-companion-dot-1"
-                    style={{ backgroundColor: currentTheme.accentColor }}
-                  />
-                  <span
-                    className="size-1.5 rounded-full animate-companion-dot-2"
-                    style={{ backgroundColor: currentTheme.accentColor }}
-                  />
-                  <span
-                    className="size-1.5 rounded-full animate-companion-dot-3"
-                    style={{ backgroundColor: currentTheme.accentColor }}
-                  />
+                  <span className="size-1.5 rounded-full bg-primary animate-companion-dot-1" />
+                  <span className="size-1.5 rounded-full bg-primary animate-companion-dot-2" />
+                  <span className="size-1.5 rounded-full bg-primary animate-companion-dot-3" />
                 </div>
-                <span className="font-mono text-[10px] text-muted-foreground">
-                  {currentTheme.typingLabel}
-                </span>
+                <span className="text-xs text-muted-foreground">{currentTheme.typingLabel}</span>
               </div>
             </div>
           )}
@@ -670,15 +457,12 @@ export function AiCompanion() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* ==================================================================
-            FOOTER: Suggestion Chips & Text Input
-            ================================================================== */}
-        <footer className="relative z-10 shrink-0 border-t border-border/70 bg-card/50 p-2.5 backdrop-blur-md">
-          {/* Quick Suggestion Chips (Swipeable horizontally, accessible touch target) */}
-          <div className="mb-2 flex items-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden overscroll-x-contain">
-            <span className="shrink-0 flex items-center gap-1 pl-0.5 text-[10px] font-mono text-muted-foreground/80">
-              <Sparkles className="size-2.5" style={{ color: currentTheme.accentColor }} />
-              <span>PROMPTS:</span>
+        {/* Suggestions + input */}
+        <footer className="shrink-0 border-t border-border bg-secondary/30 p-2.5">
+          <div className="mb-2 flex items-center gap-1.5 overflow-x-auto pb-1 overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <span className="marginalia flex shrink-0 items-center gap-1 pl-0.5 text-base leading-none">
+              <Sparkles className="size-3" />
+              try:
             </span>
 
             {activeChar.suggestions.map((suggestion, idx) => (
@@ -689,8 +473,8 @@ export function AiCompanion() {
                 disabled={isTyping}
                 aria-label={`Ask: ${suggestion}`}
                 className={cn(
-                  'relative shrink-0 rounded-full border border-border/80 bg-secondary/50 px-3 sm:px-2.5 py-1.5 sm:py-1 min-h-[36px] sm:min-h-[28px] font-mono text-[11px] sm:text-[10px] text-muted-foreground flex items-center touch-target-expand',
-                  'transition-all hover:bg-secondary hover:text-foreground active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
+                  'min-h-[36px] shrink-0 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground',
+                  'transition-colors hover:border-primary/50 hover:text-foreground active:scale-95 disabled:opacity-50 disabled:pointer-events-none touch-target-expand',
                 )}
               >
                 {suggestion}
@@ -698,7 +482,6 @@ export function AiCompanion() {
             ))}
           </div>
 
-          {/* Text Input Row (>=16px on mobile prevents iOS zoom-on-focus) */}
           <form
             onSubmit={(e) => {
               e.preventDefault()
@@ -706,7 +489,7 @@ export function AiCompanion() {
             }}
             className="flex items-center gap-2"
           >
-            <div className="relative flex-1 min-w-0">
+            <div className="relative min-w-0 flex-1">
               <input
                 ref={inputRef}
                 type="text"
@@ -716,31 +499,23 @@ export function AiCompanion() {
                 disabled={isTyping}
                 aria-label={`Message ${activeChar.name}`}
                 className={cn(
-                  'w-full rounded-xl border border-border/80 bg-background/80 px-3.5 py-2.5 sm:py-2 text-base sm:text-xs text-foreground placeholder:text-muted-foreground/60 placeholder:text-xs leading-normal',
-                  'transition-colors focus:border-cyan-500/80 focus:bg-background focus:outline-none focus:ring-1 focus:ring-cyan-500/50',
+                  'w-full rounded-md border border-border bg-card px-3.5 py-2.5 text-base text-foreground leading-normal sm:py-2 sm:text-[13px]',
+                  'transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/40',
                   'disabled:opacity-60',
                 )}
               />
             </div>
 
-            {/* Send Button (>=44px touch target on mobile) */}
             <button
               type="submit"
               disabled={!inputValue.trim() || isTyping}
-              aria-label="Send message to AI companion"
+              aria-label="Send message"
               className={cn(
-                'inline-flex size-11 sm:size-9 shrink-0 items-center justify-center rounded-xl border transition-all duration-200',
+                'inline-flex size-11 shrink-0 items-center justify-center rounded-md border transition-all duration-200 sm:size-9',
                 inputValue.trim() && !isTyping
-                  ? 'border-transparent text-black shadow-md hover:scale-105 active:scale-95'
-                  : 'border-border/60 bg-secondary/40 text-muted-foreground opacity-40 cursor-not-allowed',
+                  ? 'border-transparent bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95'
+                  : 'border-border bg-secondary/50 text-muted-foreground opacity-50 cursor-not-allowed',
               )}
-              style={{
-                backgroundColor: inputValue.trim() && !isTyping ? currentTheme.accentColor : undefined,
-                boxShadow:
-                  inputValue.trim() && !isTyping
-                    ? `0 0 14px -2px ${currentTheme.glowColor}`
-                    : undefined,
-              }}
             >
               <SendHorizonal className="size-4" />
             </button>
