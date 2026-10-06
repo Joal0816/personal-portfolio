@@ -102,7 +102,7 @@ export function About() {
                         {exp.tags.map((tag) => (
                           <li
                             key={tag}
-                            className="rounded-sm border border-border bg-secondary/60 px-2 py-0.5 text-xs text-secondary-foreground"
+                            className="rounded-full border border-border/80 bg-secondary/80 px-2.5 py-1 text-xs text-foreground font-medium"
                           >
                             {tag}
                           </li>

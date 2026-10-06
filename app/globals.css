@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-schibsted), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bricolage), var(--font-schibsted), ui-sans-serif, sans-serif;
-  --font-note: var(--font-caveat), var(--font-schibsted), cursive;
-  --font-mono: var(--font-spline-mono), ui-monospace, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-note: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --font-mono: "SF Mono", Menlo, Monaco, Consolas, ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -62,47 +62,45 @@
    ========================================================================== */
 :root {
   color-scheme: light;
-  --background: oklch(0.945 0.012 120);
-  --foreground: oklch(0.255 0.017 250);
-  --card: oklch(0.985 0.006 115);
-  --card-foreground: oklch(0.255 0.017 250);
-  --popover: oklch(0.985 0.006 115);
-  --popover-foreground: oklch(0.255 0.017 250);
-  --primary: oklch(0.435 0.135 25);
-  --primary-foreground: oklch(0.975 0.008 115);
-  --cloth: oklch(0.3 0.095 25);
-  --cloth-foreground: oklch(0.975 0.008 115);
-  --secondary: oklch(0.905 0.015 118);
-  --secondary-foreground: oklch(0.275 0.017 250);
-  --muted: oklch(0.912 0.013 118);
-  --muted-foreground: oklch(0.445 0.018 250);
-  --accent: oklch(0.875 0.032 85);
-  --accent-foreground: oklch(0.28 0.03 60);
-  --destructive: oklch(0.52 0.19 27);
-  --border: oklch(0.822 0.014 118);
-  --input: oklch(0.795 0.016 118);
-  --ring: oklch(0.435 0.135 25);
-  --chart-1: oklch(0.435 0.135 25);
-  --chart-2: oklch(0.72 0.115 85);
-  --chart-3: oklch(0.52 0.05 130);
-  --chart-4: oklch(0.55 0.09 45);
-  --chart-5: oklch(0.4 0.02 250);
-  --foil: oklch(0.75 0.115 85);
-  --tape: oklch(0.885 0.036 85);
-  --graphite: oklch(0.445 0.018 250);
-  /* Handwriting ink: the graphite family pressed harder so thin Caveat
-     strokes keep their mass on paper (measured ≥4.5:1 stroke contrast) */
-  --hand: oklch(0.3 0.018 250);
-  --olive: oklch(0.52 0.05 130);
-  --radius: 0.375rem;
-  --sidebar: oklch(0.945 0.012 120);
-  --sidebar-foreground: oklch(0.255 0.017 250);
-  --sidebar-primary: oklch(0.435 0.135 25);
-  --sidebar-primary-foreground: oklch(0.975 0.008 115);
-  --sidebar-accent: oklch(0.875 0.032 85);
-  --sidebar-accent-foreground: oklch(0.28 0.03 60);
-  --sidebar-border: oklch(0.822 0.014 118);
-  --sidebar-ring: oklch(0.435 0.135 25);
+  --background: #f5f5f7;
+  --foreground: #1d1d1f;
+  --card: rgba(255, 255, 255, 0.85);
+  --card-foreground: #1d1d1f;
+  --popover: rgba(255, 255, 255, 0.95);
+  --popover-foreground: #1d1d1f;
+  --primary: #0071e3;
+  --primary-foreground: #ffffff;
+  --cloth: #1d1d1f;
+  --cloth-foreground: #f5f5f7;
+  --secondary: #e8e8ed;
+  --secondary-foreground: #1d1d1f;
+  --muted: #e5e5ea;
+  --muted-foreground: #86868b;
+  --accent: #e8f2fe;
+  --accent-foreground: #0071e3;
+  --destructive: #ff3b30;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: rgba(0, 0, 0, 0.06);
+  --ring: #0071e3;
+  --chart-1: #0071e3;
+  --chart-2: #34c759;
+  --chart-3: #ff9500;
+  --chart-4: #af52de;
+  --chart-5: #5856d6;
+  --foil: #f5f5f7;
+  --tape: rgba(0, 0, 0, 0.05);
+  --graphite: #86868b;
+  --hand: #1d1d1f;
+  --olive: #34c759;
+  --radius: 0.875rem;
+  --sidebar: #f5f5f7;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-primary: #0071e3;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8f2fe;
+  --sidebar-accent-foreground: #0071e3;
+  --sidebar-border: rgba(0, 0, 0, 0.08);
+  --sidebar-ring: #0071e3;
 }
 
 /* ==========================================================================
@@ -111,44 +109,44 @@
    ========================================================================== */
 .dark {
   color-scheme: dark;
-  --background: oklch(0.215 0.016 252);
-  --foreground: oklch(0.93 0.011 115);
-  --card: oklch(0.262 0.018 252);
-  --card-foreground: oklch(0.93 0.011 115);
-  --popover: oklch(0.262 0.018 252);
-  --popover-foreground: oklch(0.93 0.011 115);
-  --primary: oklch(0.65 0.115 28);
-  --primary-foreground: oklch(0.185 0.015 252);
-  --cloth: oklch(0.26 0.085 25);
-  --cloth-foreground: oklch(0.975 0.008 115);
-  --secondary: oklch(0.315 0.018 252);
-  --secondary-foreground: oklch(0.93 0.011 115);
-  --muted: oklch(0.305 0.016 252);
-  --muted-foreground: oklch(0.735 0.014 250);
-  --accent: oklch(0.42 0.045 80);
-  --accent-foreground: oklch(0.93 0.02 100);
-  --destructive: oklch(0.7 0.16 25);
-  --border: oklch(0.36 0.018 252);
-  --input: oklch(0.4 0.018 252);
-  --ring: oklch(0.65 0.115 28);
-  --chart-1: oklch(0.65 0.115 28);
-  --chart-2: oklch(0.8 0.11 85);
-  --chart-3: oklch(0.66 0.05 130);
-  --chart-4: oklch(0.68 0.08 45);
-  --chart-5: oklch(0.6 0.02 250);
-  --foil: oklch(0.8 0.11 85);
-  --tape: oklch(0.45 0.032 80);
-  --graphite: oklch(0.735 0.014 250);
-  --hand: oklch(0.82 0.018 250);
-  --olive: oklch(0.66 0.05 130);
-  --sidebar: oklch(0.262 0.018 252);
-  --sidebar-foreground: oklch(0.93 0.011 115);
-  --sidebar-primary: oklch(0.65 0.115 28);
-  --sidebar-primary-foreground: oklch(0.185 0.015 252);
-  --sidebar-accent: oklch(0.42 0.045 80);
-  --sidebar-accent-foreground: oklch(0.93 0.02 100);
-  --sidebar-border: oklch(0.36 0.018 252);
-  --sidebar-ring: oklch(0.68 0.125 32);
+  --background: #000000;
+  --foreground: #f5f5f7;
+  --card: rgba(28, 28, 30, 0.85);
+  --card-foreground: #f5f5f7;
+  --popover: rgba(28, 28, 30, 0.95);
+  --popover-foreground: #f5f5f7;
+  --primary: #2997ff;
+  --primary-foreground: #ffffff;
+  --cloth: #1c1c1e;
+  --cloth-foreground: #f5f5f7;
+  --secondary: #2c2c2e;
+  --secondary-foreground: #f5f5f7;
+  --muted: #2c2c2e;
+  --muted-foreground: #86868b;
+  --accent: rgba(41, 151, 255, 0.15);
+  --accent-foreground: #2997ff;
+  --destructive: #ff453a;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #2997ff;
+  --chart-1: #2997ff;
+  --chart-2: #30d158;
+  --chart-3: #ff9f0a;
+  --chart-4: #bf5af2;
+  --chart-5: #5e5ce6;
+  --foil: #1c1c1e;
+  --tape: rgba(255, 255, 255, 0.05);
+  --graphite: #86868b;
+  --hand: #f5f5f7;
+  --olive: #30d158;
+  --sidebar: #1c1c1e;
+  --sidebar-foreground: #f5f5f7;
+  --sidebar-primary: #2997ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(41, 151, 255, 0.15);
+  --sidebar-accent-foreground: #2997ff;
+  --sidebar-border: rgba(255, 255, 255, 0.12);
+  --sidebar-ring: #2997ff;
 }
 
 @layer base {
@@ -759,4 +757,56 @@
   content: ']';
   color: #06b6d4;
   margin-left: 2px;
+}
+
+
+/* ==========================================================================
+   APPLE HIG LIQUID GLASS & SQUIRCLE UTILITIES
+   ========================================================================== */
+.glass-material {
+  background: var(--card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+.glass-nav {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark .glass-nav {
+  background: rgba(20, 20, 22, 0.75);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.apple-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.apple-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+}
+
+.dark .apple-card {
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.35);
+}
+
+.dark .apple-card:hover {
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+}
+
+.apple-pill {
+  border-radius: 9999px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }

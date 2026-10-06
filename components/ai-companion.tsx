@@ -278,32 +278,30 @@ export function AiCompanion() {
           </aside>
         )}
 
-        {/* Launcher button */}
+        {/* Apple Dynamic Island / Siri style launcher */}
         <button
           type="button"
           onClick={() => setIsOpen(true)}
           aria-label="Open the chat with Joal and his cats"
           aria-expanded={isOpen}
           className={cn(
-            'photo-print group relative flex size-16 items-center justify-center rounded-md p-1.5',
-            'transition-all duration-300 hover:-translate-y-0.5 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+            'group relative flex size-14 items-center justify-center rounded-full p-1',
+            'bg-card/90 border border-border/80 backdrop-blur-2xl shadow-xl transition-all duration-300',
+            'hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
           )}
         >
-          <span
-            aria-hidden
-            className="tape absolute -top-2 left-1/2 h-4 w-12 -translate-x-1/2 rounded-[2px] [transform:rotate(-2deg)]"
-          />
-          <div className="relative size-full overflow-hidden rounded-[2px]">
+          <div className="relative size-full overflow-hidden rounded-full border border-white/20">
             <img
               src={activeChar.photo}
               alt={activeChar.name}
               className={cn(
-                'size-full object-cover transition-transform duration-300 group-hover:scale-105',
+                'size-full object-cover transition-transform duration-300 group-hover:scale-110',
                 (activeId === 'rera' || activeId === 'area') && 'animate-companion-blink',
               )}
               style={{ objectPosition: currentTheme.avatarCrop }}
             />
           </div>
+          <span className="absolute bottom-0 right-0 size-3.5 rounded-full bg-emerald-500 border-2 border-card" />
         </button>
       </div>
 
@@ -423,10 +421,10 @@ export function AiCompanion() {
               >
                 <div
                   className={cn(
-                    'max-w-[85%] rounded-md px-3.5 py-2.5 text-[13px] leading-relaxed shadow-[0_1px_1px_color-mix(in_oklch,var(--graphite)_12%,transparent)]',
+                    'max-w-[85%] rounded-[18px] px-4 py-2.5 text-[14px] leading-relaxed select-text',
                     isBot
-                      ? 'border border-border bg-secondary/50 text-foreground'
-                      : 'bg-primary text-primary-foreground',
+                      ? 'bg-secondary/70 text-foreground rounded-bl-[4px] border border-border/60 backdrop-blur-md'
+                      : 'bg-[#007aff] text-white rounded-br-[4px] shadow-xs shadow-blue-500/20',
                   )}
                 >
                   <p className="whitespace-pre-line break-words">{msg.text}</p>

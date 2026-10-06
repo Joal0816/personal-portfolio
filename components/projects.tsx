@@ -110,8 +110,8 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="relative border-t border-border bg-secondary/25">
-      <div className="quadrille pointer-events-none absolute inset-0 opacity-40 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]" />
+    <section id="projects" className="relative border-t border-border bg-transparent py-12 md:py-20">
+      <div className="pointer-events-none absolute inset-0 opacity-0 [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]" />
 
       <div className="relative mx-auto max-w-6xl px-5 pt-14 pb-12 sm:px-8 md:pt-18 md:pb-14">
         {/* Header */}

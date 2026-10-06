@@ -87,7 +87,7 @@ export function Certifications() {
             {/* Track filter — index tabs */}
             <Reveal delay={60}>
               <div
-                className="scroll-strip mt-9 flex border-b border-border"
+                className="scroll-strip mt-8 flex items-center gap-1.5 p-1 rounded-full bg-secondary/60 border border-border/60 max-w-fit"
                 role="tablist"
                 aria-label="Filter certificates by track"
               >
@@ -107,10 +107,10 @@ export function Certifications() {
                       data-active={isActive}
                       onClick={() => setActiveTrack(track.id as TrackFilter)}
                       className={cn(
-                        'index-tab min-h-[42px] shrink-0 whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
+                        'min-h-[34px] shrink-0 whitespace-nowrap rounded-full px-4 py-1.5 text-xs font-medium transition-all select-none',
                         isActive
-                          ? 'text-primary font-semibold'
-                          : 'text-muted-foreground hover:text-foreground',
+                          ? 'bg-card text-foreground shadow-xs font-semibold'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-card/40',
                       )}
                     >
                       {track.label}
@@ -127,7 +127,7 @@ export function Certifications() {
                   <button
                     type="button"
                     onClick={() => setSelected(cert)}
-                    className="group flex w-full flex-col gap-2 border-b border-border py-5 text-left transition-colors hover:bg-card/70 sm:grid sm:grid-cols-[7.5rem_1fr_auto] sm:items-baseline sm:gap-x-4 sm:gap-y-1"
+                    className="group flex w-full flex-col gap-2 border-b border-border/60 py-4 px-3 rounded-xl text-left transition-all hover:bg-card/90 sm:grid sm:grid-cols-[7.5rem_1fr_auto] sm:items-center sm:gap-x-4 sm:gap-y-1"
                   >
                     <span className="meta">{cert.date}</span>
 

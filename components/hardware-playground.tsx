@@ -231,9 +231,9 @@ export function HardwarePlayground() {
         </div>
       </div>
 
-      {/* Tabs */}
+      {/* Apple Segmented Control Tabs */}
       <div
-        className="scroll-strip flex border-b border-border px-2 pt-1 sm:px-4"
+        className="scroll-strip flex items-center gap-1 border-b border-border/60 bg-secondary/40 p-1.5 sm:px-3"
         role="tablist"
         aria-label="Bench tools"
       >
@@ -255,10 +255,10 @@ export function HardwarePlayground() {
               data-active={isActive}
               onClick={() => setActiveTab(tab.id as PlaygroundTab)}
               className={cn(
-                'index-tab flex min-h-[42px] shrink-0 items-center gap-1.5 whitespace-nowrap px-3.5 py-2 text-[13px] transition-colors',
+                'flex min-h-[36px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all select-none',
                 isActive
-                  ? 'text-primary font-semibold'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'bg-card text-foreground shadow-xs font-semibold'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-card/40'
               )}
             >
               <Icon className="size-3.5" />

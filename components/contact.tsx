@@ -239,7 +239,7 @@ export function Contact() {
                       If nothing happened, you can open Gmail instead or copy the
                       message and send it yourself.
                     </p>
-                    <div className="flex flex-wrap gap-2 pt-1">
+                    <div className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-secondary/60 border border-border/60 max-w-fit">
                       <a
                         href={profile.socials.gmailInstitutional}
                         target="_blank"
