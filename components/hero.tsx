@@ -10,22 +10,22 @@ import { HardwarePlayground } from '@/components/hardware-playground'
 export function Hero() {
   return (
     <section id="top" className="relative overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24">
-      {/* iOS 18 Ambient Aurora Diffuse Glow */}
-      <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 size-[52rem] rounded-full opacity-35 dark:opacity-25 blur-3xl [background:radial-gradient(circle,#0071e3_0%,#34c759_30%,transparent_70%)]" />
+      {/* iOS 26 Apple Intelligence Volumetric Aurora */}
+      <div className="pointer-events-none absolute -top-48 left-1/2 -translate-x-1/2 size-[54rem] rounded-full opacity-40 dark:opacity-30 blur-3xl [background:radial-gradient(circle_at_center,#0071e3_0%,#af52de_35%,#34c759_65%,transparent_75%)] animate-pulse duration-[10000ms]" />
 
       <div className="relative mx-auto w-full max-w-6xl px-5 sm:px-8">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 items-center">
-          {/* Left Column: Keynote Studio Showcase */}
+          {/* Left Column: VisionOS Keynote Studio Showcase */}
           <div className="min-w-0">
-            {/* iOS 18 Status Chip */}
-            <div className="inline-flex items-center gap-2 rounded-full ios-island px-3.5 py-1 text-xs font-medium text-foreground mb-6">
+            {/* Apple Intelligence Luminous Chip */}
+            <div className="inline-flex items-center gap-2 rounded-full spatial-island ai-halo px-4 py-1.5 text-xs font-medium text-foreground mb-6">
               <span className="flex size-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>BS Computer Applications (Major in Embedded Systems)</span>
             </div>
 
             <div className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8 mb-6">
-              {/* Apple Squircle Portrait Frame with Specular Highlight */}
-              <div className="relative size-28 sm:size-32 shrink-0 rounded-[28px] overflow-hidden p-1 bg-gradient-to-b from-white/90 to-white/20 dark:from-white/25 dark:to-white/5 shadow-xl border border-white/40 dark:border-white/10">
+              {/* VisionOS Volumetric Portrait Frame with Chromatic Rim */}
+              <div className="relative size-28 sm:size-32 shrink-0 rounded-[30px] overflow-hidden p-1.5 ai-halo bg-gradient-to-b from-white/90 via-white/40 to-transparent dark:from-white/30 dark:via-white/10 dark:to-transparent shadow-2xl border border-white/50 dark:border-white/20">
                 <div className="relative size-full rounded-[24px] overflow-hidden">
                   <Image
                     src="/profile.jpg"
@@ -50,16 +50,16 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Tagline */}
+            {/* Subtitle / Tagline */}
             <p className="text-lg sm:text-xl font-normal text-muted-foreground leading-relaxed max-w-xl">
               I write the software that lives directly on hardware — firmware, real-time systems, and small AI models that run without the cloud.
             </p>
 
-            {/* iOS 18 Fluid Action Group */}
+            {/* iOS 26 Holographic Action Controls */}
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="#projects"
-                className="ios-btn-primary px-6 py-3 text-sm shadow-md"
+                className="ios-btn-primary ai-halo px-6 py-3 text-sm shadow-lg"
               >
                 <span>Explore Work</span>
                 <ChevronRight className="size-4" />
@@ -94,7 +94,7 @@ export function Hero() {
               </a>
             </div>
 
-            {/* Quick Metrics / Silicon chips summary */}
+            {/* Silicon Metrics Cards */}
             <div className="mt-10 grid grid-cols-3 gap-3 max-w-lg border-t border-border/80 pt-6">
               <div>
                 <span className="block text-2xl font-bold tracking-tight text-foreground">1.96</span>
@@ -111,9 +111,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Right Column: macOS Instruments Window Preview */}
+          {/* Right Column: VisionOS Spatial Instruments Bench */}
           <div className="relative min-w-0">
-            <div className="ios-card p-2 sm:p-3 overflow-hidden">
+            <div className="spatial-glass ai-halo p-2 sm:p-3 overflow-hidden">
               {/* Traffic Lights Titlebar */}
               <div className="flex items-center justify-between px-3 py-2 border-b border-border/60">
                 <div className="flex items-center gap-2">
@@ -127,7 +127,7 @@ export function Hero() {
                 <div className="flex items-center gap-1">
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-500">
                     <span className="size-1.5 rounded-full bg-emerald-500" />
-                    ACTIVE
+                    ONLINE
                   </span>
                 </div>
               </div>
@@ -140,7 +140,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Telemetry anchor & The bench heading for navigation integrity */}
+        {/* Telemetry anchor & The bench heading */}
         <div id="telemetry" className="mt-16 scroll-mt-24 border-t border-border/80 pt-12 md:mt-24">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between mb-8">
             <div>

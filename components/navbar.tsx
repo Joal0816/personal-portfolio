@@ -79,12 +79,12 @@ export function Navbar() {
   return (
     <header className="fixed top-0 inset-x-0 z-40 transition-all duration-300 pointer-events-none py-3 sm:py-4">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6">
-        {/* iOS 18 Dynamic Island Brand Pill */}
+        {/* iOS 26 Spatial Dynamic Island Brand Pill */}
         <a
           href="#top"
-          className="pointer-events-auto group flex items-center gap-2.5 rounded-full ios-island px-3 py-1.5 shadow-sm hover:scale-[1.02] active:scale-95 transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="pointer-events-auto group flex items-center gap-2.5 spatial-island ai-halo px-3.5 py-1.5 shadow-sm hover:scale-[1.03] active:scale-95 transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <div className="flex size-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#0071e3] to-[#42a5f5] text-white font-bold text-xs shadow-xs">
+          <div className="flex size-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#0071e3] via-[#af52de] to-[#34c759] text-white font-bold text-xs shadow-xs animate-pulse">
             J
           </div>
           <div className="flex flex-col pr-1">
@@ -97,10 +97,10 @@ export function Navbar() {
           </div>
         </a>
 
-        {/* macOS Sequoia Floating Segmented Control */}
+        {/* Spatial Segmented Navigation Bar */}
         <nav
           aria-label="Primary"
-          className="pointer-events-auto hidden md:flex items-center gap-1 p-1 ios-island shadow-md"
+          className="pointer-events-auto hidden md:flex items-center gap-1 p-1 spatial-island shadow-md"
         >
           {navLinks.map((link) => {
             const isActive = active === link.href
@@ -111,7 +111,7 @@ export function Navbar() {
                 className={cn(
                   'relative rounded-full px-3.5 py-1 text-xs font-medium transition-all duration-200 select-none',
                   isActive
-                    ? 'bg-card text-foreground shadow-xs font-semibold'
+                    ? 'bg-card text-foreground shadow-xs font-semibold ai-halo'
                     : 'text-muted-foreground hover:text-foreground hover:bg-card/40'
                 )}
               >
@@ -127,13 +127,13 @@ export function Navbar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full ios-island px-3.5 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 transition-all active:scale-95"
+            className="hidden sm:inline-flex items-center gap-1.5 spatial-island px-3.5 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 transition-all active:scale-95"
           >
             <FileDown className="size-3.5 text-primary" />
             <span>CV</span>
           </a>
 
-          <div className="ios-island p-1">
+          <div className="spatial-island p-1">
             <ThemeToggle />
           </div>
 
@@ -144,19 +144,19 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="md:hidden flex size-9 items-center justify-center rounded-full ios-island text-foreground active:scale-95"
+            className="md:hidden flex size-9 items-center justify-center spatial-island text-foreground active:scale-95"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
         </div>
       </div>
 
-      {/* iOS 18 Sheet Modal Drawer */}
+      {/* iOS 26 Sheet Modal Drawer */}
       <div
         ref={panelRef}
         aria-hidden={!open}
         className={cn(
-          'pointer-events-auto md:hidden fixed inset-x-4 top-16 z-50 rounded-3xl ios-card p-5 shadow-2xl border border-border transition-all duration-300',
+          'pointer-events-auto md:hidden fixed inset-x-4 top-16 z-50 spatial-glass p-5 shadow-2xl border border-border transition-all duration-300',
           open
             ? 'opacity-100 scale-100 pointer-events-auto'
             : 'opacity-0 scale-95 pointer-events-none hidden'
@@ -178,7 +178,7 @@ export function Navbar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-2 ios-btn-primary py-3 text-sm font-semibold"
+            className="mt-2 ios-btn-primary py-3 text-sm font-semibold ai-halo"
           >
             <FileDown className="size-4" />
             <span>Download Résumé</span>
