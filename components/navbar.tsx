@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { Menu, X, FileDown } from 'lucide-react'
+import { Menu, X, FileDown, Sparkles } from 'lucide-react'
 import { navLinks } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
@@ -23,7 +23,7 @@ export function Navbar() {
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 16)
+          setScrolled(window.scrollY > 20)
           if (window.scrollY < 200) setActive('')
           ticking = false
         })
@@ -77,37 +77,30 @@ export function Navbar() {
   }, [open])
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 inset-x-0 z-40 transition-all duration-300',
-        scrolled
-          ? 'glass-nav shadow-[0_4px_24px_rgba(0,0,0,0.04)] py-2 sm:py-2.5'
-          : 'bg-transparent py-4'
-      )}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 sm:px-8">
-        {/* macOS Brand Icon & Title */}
+    <header className="fixed top-0 inset-x-0 z-40 transition-all duration-300 pointer-events-none py-3 sm:py-4">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 sm:px-6">
+        {/* iOS 18 Dynamic Island Brand Pill */}
         <a
           href="#top"
-          className="group flex items-center gap-2.5 select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl px-1.5 py-1"
+          className="pointer-events-auto group flex items-center gap-2.5 rounded-full ios-island px-3 py-1.5 shadow-sm hover:scale-[1.02] active:scale-95 transition-all select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-xs shadow-sm shadow-primary/20">
+          <div className="flex size-7 items-center justify-center rounded-full bg-gradient-to-tr from-[#0071e3] to-[#42a5f5] text-white font-bold text-xs shadow-xs">
             J
           </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-sm tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <div className="flex flex-col pr-1">
+            <span className="font-semibold text-xs tracking-tight text-foreground group-hover:text-primary transition-colors">
               Joseph Vergara
             </span>
-            <span className="text-[11px] text-muted-foreground tracking-normal -mt-0.5">
+            <span className="text-[10px] text-muted-foreground tracking-normal -mt-0.5">
               Embedded &amp; Edge AI
             </span>
           </div>
         </a>
 
-        {/* macOS Floating Segmented Navigation Bar */}
+        {/* macOS Sequoia Floating Segmented Control */}
         <nav
           aria-label="Primary"
-          className="flex items-center gap-1 rounded-full p-1 bg-secondary/80 border border-border/80 backdrop-blur-xl shadow-inner max-md:hidden"
+          className="pointer-events-auto hidden md:flex items-center gap-1 p-1 ios-island shadow-md"
         >
           {navLinks.map((link) => {
             const isActive = active === link.href
@@ -116,10 +109,10 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'relative rounded-full px-4 py-1.5 text-[13px] font-medium transition-all duration-200 select-none',
+                  'relative rounded-full px-3.5 py-1 text-xs font-medium transition-all duration-200 select-none',
                   isActive
-                    ? 'bg-card text-foreground shadow-sm font-semibold'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-card/50'
+                    ? 'bg-card text-foreground shadow-xs font-semibold'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-card/40'
                 )}
               >
                 {link.label}
@@ -128,19 +121,21 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        {/* Action Controls Island */}
+        <div className="pointer-events-auto flex items-center gap-2">
           <a
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-border/80 bg-card/80 px-3.5 py-1.5 text-xs font-medium text-foreground hover:bg-card hover:border-primary/40 shadow-sm transition-all active:scale-95"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full ios-island px-3.5 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 transition-all active:scale-95"
           >
             <FileDown className="size-3.5 text-primary" />
-            <span>Résumé</span>
+            <span>CV</span>
           </a>
 
-          <ThemeToggle />
+          <div className="ios-island p-1">
+            <ThemeToggle />
+          </div>
 
           {/* Mobile Menu Toggle Button */}
           <button
@@ -149,31 +144,31 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="md:hidden flex size-9 items-center justify-center rounded-full bg-secondary/80 text-foreground border border-border/80"
+            className="md:hidden flex size-9 items-center justify-center rounded-full ios-island text-foreground active:scale-95"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* iOS 18 Sheet Modal Drawer */}
       <div
         ref={panelRef}
         aria-hidden={!open}
         className={cn(
-          'md:hidden fixed inset-x-4 top-16 z-50 rounded-2xl glass-material p-5 shadow-2xl border border-border transition-all duration-200',
+          'pointer-events-auto md:hidden fixed inset-x-4 top-16 z-50 rounded-3xl ios-card p-5 shadow-2xl border border-border transition-all duration-300',
           open
             ? 'opacity-100 scale-100 pointer-events-auto'
             : 'opacity-0 scale-95 pointer-events-none hidden'
         )}
       >
-        <nav className="flex flex-col gap-1.5">
+        <nav className="flex flex-col gap-2">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium text-foreground hover:bg-secondary/60 transition-colors"
+              className="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium text-foreground hover:bg-secondary/70 transition-colors"
             >
               <span>{link.label}</span>
               <span className="text-xs text-muted-foreground">→</span>
@@ -183,7 +178,7 @@ export function Navbar() {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground py-3 text-sm font-semibold shadow-md shadow-primary/20"
+            className="mt-2 ios-btn-primary py-3 text-sm font-semibold"
           >
             <FileDown className="size-4" />
             <span>Download Résumé</span>
@@ -191,7 +186,7 @@ export function Navbar() {
         </nav>
       </div>
 
-      {/* Hidden semantic links for mobile crawl & accessibility */}
+      {/* Semantic hidden links for accessibility tests */}
       <div className="sr-only md:hidden">
         {navLinks.map((link) => (
           <a key={`sr-${link.href}`} href={link.href}>

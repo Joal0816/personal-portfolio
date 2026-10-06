@@ -1,13 +1,9 @@
-# Plan & Todo List: Impeccable Audit & iOS/macOS Visual Redesign
+# Todo: Latest iOS 18+ / macOS Sequoia Design System Update & Deployment
 
-## Tasks
-- [x] Task 1: Audit current codebase against Impeccable standards (A11y, Performance, Theming, Responsive, Integrity)
-- [ ] Task 2: Architecture & Tokens (`app/globals.css`): Implement Apple Human Interface Guidelines / iOS / macOS visual world tokens (SF-style typography, liquid glass / acrylic materials, Cupertino segmented controls, SF rounded cards, San Francisco system accents)
-- [ ] Task 3: App Shell, Navigation & Dock (`components/navbar.tsx`, `app/layout.tsx`): Implement macOS translucent glass menu bar + iOS dynamic pill dock
-- [ ] Task 4: Hero Section (`components/hero.tsx`): Redesign into an Apple Cupertino Keynote / Product Studio showcase
-- [ ] Task 5: The Bench / Hardware Playground (`components/hardware-playground.tsx`): Redesign into macOS Activity Monitor / Xcode Instruments style inspector
-- [ ] Task 6: Projects & Modal (`components/projects.tsx`, `components/project-modal.tsx`): Redesign into iOS App Store card deck & macOS Finder detail modal
-- [ ] Task 7: Certifications & About (`components/certifications.tsx`, `components/about.tsx`): Redesign into Apple Wallet / PassKit style credential cards and System Settings profile
-- [ ] Task 8: Contact & Footer (`components/contact.tsx`, `components/footer.tsx`): Redesign into Mail.app / Messages composer layout
-- [ ] Task 9: AI Companion & Comparison Slider (`components/ai-companion.tsx`, `components/site-view-wrapper.tsx`): Restyle chat into native iOS iMessage / Siri bubble interface; keep V1/V2 peel slider intact
-- [ ] Task 10: Playwright Verification & Production Deployment: Run tests across desktop and mobile, then deploy live to Vercel
+- [ ] 1. Architecture & Tokens: Implement latest iOS 18+ glass materials (continuous squircle geometry, refined specular highlight borders, iOS 18 tinted control center accents, ultra-thin vibrancy materials)
+- [ ] 2. Dynamic Island & Menu Bar: Upgrade Navbar into an adaptive Dynamic Island / Floating Sequoia glass pill with refined spring states
+- [ ] 3. Keynote Studio Hero: Update Hero into latest iOS 18 Keynote card architecture with native depth and fluid action buttons
+- [ ] 4. Interactive Bench & Controls: Refine Instruments Bench with genuine iOS 18 segmented sliders, tactile haptic taps, and clean telemetry gauges
+- [ ] 5. App Store Cards & Wallet Passes: Upgrade Projects and Certifications into authentic iOS 18 App Store editorial cards & Apple Wallet passbook layout
+- [ ] 6. Verification: Run Next.js production build and full Playwright automated test suite across all mobile and desktop viewports
+- [ ] 7. Commit & Live Deploy: Commit changes cleanly and deploy to production Vercel

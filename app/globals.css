@@ -810,3 +810,120 @@
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
+
+
+/* ==========================================================================
+   LATEST APPLE iOS 18 / macOS SEQUOIA VIBRANCY & SQUIRCLE TOKENS
+   ========================================================================== */
+
+:root {
+  --ios-glass-bg: rgba(255, 255, 255, 0.72);
+  --ios-glass-border: rgba(0, 0, 0, 0.08);
+  --ios-glass-highlight: rgba(255, 255, 255, 0.85);
+  --ios-card-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.03);
+  --ios-card-hover: 0 16px 40px -6px rgba(0, 0, 0, 0.08), 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+  --ios-tint: #0071e3;
+  --ios-secondary-tint: #34c759;
+}
+
+.dark {
+  --ios-glass-bg: rgba(26, 26, 30, 0.72);
+  --ios-glass-border: rgba(255, 255, 255, 0.12);
+  --ios-glass-highlight: rgba(255, 255, 255, 0.18);
+  --ios-card-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.45), 0 2px 8px -2px rgba(0, 0, 0, 0.25);
+  --ios-card-hover: 0 18px 48px -6px rgba(0, 0, 0, 0.65), 0 6px 20px -2px rgba(0, 0, 0, 0.35);
+  --ios-tint: #2997ff;
+  --ios-secondary-tint: #30d158;
+}
+
+/* iOS 18 Continuous Squircle Glass Surface */
+.ios-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--ios-card-shadow);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+}
+
+.ios-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--ios-glass-highlight), transparent 60%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.ios-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ios-card-hover);
+}
+
+/* Dynamic Island Floating Pill */
+.ios-island {
+  background: var(--ios-glass-bg);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid var(--ios-glass-border);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px var(--ios-glass-highlight) inset;
+  border-radius: 9999px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* iOS 18 Haptic Pill Action Button */
+.ios-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background: var(--ios-tint);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 16px -2px color-mix(in srgb, var(--ios-tint) 45%, transparent);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-btn-primary:hover {
+  filter: brightness(1.06);
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px -2px color-mix(in srgb, var(--ios-tint) 55%, transparent);
+}
+
+.ios-btn-primary:active {
+  transform: scale(0.96);
+}
+
+/* iOS 18 Secondary Vibrancy Button */
+.ios-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  font-weight: 500;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-btn-secondary:hover {
+  background: var(--secondary);
+  border-color: color-mix(in srgb, var(--ios-tint) 40%, var(--border));
+  transform: scale(1.02);
+}
+
+.ios-btn-secondary:active {
+  transform: scale(0.96);
+}
