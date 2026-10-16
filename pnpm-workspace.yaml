@@ -3,6 +3,3 @@ overrides:
 
 onlyBuiltDependencies:
   - msw
-
-minimumReleaseAgeExclude:
-  - resend@6.27.0

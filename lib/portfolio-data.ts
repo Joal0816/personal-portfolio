@@ -106,6 +106,13 @@ export const certifications = [
     category: 'Academic Records',
   },
   {
+    name: 'Startup Basics 101',
+    issuer: 'iDEYA: Center of Innovation and Technopreneurship, MSU-IIT',
+    date: 'September 24, 2026',
+    image: '/certificates/TECH/startup-basics-101.pdf',
+    category: 'Technopreneurship',
+  },
+  {
     name: 'IEEE Sumpai Hackathon 2026',
     issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City',
     date: 'September 14, 2026',
@@ -496,6 +503,104 @@ vTaskStartScheduler();`,
     ],
   },
   {
+    title: 'BCA182 Personal MP3 Player & Tone Sequencer',
+    category: 'Embedded & HMI',
+    role: 'Firmware & RTOS Engineer',
+    badge: '18 Passing Unit Tests',
+    description:
+      'Multi-threaded FreeRTOS audio sequencer on STM32F407 (RT-Spark) with 240x240 ST7789 IPS LCD, 3-bit binary button decoder, and 12-bit ADC volume control.',
+    longDescription:
+      'Engineered a deterministic multi-threaded embedded MP3/audio player on the STM32F407ZGT6 (RT-Spark board, ARM Cortex-M4 @ 168MHz) running FreeRTOS. Implemented 3 dedicated tasks with mutex-protected ST7789 IPS LCD rendering, 3-bit binary push-button song decoder with a 5-second countdown confirmation state machine, TIM4 PWM audio note sequencer with 8 polyphonic classical compositions, and 12-bit ADC potentiometer volume modulation. Verified with 18 automated unit tests and cppcheck static analysis.',
+    features: [
+      'Preemptive 3-thread FreeRTOS task pipeline with mutex-guarded FSMC 8080 ST7789 LCD rendering.',
+      '3-bit binary active-low button decoder indexing 8 classical compositions with 5s countdown confirmation.',
+      '12-bit ADC potentiometer input with dynamic 0–100% volume modulation.',
+      'TIM4 PWM audio frequency generation and 18 passing native unit test suites.',
+    ],
+    image: '/projects/bca182-mp3.png',
+    tags: ['STM32F407', 'FreeRTOS', 'ARM Cortex-M4', 'C', 'PWM Audio', 'ST7789 LCD'],
+    demo: 'https://github.com/Joal0816/BCA182-Lab2-MP3-Player',
+    demoLabel: 'View Repository',
+    repo: 'https://github.com/Joal0816/BCA182-Lab2-MP3-Player',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'STM32F407ZGT6 (RT-Spark)',
+      protocol: 'FSMC 8080 / ADC / PWM',
+      latency: '1ms Ticker sequencer',
+      clockSpeed: '168 MHz Cortex-M4',
+      memoryFootprint: '41 KB RAM / 35 KB Flash',
+    },
+    codeSnippet: {
+      filename: 'player_thread_scheduler.c',
+      language: 'c',
+      code: `xTaskCreate(update_lcd_leds_thread, "LCD_LED", 512, NULL, 2, &xLcdTask);
+xTaskCreate(polling_buttons,        "BTN_POLL", 256, NULL, 3, &xBtnTask);
+xTaskCreate(adjust_volume,          "VOL_ADC",  256, NULL, 1, &xVolTask);
+
+/* 1ms recurring note ticker + 5s one-shot confirmation timeout */
+xTimerCreate("NoteTicker", pdMS_TO_TICKS(1), pdTRUE, 0, vNoteTickerCb);
+vTaskStartScheduler();`,
+    },
+    architectureFlow: [
+      '3-bit Push Buttons (PB1-PB3)',
+      'FreeRTOS Button Poll & Debounce',
+      '5s Confirmation State Machine',
+      'TIM4 PWM Tone Sequencer',
+      'ST7789 LCD via FSMC Bus',
+    ],
+  },
+  {
+    title: 'IoT Human Activity Recognition & Edge Telemetry',
+    category: 'Mobile & Edge AI',
+    role: 'Edge ML & IoT Systems Engineer',
+    badge: '99.98% ML Benchmark',
+    description:
+      'End-to-end edge-to-cloud activity recognition pipeline pairing STM32F407 IMU telemetry with 99.98% accurate logistic regression ML and Kinesis OS PWA.',
+    longDescription:
+      'Architected an end-to-end intelligent IoT wearable system on STM32F407 with LSM6DSL 6-axis IMU and ISM43362 Wi-Fi streaming coreMQTT telemetry to cloud endpoints. Features a sliding-window temporal feature extractor and logistic regression classifier achieving 99.98% accuracy on the Kaggle Run-or-Walk benchmark, paired with a production-grade Kinesis OS PWA and Android APK deployment.',
+    features: [
+      '6-axis LSM6DSL IMU motion acquisition streaming over AWS coreMQTT.',
+      'Sliding-window temporal feature engineering with 99.98% benchmark classification accuracy.',
+      'Serverless TypeScript API ingestion pipeline with Supabase persistence.',
+      'Kinesis OS progressive web application with Android Trusted Web Activity APK support.',
+    ],
+    image: '/projects/activity-recognition.png',
+    tags: ['STM32F407', 'TinyML', 'MQTT', 'Edge AI', 'TypeScript', 'IoT Telemetry'],
+    demo: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
+    demoLabel: 'View Repository',
+    repo: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'STM32F407 + LSM6DSL IMU',
+      protocol: 'coreMQTT / TLS / Wi-Fi',
+      latency: '20ms Inference window',
+      clockSpeed: '168 MHz ARM Cortex-M4',
+      memoryFootprint: '54 KB SRAM',
+    },
+    codeSnippet: {
+      filename: 'imu_feature_extractor.ts',
+      language: 'typescript',
+      code: `export function extractTemporalFeatures(window: IMUSample[]): FeatureVector {
+  const ax = window.map(s => s.accel_x);
+  const ay = window.map(s => s.accel_y);
+  const az = window.map(s => s.accel_z);
+  return {
+    meanAccel: [mean(ax), mean(ay), mean(az)],
+    variance: [variance(ax), variance(ay), variance(az)],
+    jerk: computeMeanJerk(ax, ay, az),
+    dominantFreq: computeFFTPeak(ax),
+  };
+}`,
+    },
+    architectureFlow: [
+      'LSM6DSL 6-Axis IMU (50Hz)',
+      'RT-Spark ISM43362 Wi-Fi Node',
+      'AWS coreMQTT Ingestion Pipeline',
+      'Temporal Feature Classifier (99.98%)',
+      'Kinesis OS PWA & Android TWA',
+    ],
+  },
+  {
     title: 'ARUGA Fall Detection & Inactivity Monitoring',
     category: 'Mobile & Edge AI',
     role: 'Computer Vision & Edge AI Engineer',
@@ -661,6 +766,33 @@ updateParticleTelemetryCount(particles.size)`,
     demoLabel: 'Live Platform',
     repo: 'https://github.com/Joal0816/Barangay-Connect',
     repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Next.js / Vite + Supabase Edge',
+      protocol: 'HTTPS / TLS 1.3 / Supabase RLS',
+      latency: '< 60ms Database Query',
+      clockSpeed: 'Cloudflare / Vercel Edge Host',
+      memoryFootprint: 'PostgreSQL Serverless',
+    },
+    codeSnippet: {
+      filename: 'supabase_incident_rls.sql',
+      language: 'sql',
+      code: `CREATE POLICY "Residents can view community incidents"
+ON public.incidents FOR SELECT
+TO authenticated
+USING (barangay_id = (SELECT barangay_id FROM profiles WHERE id = auth.uid()));
+
+CREATE POLICY "Residents can submit verified incidents"
+ON public.incidents FOR INSERT
+TO authenticated
+WITH CHECK (auth.uid() = resident_id);`,
+    },
+    architectureFlow: [
+      'Resident Web PWA / Mobile',
+      'Supabase Auth & RLS Guard',
+      'PostgreSQL Realtime Channel',
+      'Incident Storage Bucket',
+      'Admin Triage & Notification Queue',
+    ],
   },
   {
     title: 'Snake OS: Embedded Interactive HMI Game',
@@ -757,8 +889,41 @@ updateParticleTelemetryCount(particles.size)`,
     tags: ['CODESYS V3', 'PLC', 'Ladder Logic', 'HMI', 'Industrial Automation'],
     demo: 'https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing',
     demoLabel: 'View Documentation',
-    repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repo: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Virtual Soft-PLC / CODESYS V3',
+      protocol: 'Modbus TCP / Fieldbus Telemetry',
+      latency: '10ms Scan Cycle',
+      clockSpeed: 'Real-Time Soft PLC Engine',
+      memoryFootprint: 'IEC 61131-3 Memory Map',
+    },
+    codeSnippet: {
+      filename: 'oven_safety_interlock.st',
+      language: 'pascal',
+      code: `PROGRAM OvenControl
+VAR
+    rActualTemp : REAL;
+    rSetpoint   : REAL := 180.0;
+    bHeaterOn   : BOOL;
+    bOverTempAlarm : BOOL;
+END_VAR
+
+IF rActualTemp >= (rSetpoint + 15.0) THEN
+    bHeaterOn := FALSE;
+    bOverTempAlarm := TRUE;
+ELSIF rActualTemp < rSetpoint THEN
+    bHeaterOn := TRUE;
+    bOverTempAlarm := FALSE;
+END_IF;`,
+    },
+    architectureFlow: [
+      'PT100 Temperature Probe Input',
+      'CODESYS IEC 61131-3 PLC Kernel',
+      'Thermal Overrun Safety Interlocks',
+      'Modbus TCP Telemetry Stream',
+      'Interactive Operator HMI Panel',
+    ],
   },
   {
     title: 'IoT Vermicomposting Monitor',

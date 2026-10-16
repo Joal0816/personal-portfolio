@@ -74,21 +74,6 @@ export const metadata: Metadata = {
     'Joseph Vergara',
   ],
   authors: [{ name: 'Joseph Vergara' }],
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://joalvergs.tech',
-    siteName: 'Joseph Vergara Portfolio',
-    title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
-    description:
-      'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions.',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Joseph Vergara — Embedded Systems & Full-Stack Developer',
-    description:
-      'Portfolio of Joseph Vergara, an embedded systems and full-stack developer specializing in microcontroller firmware, Edge AI, and IoT solutions.',
-  },
   icons: {
     icon: [
       { url: '/icon.svg?v=3', type: 'image/svg+xml' },

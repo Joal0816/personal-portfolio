@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Next.js 16.3 (App Router) + React 19, Tailwind CSS v4, shadcn/base-ui primitives, PWA (manifest + service worker), @vercel/analytics. Contact endpoint lives at `app/api/contact` (POST) with the `resend` package installed; the route today acknowledges the request and the form dispatches through the visitor's own mail client (mailto). Package manager is pnpm (`pnpm-lock.yaml`); a `package-lock.json` also exists. No dependency additions are wanted for the redesign.
+Next.js 16.3 (App Router) + React 19, Tailwind CSS v4, shadcn/base-ui primitives, PWA (manifest + service worker), @vercel/analytics. Contact form dispatches directly through the visitor's own mail client (mailto). Package manager is pnpm (`pnpm-lock.yaml`); a `package-lock.json` also exists. No dependency additions are wanted for the redesign.
 
 ## Users
 

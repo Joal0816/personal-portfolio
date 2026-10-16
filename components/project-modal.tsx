@@ -24,7 +24,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
             <>
               {/* The photo print at the top of the page */}
               <div className="relative h-48 sm:h-64 w-full shrink-0 overflow-hidden border-b border-border bg-secondary">
-                <div className="thumb-mat absolute inset-0">
+                <div className="thumb-mat relative size-full">
                   <Image
                     src={project.image || '/placeholder.svg'}
                     alt={`${project.title} — project screenshot`}

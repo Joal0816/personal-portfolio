@@ -74,7 +74,7 @@ export function Hero() {
               </a>
 
               <a
-                href={profile.github}
+                href={profile.socials.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ios-btn-secondary size-11 p-0"
@@ -84,7 +84,7 @@ export function Hero() {
               </a>
 
               <a
-                href={profile.linkedin}
+                href={profile.socials.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ios-btn-secondary size-11 p-0"
