@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { Menu, X, FileDown } from 'lucide-react'
-import { navLinks } from '@/lib/portfolio-data'
+import { navLinks, profile } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
 
@@ -150,7 +150,7 @@ export function Navbar() {
         {/* Action Controls Island */}
         <div className="pointer-events-auto flex items-center gap-2">
           <a
-            href="/resume.pdf"
+            href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 spatial-island px-3.5 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 transition-all active:scale-95"
@@ -213,7 +213,7 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="/resume.pdf"
+            href={profile.resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 ios-btn-primary py-3 text-sm font-semibold ai-halo"

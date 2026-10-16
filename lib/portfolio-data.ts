@@ -25,6 +25,7 @@ export const profile = {
   },
   phone: '+63 947-589-2995',
   website: 'https://joalvergs.tech',
+  resumeUrl: '/resume.pdf?v=e2e47d5e69ee',
   status: 'Fourth year · BS Computer Applications (Major in Embedded Systems)',
   tagline: 'I write the software that lives directly on hardware — firmware, real-time systems, and small AI models that run without the cloud.',
   intro:

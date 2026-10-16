@@ -30,7 +30,7 @@ export function Hero() {
               <a href="#contact" className="ios-btn-secondary px-5 py-3 text-sm">
                 <Mail className="size-4" /><span>Contact</span>
               </a>
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-foreground underline-offset-4 hover:underline">
+              <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-foreground underline-offset-4 hover:underline">
                 <FileDown className="size-4" /><span>Résumé</span>
               </a>
             </div>

@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
-import { certifications, projects } from '../lib/portfolio-data.ts'
+import { readFileSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { certifications, projects, profile } from '../lib/portfolio-data.ts'
 
 const raw = process.argv[2] || process.env.DEPLOYMENT_URL
 assert(raw, 'Usage: npm run check:deployment -- https://your-deployment.example')
@@ -19,3 +21,11 @@ for (const path of [certifications[0].image, certifications[0].preview, projects
   await asset.body?.cancel()
 }
 console.log(`Deployment checks passed: ${base.origin}, current content and key assets.`)
+
+assert(html.includes(profile.resumeUrl), 'Deployment is stale: the latest resume link is missing')
+const resume = await fetch(new URL(profile.resumeUrl, base), { cache: 'no-store', signal: AbortSignal.timeout(30000) })
+assert(resume.ok, `Resume returned HTTP ${resume.status}`)
+const deployedHash = createHash('sha256').update(Buffer.from(await resume.arrayBuffer())).digest('hex')
+const localHash = createHash('sha256').update(readFileSync(new URL('../public/resume.pdf', import.meta.url))).digest('hex')
+assert.equal(deployedHash, localHash, 'Deployment is stale: resume PDF differs from the current local CV')
+console.log('Verified deployed resume matches the updated local PDF byte for byte.')
