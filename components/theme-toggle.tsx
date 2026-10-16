@@ -9,8 +9,10 @@ export function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true)
-    const stored = (localStorage.getItem('theme') as 'light' | 'dark') || 'dark'
+    let stored: 'light' | 'dark' = 'dark'
+    try { if (localStorage.getItem('theme') === 'light') stored = 'light' } catch { /* Storage may be unavailable. */ }
     setTheme(stored)
+    document.documentElement.classList.remove('light', 'dark')
     document.documentElement.classList.add(stored)
   }, [])
 
@@ -20,7 +22,7 @@ export function ThemeToggle() {
     const root = document.documentElement
     root.classList.remove('light', 'dark')
     root.classList.add(next)
-    localStorage.setItem('theme', next)
+    try { localStorage.setItem('theme', next) } catch { /* Keep the toggle usable without storage. */ }
   }
 
   // Prevent hydration mismatch by rendering nothing until mounted

@@ -6,7 +6,7 @@ import { Check, X, ExternalLink, Code2, GitBranch, Wrench, NotebookText } from '
 import { GithubIcon } from '@/components/brand-icons'
 import { Button } from '@/components/ui/button'
 import { HyphenSafe } from '@/components/text-fixes'
-import type { Project } from '@/lib/portfolio-data'
+import { projectDateLabel, type Project } from '@/lib/portfolio-data'
 
 type ProjectModalProps = {
   project: Project | null
@@ -62,6 +62,13 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
 
               {/* The note itself */}
               <div className="flex-1 overflow-y-auto px-5 py-6 sm:px-7 sm:py-7">
+                <p className="mb-3 text-sm text-muted-foreground">{projectDateLabel(project)}</p>
+                {project.outcome && (
+                  <section className="mb-5 border-b border-border pb-5">
+                    <h4 className="text-sm font-semibold">Result</h4>
+                    <p className="mt-2 text-[15px] leading-relaxed">{project.outcome}</p>
+                  </section>
+                )}
                 {project.role && (
                   <p className="text-sm text-muted-foreground">
                     <span className="font-medium text-foreground">My part: </span>
@@ -179,6 +186,7 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                   </ul>
                 </div>
 
+                {project.sourceNote && <p className="mt-6 text-sm leading-relaxed text-muted-foreground">{project.sourceNote}</p>}
                 <div className="mt-8 flex flex-col gap-2.5 border-t border-border pt-6 sm:flex-row sm:flex-wrap">
                   {project.demo && project.demo !== '#' && (
                     <Button

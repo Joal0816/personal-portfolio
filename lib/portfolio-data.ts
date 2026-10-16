@@ -97,12 +97,14 @@ export const experiences = [
   },
 ]
 
-export const certifications = [
+const certificateEntries = [
   {
     name: 'MSU-IIT Official Certificate of Registration & Enrolment',
     issuer: 'Office of the Institute Registrar, MSU-IIT',
     date: '2023 – Present',
     image: '/certificates/OTHERS/msuiit-certificate-of-registration.pdf',
+    preview: '/certificates/previews/msuiit-certificate-of-registration.jpg',
+    sortDate: '',
     category: 'Academic Records',
   },
   {
@@ -110,6 +112,8 @@ export const certifications = [
     issuer: 'iDEYA: Center of Innovation and Technopreneurship, MSU-IIT',
     date: 'September 24, 2026',
     image: '/certificates/TECH/startup-basics-101.pdf',
+    preview: '/certificates/previews/startup-basics-101.jpg',
+    sortDate: '2026-09-24',
     category: 'Technopreneurship',
   },
   {
@@ -117,6 +121,8 @@ export const certifications = [
     issuer: '1st floor, CCS Building, ICTD, MSU-IIT, Iligan City',
     date: 'September 14, 2026',
     image: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
+    preview: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
+    sortDate: '2026-09-14',
     category: 'Hackathon & AI',
   },
   {
@@ -124,6 +130,8 @@ export const certifications = [
     issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City',
     date: 'August 20, 2026',
     image: '/certificates/TECH/AI Career Readiness Training.png',
+    preview: '/certificates/TECH/AI Career Readiness Training.png',
+    sortDate: '2026-08-20',
     category: 'Edge AI & Professional',
   },
   {
@@ -131,6 +139,8 @@ export const certifications = [
     issuer: 'Zoom Meeting, Webinar Series',
     date: 'March 20, 2026',
     image: '/certificates/TECH/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.pdf',
+    preview: '/certificates/previews/Quantum Circuits as Pictures_ An Introduction to ZX Calculus.jpg',
+    sortDate: '2026-03-20',
     category: 'Quantum Computing',
   },
   {
@@ -138,6 +148,8 @@ export const certifications = [
     issuer: 'Zoom Meeting, Webinar Series',
     date: 'December 22, 2025',
     image: '/certificates/TECH/Permaculture Webinar \u201cFrom Code to Crops\u201d.png',
+    preview: '/certificates/TECH/Permaculture Webinar “From Code to Crops”.png',
+    sortDate: '2025-12-22',
     category: 'Smart Agriculture & IoT',
   },
   {
@@ -145,6 +157,8 @@ export const certifications = [
     issuer: 'PRISM Mini theater, MSU-IIT, Iligan City',
     date: 'December 17, 2025',
     image: '/certificates/TECH/techshowcase-2025.jpg',
+    preview: '/certificates/TECH/techshowcase-2025.jpg',
+    sortDate: '2025-12-17',
     category: 'Innovation Award',
   },
   {
@@ -152,6 +166,8 @@ export const certifications = [
     issuer: '4th floor CCS Building, MSU-IIT, Iligan City',
     date: 'November 24-25, 2025',
     image: '/certificates/TECH/my-comapps-tech-symposium.jpg',
+    preview: '/certificates/TECH/my-comapps-tech-symposium.jpg',
+    sortDate: '2025-11-25',
     category: 'RTOS & Embedded',
   },
   {
@@ -159,6 +175,8 @@ export const certifications = [
     issuer: 'ICT 3D, CCS Building, MSU-IIT, Iligan City',
     date: 'November 24, 2025',
     image: '/certificates/TECH/Seize Your Opportunity Internships and OJTs Workshop!.png',
+    preview: '/certificates/TECH/Seize Your Opportunity Internships and OJTs Workshop!.png',
+    sortDate: '2025-11-24',
     category: 'Professional Dev',
   },
   {
@@ -166,6 +184,8 @@ export const certifications = [
     issuer: 'Department of Mathematics and Statistics, MSU-IIT',
     date: 'October 2023',
     image: '/certificates/OTHERS/statistics-bridging-gaps-digital-age.pdf',
+    preview: '/certificates/previews/statistics-bridging-gaps-digital-age.jpg',
+    sortDate: '2023-10',
     category: 'Data & Analytics',
   },
   {
@@ -173,6 +193,8 @@ export const certifications = [
     issuer: 'CCS Building, MSU-IIT, Iligan City',
     date: 'September 16, 2023',
     image: '/certificates/TECH/Software Freedom Day 2023.png',
+    preview: '/certificates/TECH/Software Freedom Day 2023.png',
+    sortDate: '2023-09-16',
     category: 'Open Source',
   },
   {
@@ -180,6 +202,8 @@ export const certifications = [
     issuer: 'Mindanao State University – IIT Admissions',
     date: 'August 2023',
     image: '/certificates/OTHERS/msuiit-sase-admission-acceptance.pdf',
+    preview: '/certificates/previews/msuiit-sase-admission-acceptance.jpg',
+    sortDate: '2023-08',
     category: 'Academic Merit',
   },
   {
@@ -187,6 +211,8 @@ export const certifications = [
     issuer: 'MSU-IIT Research Colloquium Series',
     date: '2023',
     image: '/certificates/OTHERS/tukisayod-certificate-of-participation.pdf',
+    preview: '/certificates/previews/tukisayod-certificate-of-participation.jpg',
+    sortDate: '2023',
     category: 'Research Colloquium',
   },
   {
@@ -194,6 +220,8 @@ export const certifications = [
     issuer: 'Department of Mathematics & Statistics (DMS)',
     date: '2023',
     image: '/certificates/OTHERS/dms-statistics-webinar-participation.pdf',
+    preview: '/certificates/previews/dms-statistics-webinar-participation.jpg',
+    sortDate: '2023',
     category: 'Data & Analytics',
   },
   {
@@ -201,6 +229,8 @@ export const certifications = [
     issuer: 'MSU-IIT Integrated Developmental School',
     date: '2022 – 2023',
     image: '/certificates/OTHERS/ids-academic-honor-g11.pdf',
+    preview: '/certificates/previews/ids-academic-honor-g11.jpg',
+    sortDate: '2023',
     category: 'Academic Honors',
   },
   {
@@ -208,9 +238,13 @@ export const certifications = [
     issuer: 'Youth Entrepreneurship Program & Mentorship',
     date: '2021',
     image: '/certificates/OTHERS/teenpreneur-2021.pdf',
+    preview: '/certificates/previews/teenpreneur-2021.jpg',
+    sortDate: '2021',
     category: 'Technopreneurship',
   },
 ]
+
+export const certifications = [...certificateEntries].sort((a, b) => b.sortDate.localeCompare(a.sortDate))
 
 export const leadership = [
   {
@@ -325,6 +359,12 @@ export const projectCategories: ProjectCategory[] = [
 
 export type Project = {
   title: string
+  date?: string
+  dateLabel?: 'Repository created' | 'Showcased'
+  dateSource?: string
+  featured?: boolean
+  outcome?: string
+  sourceNote?: string
   category: ProjectCategory
   role: string
   description: string
@@ -352,9 +392,15 @@ export type Project = {
   architectureFlow?: string[]
 }
 
-export const projects: Project[] = [
+const projectEntries: Project[] = [
   {
     title: 'O.I.N.K. — Swine Thermal Fever Surveillance',
+    sourceNote: 'The source repository is private. You can explore the live platform.',
+    date: '2026-09-27',
+    dateLabel: 'Repository created',
+    featured: true,
+    outcome: 'Thermal readings stream from an ESP32 to an OpenCV pipeline and Flutter dashboard.',
+    dateSource: 'https://github.com/Joal0816/oink',
     category: 'Full-Stack & Embedded',
     role: 'Lead Firmware & Edge CV Developer',
     badge: 'Live Telemetry System',
@@ -372,7 +418,7 @@ export const projects: Project[] = [
     tags: ['ESP32', 'MLX90640', 'Thermal Imaging', 'Flutter', 'OpenCV', 'IoT Telemetry'],
     demo: 'https://oink.joalvergs.tech',
     demoLabel: 'Live Platform',
-    repo: 'https://github.com/Joal0816/oink',
+    repo: '',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
       target: 'ESP32-WROOM-32',
@@ -408,6 +454,11 @@ export const projects: Project[] = [
   },
   {
     title: 'Agap AI — Multimodal Emergency Triage Platform',
+    sourceNote: 'The source repository is currently unavailable.',
+    date: '2026-09-14',
+    dateLabel: 'Showcased',
+    outcome: 'Developed during IEEE Sumpai Hackathon 2026 to turn emergency calls into structured dispatch information.',
+    dateSource: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
     category: 'Web Development',
     role: 'Lead Full-Stack & AI Systems Architect — IEEE Sumpai Hackathon 2026',
     badge: 'IEEE Hackathon 2026',
@@ -423,9 +474,9 @@ export const projects: Project[] = [
     ],
     image: '/projects/agap-ai.jpg',
     tags: ['Next.js', 'TypeScript', 'AI / NLP', 'GIS Mapping', 'Speech-to-Text', 'Hackathon'],
-    demo: 'https://github.com/Joal0816/agap-ai',
+    demo: '',
     demoLabel: 'View Repository',
-    repo: 'https://github.com/Joal0816/agap-ai',
+    repo: '',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
       target: 'Next.js 15 & AI Engine',
@@ -457,6 +508,11 @@ export const projects: Project[] = [
   },
   {
     title: 'BCA182 Multisensor Room Monitor',
+    date: '2026-09-14',
+    dateLabel: 'Repository created',
+    featured: true,
+    outcome: 'Published on Hackster.io with technical schematics and 33 unit tests.',
+    dateSource: 'https://github.com/Joal0816/BCA182-RoomMonitor',
     category: 'Embedded & HMI',
     role: 'Firmware & Systems Engineer',
     badge: 'Hackster.io Published',
@@ -504,6 +560,10 @@ vTaskStartScheduler();`,
   },
   {
     title: 'BCA182 Personal MP3 Player & Tone Sequencer',
+    date: '2026-10-02',
+    dateLabel: 'Repository created',
+    outcome: 'Firmware and RTOS implementation backed by 18 passing unit tests.',
+    dateSource: 'https://github.com/Joal0816/BCA182-Lab2-MP3-Player',
     category: 'Embedded & HMI',
     role: 'Firmware & RTOS Engineer',
     badge: '18 Passing Unit Tests',
@@ -551,6 +611,9 @@ vTaskStartScheduler();`,
   },
   {
     title: 'IoT Human Activity Recognition & Edge Telemetry',
+    date: '2026-10-06',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
     category: 'Mobile & Edge AI',
     role: 'Edge ML & IoT Systems Engineer',
     badge: '99.98% ML Benchmark',
@@ -602,6 +665,9 @@ vTaskStartScheduler();`,
   },
   {
     title: 'ARUGA Fall Detection & Inactivity Monitoring',
+    date: '2026-10-05',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
     category: 'Mobile & Edge AI',
     role: 'Computer Vision & Edge AI Engineer',
     badge: 'Biomechanical Kinematics',
@@ -617,9 +683,9 @@ vTaskStartScheduler();`,
     ],
     image: '/projects/aruga-system.png',
     tags: ['Python', 'OpenCV', 'MediaPipe', 'Kinematics', 'Edge AI', 'Computer Vision'],
-    demo: 'https://github.com/Joal0816/ARUGA-fall-detection-and-inactivity-monitoring-system',
+    demo: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
     demoLabel: 'View Repository',
-    repo: 'https://github.com/Joal0816/ARUGA-fall-detection-and-inactivity-monitoring-system',
+    repo: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
       target: 'Edge Compute (Python/CV)',
@@ -651,6 +717,9 @@ vTaskStartScheduler();`,
   },
   {
     title: 'Microcontroller-Based Automated Feedback System',
+    date: '2026-08-30',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/MIOW-CODES/lms',
     category: 'Full-Stack & Embedded',
     role: 'Co-Author & Full-Stack / Embedded Developer — PhD Research Collaboration',
     badge: 'PhD Dissertation Research',
@@ -700,6 +769,9 @@ vTaskStartScheduler();`,
   },
   {
     title: 'Mobile Microplastic Detection App',
+    date: '2026-09-02',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/MP-DETECT-CODE/Mp-Detect',
     category: 'Mobile & Edge AI',
     role: 'Co-Author & Edge AI Developer — Master’s & Undergraduate Collaboration',
     badge: 'Published Collaboration',
@@ -717,7 +789,7 @@ vTaskStartScheduler();`,
     tags: ['YOLOv8n', 'Edge AI', 'TFLite', 'Android SDK', 'Computer Vision'],
     demo: 'https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing',
     demoLabel: 'View Documentation',
-    repo: 'https://github.com/MP-DETECT-CODE/Mp-Detect',
+    repo: 'https://github.com/Joal0816/Mp-Detect',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
       target: 'Mobile Neural Engine (NPU/GPU)',
@@ -746,6 +818,11 @@ updateParticleTelemetryCount(particles.size)`,
   },
   {
     title: 'Barangay Connect Web App',
+    date: '2025-12-10',
+    dateLabel: 'Repository created',
+    featured: true,
+    outcome: 'Won 2nd Best Innovation and 3rd Best Pitch at TechShowcase 2025, MSU-IIT.',
+    dateSource: 'https://github.com/Joal0816/Barangay-Connect',
     category: 'Web Development',
     role: 'Full-Stack Developer — TechShowcase 2025 Award Winner',
     badge: '2nd Best Innovation Award',
@@ -796,6 +873,9 @@ WITH CHECK (auth.uid() = resident_id);`,
   },
   {
     title: 'Snake OS: Embedded Interactive HMI Game',
+    date: '2026-08-23',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
     category: 'Embedded & HMI',
     role: 'Embedded Developer — Renesas RA6M3, RT-Thread OS, LVGL',
     badge: 'Hackster.io Showcase',
@@ -841,7 +921,7 @@ WITH CHECK (auth.uid() = resident_id);`,
     demo: 'https://cup.joalvergs.tech',
     demoLabel: 'Live System (cup.joalvergs.tech)',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
     telemetrySpec: {
       target: 'Cloudflare Pages Edge',
       protocol: 'HTTPS / TLS 1.3 / Custom Domain',
@@ -868,10 +948,13 @@ WITH CHECK (auth.uid() = resident_id);`,
     demo: 'https://studio.edgeimpulse.com/studio/848525',
     demoLabel: 'Edge Impulse Studio',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
   },
   {
     title: 'Industrial Oven Simulation & Control',
+    date: '2026-08-23',
+    dateLabel: 'Repository created',
+    dateSource: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
     category: 'Embedded & HMI',
     role: 'PLC & Automation Developer — CODESYS V3, PLC, HMI',
     badge: 'Industrial Automation',
@@ -945,7 +1028,7 @@ END_IF;`,
     demo: 'https://canva.link/k5sngerg431bggp',
     demoLabel: 'View Documentation',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
   },
   {
     title: 'Line Following Robot',
@@ -967,7 +1050,7 @@ END_IF;`,
     demo: 'https://docs.google.com/document/d/1k9SudemZJafofm2p3hludQYK7nMUtvUpkMm6N-_rJvY/edit?usp=sharing',
     demoLabel: 'Project Report',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
   },
   {
     title: 'K-Bin: Automated Smart Waste Sorting',
@@ -989,7 +1072,7 @@ END_IF;`,
     demo: 'https://drive.google.com/drive/folders/1OVPIXr5QFTa3_Uin5QVysLJvsKLshUdQ?usp=sharing',
     demoLabel: 'View Documentation',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
   },
   {
     title: 'Adjustable DC Power Supply',
@@ -1010,7 +1093,7 @@ END_IF;`,
     tags: ['Power Electronics', 'Circuit Design', 'Linear Regulator', 'Hardware'],
     demo: '#',
     repo: 'https://github.com/Joal0816',
-    repoLabel: 'GitHub Profile',
+    repoLabel: 'Developer GitHub',
   },
 ]
 
@@ -1021,3 +1104,21 @@ export const navLinks = [
   { label: 'Certifications', href: '#certifications', code: '04' },
   { label: 'Contact', href: '#contact', code: '05' },
 ]
+
+
+/** Undated work stays last in either direction. Dates are ISO, with provenance above. */
+export function sortProjects(entries: readonly Project[], order: 'newest' | 'oldest' = 'newest'): Project[] {
+  return [...entries].sort((a, b) => {
+    if (!a.date) return b.date ? 1 : 0
+    if (!b.date) return -1
+    return order === 'newest' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)
+  })
+}
+
+export function projectDateLabel(project: Project): string {
+  if (!project.date) return 'Date not recorded'
+  const date = new Date(`${project.date}T00:00:00Z`)
+  return `${project.dateLabel}: ${new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(date)}`
+}
+
+export const projects = sortProjects(projectEntries)

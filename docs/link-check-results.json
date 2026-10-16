@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-10-16T18:52:49.560Z",
+  "results": [
+    {
+      "url": "https://barangay-connect.joalvergs.tech",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://barangay-connect.joalvergs.tech/"
+    },
+    {
+      "url": "https://canva.link/k5sngerg431bggp",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://www.canva.com/design/DAGmcevbVig/1HmrjtkG2dE3sFcxi06FQw/view?utm_content=DAGmcevbVig&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hfc9de10097"
+    },
+    {
+      "url": "https://cup.joalvergs.tech",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://cup.joalvergs.tech/"
+    },
+    {
+      "url": "https://docs.google.com/document/d/1k9SudemZJafofm2p3hludQYK7nMUtvUpkMm6N-_rJvY/edit?usp=sharing",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://docs.google.com/document/d/1k9SudemZJafofm2p3hludQYK7nMUtvUpkMm6N-_rJvY/edit?usp=sharing"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing"
+    },
+    {
+      "url": "https://drive.google.com/drive/folders/1OVPIXr5QFTa3_Uin5QVysLJvsKLshUdQ?usp=sharing",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://drive.google.com/drive/folders/1OVPIXr5QFTa3_Uin5QVysLJvsKLshUdQ?usp=sharing"
+    },
+    {
+      "url": "https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system"
+    },
+    {
+      "url": "https://github.com/Joal0816",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816"
+    },
+    {
+      "url": "https://github.com/Joal0816/Barangay-Connect",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/Barangay-Connect"
+    },
+    {
+      "url": "https://github.com/Joal0816/BCA182-Lab2-MP3-Player",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/BCA182-Lab2-MP3-Player"
+    },
+    {
+      "url": "https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition"
+    },
+    {
+      "url": "https://github.com/Joal0816/BCA182-RoomMonitor",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/BCA182-RoomMonitor"
+    },
+    {
+      "url": "https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI"
+    },
+    {
+      "url": "https://github.com/Joal0816/Mp-Detect",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/Mp-Detect"
+    },
+    {
+      "url": "https://github.com/Joal0816/Snake-OS-RT-Thread-HMI",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/Joal0816/Snake-OS-RT-Thread-HMI"
+    },
+    {
+      "url": "https://github.com/MIOW-CODES/lms",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://github.com/MIOW-CODES/lms"
+    },
+    {
+      "url": "https://mail.google.com/mail/?view=cm&fs=1&to=hpesojnalab.aragrev@gmail.com",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/?view%3Dcm%26fs%3D1%26to%3Dhpesojnalab.aragrev@gmail.com&emr=1&ltmpl=default&ltmplcache=2&osid=1&passive=true&scc=1&service=mail&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S1778574252:1792176769467378"
+    },
+    {
+      "url": "https://mail.google.com/mail/?view=cm&fs=1&to=josephalan.vergara@g.msuiit.edu.ph",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/?view%3Dcm%26fs%3D1%26to%3Djosephalan.vergara@g.msuiit.edu.ph&emr=1&ltmpl=default&ltmplcache=2&osid=1&passive=true&scc=1&service=mail&flowName=WebLiteSignIn&flowEntry=ServiceLogin&dsh=S-1625020713:1792176767906183"
+    },
+    {
+      "url": "https://miow-lms.ter-ids.online/auth",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://miow-lms.ter-ids.online/auth"
+    },
+    {
+      "url": "https://oink.joalvergs.tech",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://oink.joalvergs.tech/"
+    },
+    {
+      "url": "https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://sites.google.com/g.msuiit.edu.ph/hassanvergarafinalproject?usp=sharing"
+    },
+    {
+      "url": "https://studio.edgeimpulse.com/studio/848525",
+      "status": "ok",
+      "httpStatus": 200,
+      "finalUrl": "https://studio.edgeimpulse.com/public/848525/live"
+    },
+    {
+      "url": "https://www.hackster.io/554910/real-time-multisensor-room-monitoring-system-with-freertos-450a00",
+      "status": "restricted",
+      "httpStatus": 403,
+      "finalUrl": "https://www.hackster.io/554910/real-time-multisensor-room-monitoring-system-with-freertos-450a00"
+    },
+    {
+      "url": "https://www.hackster.io/josephalanvergara/snake-os-interactive-hmi-game-on-rt-thread-f8b988",
+      "status": "restricted",
+      "httpStatus": 403,
+      "finalUrl": "https://www.hackster.io/josephalanvergara/snake-os-interactive-hmi-game-on-rt-thread-f8b988"
+    },
+    {
+      "url": "https://www.linkedin.com/in/joseph-alan-vergara-638803348/",
+      "status": "restricted",
+      "httpStatus": 999,
+      "finalUrl": "https://www.linkedin.com/in/joseph-alan-vergara-638803348/"
+    }
+  ]
+}

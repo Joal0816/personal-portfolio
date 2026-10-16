@@ -12,7 +12,7 @@ test.describe('project modal', () => {
     await page.getByRole('button', { name: 'Read the full note' }).click()
 
     // The featured project modal
-    const dialog = page.getByRole('dialog', { name: /O\.I\.N\.K\.|Swine Thermal/i })
+    const dialog = page.getByRole('dialog', { name: /IoT Human Activity Recognition/ })
     await expect(dialog).toBeVisible()
     await expect(dialog.getByText('What it does')).toBeVisible()
 

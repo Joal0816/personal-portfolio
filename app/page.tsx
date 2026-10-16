@@ -10,9 +10,10 @@ import { InstallPwa } from '@/components/install-pwa'
 export default function Page() {
   return (
     <>
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <InstallPwa />
       <Navbar />
-      <main className="overflow-x-hidden">
+      <main id="main-content" tabIndex={-1} className="overflow-x-hidden">
         <Hero />
         <About />
         <Projects />

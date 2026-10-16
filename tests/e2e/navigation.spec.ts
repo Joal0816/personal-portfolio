@@ -11,6 +11,8 @@ const NAV = [
 test.describe('navigation integrity', () => {
   test('the five nav links carry the expected hrefs', async ({ page }) => {
     await page.goto('/')
+    const menu = page.getByRole('button', { name: 'Open menu' })
+    if (await menu.isVisible()) await menu.click()
 
     for (const item of NAV) {
       const links = page.getByRole('link', { name: item.label })
@@ -35,4 +37,20 @@ test.describe('navigation integrity', () => {
       await expect(page.locator(`#${item.sectionId}`), `#${item.sectionId}`).toHaveCount(1)
     }
   })
+})
+
+
+test('mobile menu supports Escape and restores focus', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const toggle = page.getByRole('button', { name: 'Open menu' })
+  await toggle.click()
+  await expect(page.locator('#mobile-navigation').getByRole('link', { name: /About/ })).toBeFocused()
+  await page.keyboard.press('Shift+Tab')
+  await expect(page.getByRole('button', { name: 'Close menu' })).toBeFocused()
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('Escape')
+  await expect(toggle).toBeFocused()
+  await expect(page.locator('#mobile-navigation')).toBeHidden()
+  await expect(page.locator('body')).not.toHaveCSS('overflow', 'hidden')
 })

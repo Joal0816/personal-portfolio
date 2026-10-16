@@ -4,6 +4,7 @@ import {
   navLinks,
   projectCategories,
   projects,
+  sortProjects,
 } from '../../lib/portfolio-data'
 
 const EXPECTED_NAV_HREFS = [
@@ -63,6 +64,26 @@ test.describe('lib/portfolio-data invariants', () => {
     }
   })
 
-  // NOTE: certification ordering is intentionally not asserted — the cert
-  // array is being reordered right now.
+  test('project dates have evidence and unknown dates stay last in either direction', () => {
+    for (const project of projects.filter((project) => project.date)) {
+      expect(project.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+      expect(project.dateLabel).toBeTruthy()
+      expect(project.dateSource).toBeTruthy()
+    }
+    for (const order of ['newest', 'oldest'] as const) {
+      const sorted = sortProjects(projects, order)
+      const known = sorted.filter((project) => project.date).map((project) => project.date!)
+      const expected = [...known].sort()
+      if (order === 'newest') expected.reverse()
+      expect(known).toEqual(expected)
+      expect(sorted.slice(known.length).every((project) => !project.date)).toBe(true)
+    }
+  })
+
+  test('certificates sort newest first and include previews', () => {
+    expect(certifications[0].name).toBe('Startup Basics 101')
+    const dates = certifications.map((certificate) => certificate.sortDate)
+    expect(dates).toEqual([...dates].sort().reverse())
+    for (const certificate of certifications) expect(certificate.preview).toBeTruthy()
+  })
 })

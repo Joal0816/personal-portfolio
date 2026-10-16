@@ -1,0 +1,39 @@
+name: Portfolio checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run check:content
+      - run: pnpm run build
+      - run: pnpm run typecheck
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test --workers=2
+        env:
+          PLAYWRIGHT_USE_BUNDLED_CHROMIUM: '1'
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-results
+          path: test-results/
+  deployment-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node --experimental-strip-types scripts/check-deployment.mjs https://joalvergs.tech

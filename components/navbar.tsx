@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { Menu, X, FileDown, Sparkles } from 'lucide-react'
+import { Menu, X, FileDown } from 'lucide-react'
 import { navLinks } from '@/lib/portfolio-data'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('')
   const [isMounted, setIsMounted] = useState(false)
 
@@ -23,7 +22,6 @@ export function Navbar() {
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20)
           if (window.scrollY < 200) setActive('')
           ticking = false
         })
@@ -74,7 +72,34 @@ export function Navbar() {
       }
     }
     prevOpenRef.current = open
+    return () => { document.body.style.overflow = '' }
   }, [open])
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)')
+    const closeOnDesktop = () => { if (media.matches) setOpen(false) }
+    media.addEventListener('change', closeOnDesktop)
+    return () => media.removeEventListener('change', closeOnDesktop)
+  }, [])
+
+  function handleMenuKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      setOpen(false)
+    }
+    if (event.key !== 'Tab') return
+    const controls = panelRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')
+    if (!controls?.length) return
+    const first = controls[0]
+    const last = controls[controls.length - 1]
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault()
+      toggleRef.current?.focus()
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault()
+      toggleRef.current?.focus()
+    }
+  }
 
   return (
     <header className="fixed top-0 inset-x-0 z-40 transition-all duration-300 pointer-events-none py-3 sm:py-4">
@@ -108,8 +133,9 @@ export function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
+                aria-current={isActive ? 'location' : undefined}
                 className={cn(
-                  'relative rounded-full px-3.5 py-1 text-xs font-medium transition-all duration-200 select-none',
+                  'relative inline-flex min-h-11 items-center rounded-full px-3.5 py-1 text-xs font-medium transition-all duration-200 select-none',
                   isActive
                     ? 'bg-card text-foreground shadow-xs font-semibold ai-halo'
                     : 'text-muted-foreground hover:text-foreground hover:bg-card/40'
@@ -143,8 +169,18 @@ export function Navbar() {
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
+            aria-controls="mobile-navigation"
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') setOpen(false)
+              if (open && event.key === 'Tab') {
+                event.preventDefault()
+                const links = panelRef.current?.querySelectorAll<HTMLElement>('a[href]')
+                if (event.shiftKey) links?.[links.length - 1]?.focus()
+                else links?.[0]?.focus()
+              }
+            }}
             aria-label={open ? 'Close menu' : 'Open menu'}
-            className="md:hidden flex size-9 items-center justify-center spatial-island text-foreground active:scale-95"
+            className="md:hidden flex size-11 items-center justify-center spatial-island text-foreground active:scale-95"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -153,7 +189,9 @@ export function Navbar() {
 
       {/* iOS 26 Sheet Modal Drawer */}
       <div
+        id="mobile-navigation"
         ref={panelRef}
+        onKeyDown={handleMenuKeyDown}
         aria-hidden={!open}
         className={cn(
           'pointer-events-auto md:hidden fixed inset-x-4 top-16 z-50 spatial-glass p-5 shadow-2xl border border-border transition-all duration-300',
@@ -186,14 +224,6 @@ export function Navbar() {
         </nav>
       </div>
 
-      {/* Semantic hidden links for accessibility tests */}
-      <div className="sr-only md:hidden">
-        {navLinks.map((link) => (
-          <a key={`sr-${link.href}`} href={link.href}>
-            {link.label}
-          </a>
-        ))}
-      </div>
     </header>
   )
 }

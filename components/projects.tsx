@@ -17,6 +17,8 @@ import { ProjectModal } from '@/components/project-modal'
 import { HyphenSafe } from '@/components/text-fixes'
 import {
   projects,
+  sortProjects,
+  projectDateLabel,
   projectCategories,
   type Project,
   type ProjectCategory,
@@ -27,6 +29,7 @@ type Filter = 'All' | ProjectCategory
 type DrawerTab = 'specs' | 'code' | 'flow'
 
 export function Projects() {
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest')
   const [filter, setFilter] = useState<Filter>('All')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
@@ -64,7 +67,7 @@ export function Projects() {
   ]
 
   const visible = useMemo(() => {
-    return projects.filter((p) => {
+    return sortProjects(projects.filter((p) => {
       const matchesCategory = filter === 'All' || p.category === filter
       const matchesTag =
         !selectedTag || p.tags.some((t) => t.toLowerCase().includes(selectedTag.toLowerCase()))
@@ -79,8 +82,8 @@ export function Projects() {
         (p.telemetrySpec?.protocol && p.telemetrySpec.protocol.toLowerCase().includes(q))
 
       return matchesCategory && matchesTag && matchesSearch
-    })
-  }, [filter, selectedTag, searchQuery])
+    }), sortOrder)
+  }, [filter, selectedTag, searchQuery, sortOrder])
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { All: projects.length }
@@ -126,11 +129,23 @@ export function Projects() {
                 make them useful. Every entry links to real code or a live build.
               </p>
             </div>
-            <p className="meta">
+            <p className="meta" role="status" aria-live="polite">
               showing {visible.length} of {projects.length}
             </p>
           </div>
         </Reveal>
+
+        <div className="mt-8 border-y border-border py-5">
+          <h3 className="text-base font-semibold">Selected work</h3>
+          <p className="mt-1 text-sm text-muted-foreground">Start with a live system, a documented firmware build, or an award-winning web app.</p>
+          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+            {projects.filter((project) => project.featured).map((project) => (
+              <button key={project.title} type="button" onClick={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2 text-left text-sm font-medium text-primary underline-offset-4 hover:underline">
+                {project.title}<ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Search */}
         <Reveal delay={60}>
@@ -138,7 +153,8 @@ export function Projects() {
             <div className="relative flex items-center">
               <Search className="absolute left-3.5 size-4 text-muted-foreground" />
               <input
-                type="text"
+                type="search"
+                aria-label="Search projects"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={searchPlaceholder}
@@ -156,6 +172,17 @@ export function Projects() {
               )}
             </div>
 
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">Dates show when a repository was created or the work was showcased. Undated work appears last.</p>
+              <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
+                Sort by
+                <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value as 'newest' | 'oldest')} className="min-h-11 rounded-md border border-border bg-card px-3 text-foreground">
+                  <option value="newest">Newest first</option>
+                  <option value="oldest">Oldest first</option>
+                </select>
+              </label>
+            </div>
+
             {/* Quick tags */}
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
               <span className="marginalia text-lg leading-none">by tag:</span>
@@ -166,8 +193,9 @@ export function Projects() {
                     key={tag}
                     type="button"
                     onClick={() => setSelectedTag(isSelected ? null : tag)}
+                    aria-pressed={isSelected}
                     className={cn(
-                      'min-h-[32px] rounded-sm border px-2.5 py-1 text-xs transition-colors',
+                      'min-h-[44px] rounded-sm border px-2.5 py-1 text-xs transition-colors',
                       isSelected
                         ? 'border-primary bg-primary text-primary-foreground font-semibold'
                         : 'border-border bg-card text-muted-foreground hover:border-primary/50 hover:text-foreground',
@@ -195,7 +223,7 @@ export function Projects() {
         <Reveal delay={80}>
           <div
             className="scroll-strip mt-8 -mx-5 flex border-b border-border px-5 sm:mx-0 sm:px-0"
-            role="tablist"
+            role="group"
             aria-label="Filter projects by domain"
           >
             {filters.map((f) => {
@@ -204,12 +232,11 @@ export function Projects() {
                 <button
                   key={f}
                   type="button"
-                  role="tab"
-                  aria-selected={isActive}
+                  aria-pressed={isActive}
                   data-active={isActive}
                   onClick={() => setFilter(f)}
                   className={cn(
-                    'index-tab flex min-h-[42px] shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
+                    'index-tab flex min-h-[44px] shrink-0 items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm transition-colors',
                     isActive
                       ? 'text-primary font-semibold'
                       : 'text-muted-foreground hover:text-foreground',
@@ -259,11 +286,11 @@ export function Projects() {
                   {featured.badge ? ` · ${featured.badge}` : ''}
                 </p>
                 <h3
-                  className="mt-2 cursor-pointer text-3xl font-extrabold leading-tight tracking-tight transition-colors hover:text-primary sm:text-4xl"
-                  onClick={() => openProject(featured)}
+                  className="mt-2 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
                 >
-                  {featured.title}
+                  <button type="button" onClick={() => openProject(featured)} className="text-left transition-colors hover:text-primary">{featured.title}</button>
                 </h3>
+                <p className="mt-3 text-sm text-muted-foreground" data-project-date={featured.date || ''}>{projectDateLabel(featured)}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{featured.role}</p>
                 <p className="mt-4 max-w-[54ch] text-pretty text-base leading-relaxed text-foreground/85">
                   {featured.description}
@@ -317,7 +344,7 @@ export function Projects() {
                   <button
                     type="button"
                     onClick={() => openProject(featured)}
-                    className="inline-flex min-h-[40px] items-center gap-1.5 text-sm font-semibold text-primary"
+                    className="inline-flex min-h-[44px] items-center gap-1.5 text-sm font-semibold text-primary"
                   >
                     <span className="pencil-underline" data-active="true">
                       Read the full note
@@ -329,7 +356,7 @@ export function Projects() {
                       href={featured.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-[40px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                      className="inline-flex min-h-[44px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
                     >
                       <ExternalLink className="size-4" />
                       {featured.demoLabel || 'Open it live'}
@@ -340,7 +367,7 @@ export function Projects() {
                       href={featured.repo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-[40px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+                      className="inline-flex min-h-[44px] items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
                     >
                       <GithubIcon className="size-4" />
                       {featured.repoLabel || 'Source code'}
@@ -385,16 +412,16 @@ export function Projects() {
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                         <h3
-                          className="cursor-pointer text-xl font-bold leading-snug tracking-tight transition-colors hover:text-primary"
-                          onClick={() => openProject(project)}
+                          className="text-xl font-bold leading-snug tracking-tight"
                         >
-                          {project.title}
+                          <button type="button" onClick={() => openProject(project)} className="min-h-11 text-left transition-colors hover:text-primary">{project.title}</button>
                         </h3>
                         <span className="text-xs text-muted-foreground">
                           {project.category}
                         </span>
                       </div>
-                      <p className="mt-1 text-sm text-muted-foreground">{project.role}</p>
+                      <p className="mt-1 text-sm text-muted-foreground" data-project-date={project.date || ''}>{projectDateLabel(project)}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">My contribution: {project.role}</p>
                       <p className="mt-2.5 max-w-[62ch] text-pretty text-sm leading-relaxed text-foreground/85">
                         {project.description}
                       </p>
@@ -405,8 +432,9 @@ export function Projects() {
                         {project.telemetrySpec && (
                           <button
                             type="button"
+                            aria-expanded={drawerKey === 'specs'}
                             onClick={() => toggleDrawer(project.title, 'specs')}
-                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            className="pencil-underline inline-flex min-h-[44px] items-center text-xs text-muted-foreground"
                             data-active={drawerKey === 'specs'}
                           >
                             Specs
@@ -415,8 +443,9 @@ export function Projects() {
                         {project.codeSnippet && (
                           <button
                             type="button"
+                            aria-expanded={drawerKey === 'code'}
                             onClick={() => toggleDrawer(project.title, 'code')}
-                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            className="pencil-underline inline-flex min-h-[44px] items-center text-xs text-muted-foreground"
                             data-active={drawerKey === 'code'}
                           >
                             Code
@@ -425,8 +454,9 @@ export function Projects() {
                         {project.architectureFlow && (
                           <button
                             type="button"
+                            aria-expanded={drawerKey === 'flow'}
                             onClick={() => toggleDrawer(project.title, 'flow')}
-                            className="pencil-underline inline-flex min-h-[32px] items-center text-xs text-muted-foreground"
+                            className="pencil-underline inline-flex min-h-[44px] items-center text-xs text-muted-foreground"
                             data-active={drawerKey === 'flow'}
                           >
                             How it flows
@@ -480,7 +510,7 @@ export function Projects() {
                                   onClick={() =>
                                     copyCode(project.title, project.codeSnippet!.code)
                                   }
-                                  className="inline-flex min-h-[32px] items-center gap-1.5 rounded-sm border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-sm border border-border px-2 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
                                 >
                                   {copiedSnippet === project.title ? (
                                     <>
@@ -527,7 +557,7 @@ export function Projects() {
                           href={project.demo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex min-h-[36px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
+                          className="inline-flex min-h-[44px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
                         >
                           <ExternalLink className="size-3.5" />
                           <span>{project.demoLabel || 'Live'}</span>
@@ -538,7 +568,7 @@ export function Projects() {
                           href={project.repo}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex min-h-[36px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
+                          className="inline-flex min-h-[44px] items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
                         >
                           <GithubIcon className="size-3.5" />
                           <span>{project.repoLabel || 'Source code'}</span>
@@ -547,7 +577,7 @@ export function Projects() {
                       <button
                         type="button"
                         onClick={() => openProject(project)}
-                        className="inline-flex min-h-[36px] items-center gap-1 text-xs font-semibold text-primary"
+                        className="inline-flex min-h-[44px] items-center gap-1 text-xs font-semibold text-primary"
                       >
                         <span className="pencil-underline">Open note</span>
                         <ArrowUpRight className="size-3.5" />
@@ -575,7 +605,7 @@ export function Projects() {
                 setSelectedTag(null)
                 setSearchQuery('')
               }}
-              className="mt-5 min-h-[40px] rounded-md border border-border bg-secondary/60 px-4 py-2 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary"
+              className="mt-5 min-h-[44px] rounded-md border border-border bg-secondary/60 px-4 py-2 text-sm font-medium transition-colors hover:border-primary/50 hover:text-primary"
             >
               Reset everything
             </button>
