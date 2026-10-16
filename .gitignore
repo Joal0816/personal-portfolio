@@ -16,3 +16,4 @@ __v0_runtime_loader.js
 .v0-trash/
 .vercel
 .vercel/
+.pnpm-store/
