@@ -395,6 +395,75 @@ export type Project = {
 
 const projectEntries: Project[] = [
   {
+    title: 'S.L.I.D.E. — Landslide Monitoring & Risk Indication',
+    date: '2026-10-17',
+    dateLabel: 'Repository created',
+    outcome: 'Field-ready PWA dashboard tracking real-time ground tilt, soil moisture, and rainfall with offline resilience.',
+    dateSource: 'https://github.com/SLIDE-full-soure-codes/SLIDE-dashboard',
+    category: 'Full-Stack & Embedded',
+    role: 'Lead Frontend & Telemetry Dashboard Engineer',
+    badge: 'Live Telemetry PWA',
+    description:
+      'Responsive progressive web app for the Soil Movement Landslide Indication and Detection system, tracking slope tilt, soil moisture, and rainfall intensity.',
+    longDescription:
+      'Engineered a responsive progressive web application (PWA) prototype for the S.L.I.D.E. (Soil Movement Landslide Indication and Detection) field monitoring network. Provides field-ready telemetry tracking for ground tilt, soil saturation, rain intensity, and environmental metrics across landslide-prone slopes. Features offline application-shell caching, threshold-breach alert notifications, historical telemetry charts, and monitoring site diagnostics.',
+    features: [
+      'Real-time telemetry tracking for soil moisture (%), ground tilt (°), and rainfall intensity (mm/h).',
+      'Progressive Web App (PWA) with offline shell caching, standalone mode, and network status monitoring.',
+      'Threshold breach alert system with categorized watch levels and event log modal.',
+      'Responsive SVG sensor trend charts spanning 24-hour, 7-day, and 30-day monitoring periods.',
+    ],
+    image: '/projects/slide-dashboard.png',
+    tags: ['PWA', 'Telemetry', 'IoT', 'Landslide Monitoring', 'JavaScript', 'Responsive Design'],
+    demo: 'https://slide.joalvergs.tech',
+    demoLabel: 'Live Platform',
+    repo: 'https://github.com/SLIDE-full-soure-codes/SLIDE-dashboard',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'S.L.I.D.E. Field Station 04',
+      protocol: 'PWA / Service Worker / REST',
+      latency: '< 50ms Edge Response',
+      clockSpeed: 'Solar-Powered Field Node',
+      memoryFootprint: 'Offline Cache Shell',
+    },
+    codeSnippet: {
+      filename: 'sw.js',
+      language: 'javascript',
+      code: `const CACHE_NAME = 'slide-shell-v1.2.1';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './styles.css',
+  './app.js',
+  './manifest.webmanifest',
+  './assets/slide-logo.png',
+  './assets/icon-192.png',
+];
+
+self.addEventListener('fetch', (event) => {
+  if (new URL(event.request.url).origin !== self.location.origin) return;
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE_NAME);
+    try {
+      const response = await fetch(event.request, { cache: 'no-cache' });
+      if (response.ok) await cache.put(event.request, response.clone());
+      return response;
+    } catch {
+      const cached = await cache.match(event.request);
+      if (cached) return cached;
+    }
+  })());
+});`,
+    },
+    architectureFlow: [
+      'Field Inclinometer & Soil Moisture Sensors',
+      'Station 04 GSM Solar Node',
+      'Edge Telemetry Ingestion',
+      'S.L.I.D.E. Service Worker Cache',
+      'Responsive Field Monitor Dashboard',
+    ],
+  },
+  {
     title: 'O.I.N.K. — Swine Thermal Fever Surveillance',
     sourceNote: 'The source repository is private. You can explore the live platform.',
     date: '2026-09-27',
