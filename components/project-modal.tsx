@@ -53,7 +53,18 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
                   <X className="size-5 sm:size-4" />
                 </Dialog.Close>
 
-                <div className="absolute bottom-2 left-4 right-4">
+                <div className="absolute bottom-2 left-4 right-4 flex items-center gap-2.5">
+                  {project.favicon && (
+                    <span className="relative inline-flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-[5px] border border-white/20 bg-background/80 p-1 shadow-sm backdrop-blur-sm">
+                      <Image
+                        src={project.favicon}
+                        alt=""
+                        width={24}
+                        height={24}
+                        className="size-full object-contain"
+                      />
+                    </span>
+                  )}
                   <Dialog.Title className="text-xl font-extrabold leading-tight tracking-tight sm:text-2xl">
                     {project.title}
                   </Dialog.Title>

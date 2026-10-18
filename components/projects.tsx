@@ -288,7 +288,20 @@ export function Projects() {
                 <h3
                   className="mt-2 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
                 >
-                  <button type="button" onClick={() => openProject(featured)} className="text-left transition-colors hover:text-primary">{featured.title}</button>
+                  <button type="button" onClick={() => openProject(featured)} className="inline-flex items-center gap-3 text-left transition-colors hover:text-primary">
+                    {featured.favicon && (
+                      <span className="relative inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-card p-1 shadow-xs">
+                        <Image
+                          src={featured.favicon}
+                          alt=""
+                          width={24}
+                          height={24}
+                          className="size-full object-contain"
+                        />
+                      </span>
+                    )}
+                    <span>{featured.title}</span>
+                  </button>
                 </h3>
                 <p className="mt-3 text-sm text-muted-foreground" data-project-date={featured.date || ''}>{projectDateLabel(featured)}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{featured.role}</p>
@@ -414,7 +427,20 @@ export function Projects() {
                         <h3
                           className="text-xl font-bold leading-snug tracking-tight"
                         >
-                          <button type="button" onClick={() => openProject(project)} className="min-h-11 text-left transition-colors hover:text-primary">{project.title}</button>
+                          <button type="button" onClick={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2.5 text-left transition-colors hover:text-primary">
+                            {project.favicon && (
+                              <span className="relative inline-flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-[5px] border border-border bg-card p-0.5 shadow-xs">
+                                <Image
+                                  src={project.favicon}
+                                  alt=""
+                                  width={20}
+                                  height={20}
+                                  className="size-full object-contain"
+                                />
+                              </span>
+                            )}
+                            <span>{project.title}</span>
+                          </button>
                         </h3>
                         <span className="text-xs text-muted-foreground">
                           {project.category}

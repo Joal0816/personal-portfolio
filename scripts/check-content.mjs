@@ -14,6 +14,7 @@ assert.equal(new Set(projects.map((p) => p.title)).size, projects.length, 'Dupli
 assert.equal(new Set(certifications.map((c) => c.name)).size, certifications.length, 'Duplicate certificates')
 for (const project of projects) {
   asset(project.image)
+  if (project.favicon) asset(project.favicon)
   if (project.date) {
     assert(/^\d{4}-\d{2}-\d{2}$/.test(project.date), `Invalid date: ${project.title}`)
     assert.equal(new Date(`${project.date}T00:00:00Z`).toISOString().slice(0, 10), project.date)

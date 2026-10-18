@@ -90,7 +90,14 @@ export function About() {
                 {experiences.map((exp) => (
                   <li key={exp.role} className="border-b border-border py-5">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                      <h4 className="text-[17px] font-semibold leading-snug">{exp.role}</h4>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h4 className="text-[17px] font-semibold leading-snug">{exp.role}</h4>
+                        {exp.status && (
+                          <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-semibold text-primary">
+                            {exp.status}
+                          </span>
+                        )}
+                      </div>
                       <span className="meta">{exp.period}</span>
                     </div>
                     <p className="mt-1 text-sm font-medium text-primary">{exp.organization}</p>

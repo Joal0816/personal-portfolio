@@ -82,6 +82,7 @@ export const experiences = [
     role: 'Co-Author & Web App Developer',
     organization: 'PhD Dissertation Research Publication',
     period: '2024 – Present',
+    status: 'In progress',
     badge: 'PhD Publication',
     description:
       'Designed and developed the full-stack Learning Management System web application (React.js, Node.js, Supabase/PostgreSQL) for a PhD dissertation publication, capturing live microcontroller hardware telemetry and automating laboratory scoring logic with zero manual intervention. Benchmarked standard cloud server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller.',
@@ -91,6 +92,7 @@ export const experiences = [
     role: 'PWA & Mobile Developer',
     organization: "Master's & Undergraduate Research Project",
     period: '2025 – Present',
+    status: 'In progress',
     badge: 'Cross-Platform PWA & APK',
     description:
       'Developed the cross-platform Progressive Web Application (PWA) compatible across all devices and established release toolchains for Android APK generation, integrating an on-device quantized YOLOv8n microplastic particle detection pipeline.',
@@ -372,6 +374,7 @@ export type Project = {
   longDescription: string
   features: string[]
   image: string
+  favicon?: string
   tags: string[]
   demo: string
   demoLabel?: string
@@ -414,6 +417,7 @@ const projectEntries: Project[] = [
       'Responsive SVG sensor trend charts spanning 24-hour, 7-day, and 30-day monitoring periods.',
     ],
     image: '/projects/slide-dashboard.png',
+    favicon: '/icons/projects/slide.png',
     tags: ['PWA', 'Telemetry', 'IoT', 'Landslide Monitoring', 'JavaScript', 'Responsive Design'],
     demo: 'https://slide.joalvergs.tech',
     demoLabel: 'Live Platform',
@@ -464,7 +468,116 @@ self.addEventListener('fetch', (event) => {
     ],
   },
   {
+    title: 'Vault — Personal Expense & Family Sanctuary PWA',
+    date: '2026-10-08',
+    dateLabel: 'Repository created',
+    outcome: 'Offline-first financial analytics PWA with automated SMS parsing and client-side encryption.',
+    dateSource: 'https://github.com/Joal0816/vault-expense',
+    category: 'Full-Stack & Embedded',
+    role: 'Lead Full-Stack & PWA Architect',
+    badge: 'In Progress',
+    description:
+      'Offline-first personal expense tracker, family planner, and financial analytics Progressive Web App with local encryption and cloud sync.',
+    longDescription:
+      'Engineered Vault, an offline-first financial sanctuary and family planner Progressive Web Application (PWA). Features instant transaction logging, GCash SMS quick parsing, categorized spending analytics, budget envelope thresholds, multi-device sync, and private family milestone tracking with zero third-party data tracking.',
+    features: [
+      'Offline-first Progressive Web App (PWA) with background sync and standalone installation.',
+      'Automated SMS and transaction text parsing for rapid expense categorization.',
+      'Dynamic budget visualization charts and monthly envelope surplus indicators.',
+      'Dual-layer security with PIN protection and localized client-side encryption.',
+    ],
+    image: '/projects/vault.png',
+    favicon: '/icons/projects/vault.svg',
+    tags: ['PWA', 'TypeScript', 'React', 'Vite', 'Tailwind CSS', 'Offline-First'],
+    demo: 'https://vault.joalvergs.tech',
+    demoLabel: 'Live Platform (In Progress)',
+    repo: 'https://github.com/Joal0816/vault-expense',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'PWA / Vite + LocalStorage',
+      protocol: 'Service Worker / CacheAPI',
+      latency: '< 16ms Local Query',
+      clockSpeed: 'Client-Side Offline Engine',
+      memoryFootprint: 'Offline Cache Shell',
+    },
+    codeSnippet: {
+      filename: 'sw.ts',
+      language: 'typescript',
+      code: `const CACHE_NAME = 'vault-pwa-v1.4.0';
+const STATIC_ASSETS = ['/', '/index.html', '/manifest.webmanifest', '/favicon.svg'];
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((cached) => cached || fetch(event.request))
+  );
+});`,
+    },
+    architectureFlow: [
+      'Encrypted Local Storage',
+      'GCash SMS Regex Parser',
+      'Dynamic Budget Analytics',
+      'PWA Offline Service Worker',
+      'Sanctuary Financial Dashboard',
+    ],
+  },
+  {
+    title: 'Pulse — Unified Observability & Telemetry Radar',
+    date: '2026-10-07',
+    dateLabel: 'Repository created',
+    outcome: 'Unified real-time observability telemetry network tracking live visitors, lifetime impressions, and deployment health across all web applications.',
+    dateSource: 'https://github.com/Joal0816/pulse',
+    category: 'Full-Stack & Embedded',
+    role: 'Lead Full-Stack & Telemetry Systems Architect',
+    badge: 'Live Telemetry Platform',
+    description:
+      'Production-grade observability and telemetry radar monitoring real-time visitors, domain traffic metrics, and system uptime across web applications with serverless PostgreSQL and automated webhook alerts.',
+    longDescription:
+      'Engineered a high-performance, real-time observability and visitor analytics platform for live portfolio applications. Integrates lightweight zero-cookie client tracking, Neon serverless PostgreSQL for organic metrics persistence, automated visitor geolocation and user-agent parsing, instant webhook dispatchers for alert routing, and a live radar dashboard rendering real-time concurrent sessions and historical traffic telemetry.',
+    features: [
+      'Zero-dependency client telemetry beacon with privacy-centric session tracking.',
+      'Serverless Neon PostgreSQL backend for deterministic analytics persistence.',
+      'Real-time traffic radar dashboard displaying active sessions and domain distribution.',
+      'Automated multi-channel webhook dispatching for visitor event notifications.',
+    ],
+    image: '/projects/pulse.png',
+    favicon: '/icons/projects/pulse.png',
+    tags: ['TypeScript', 'Next.js', 'PostgreSQL', 'Neon', 'Telemetry', 'Observability', 'Webhooks'],
+    demo: 'https://pulse.joalvergs.tech',
+    demoLabel: 'Live Platform',
+    repo: 'https://github.com/Joal0816/pulse',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Vercel Edge + Neon DB',
+      protocol: 'HTTPS / REST / Webhooks',
+      latency: '< 35ms Edge Ingestion',
+      clockSpeed: 'Serverless Edge Node',
+      memoryFootprint: 'Zero-Cookie Beacon',
+    },
+    codeSnippet: {
+      filename: 'tracker.ts',
+      language: 'typescript',
+      code: `export async function recordVisitorTelemetry(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') || '127.0.0.1';
+  const ua = req.headers.get('user-agent') || 'Unknown';
+  const parsed = parseUserAgent(ua);
+  
+  await sql\`INSERT INTO visitor_telemetry (ip_hash, browser, os, domain, timestamp)
+            VALUES (\${hashIp(ip)}, \${parsed.browser}, \${parsed.os}, \${req.headers.get('host')}, NOW())\`;
+  await dispatchSlackWebhook({ ip: hashIp(ip), browser: parsed.browser });
+}`,
+    },
+    architectureFlow: [
+      'Client Telemetry Beacon (p.js)',
+      'Vercel Edge API Ingestion',
+      'User-Agent & Geo Parser',
+      'Neon PostgreSQL Serverless',
+      'Live Pulse Radar Dashboard',
+    ],
+  },
+
+  {
     title: 'O.I.N.K. — Swine Thermal Fever Surveillance',
+    favicon: '/icons/projects/oink.png',
     sourceNote: 'The source repository is private. You can explore the live platform.',
     date: '2026-09-27',
     dateLabel: 'Repository created',
@@ -526,6 +639,7 @@ self.addEventListener('fetch', (event) => {
     title: 'Agap AI — Multimodal Emergency Triage Platform',
     sourceNote: 'The source repository is currently unavailable.',
     date: '2026-09-14',
+    favicon: '/icons/projects/agapai.png',
     dateLabel: 'Showcased',
     outcome: 'Developed during IEEE Sumpai Hackathon 2026 to turn emergency calls into structured dispatch information.',
     dateSource: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
@@ -544,8 +658,8 @@ self.addEventListener('fetch', (event) => {
     ],
     image: '/projects/agap-ai.jpg',
     tags: ['Next.js', 'TypeScript', 'AI / NLP', 'GIS Mapping', 'Speech-to-Text', 'Hackathon'],
-    demo: '',
-    demoLabel: 'View Repository',
+    demo: 'https://agapai.joalvergs.tech',
+    demoLabel: 'Live Platform',
     repo: '',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
@@ -579,6 +693,7 @@ self.addEventListener('fetch', (event) => {
   {
     title: 'BCA182 Multisensor Room Monitor',
     date: '2026-09-14',
+    favicon: '/icons/projects/room-monitor.svg',
     dateLabel: 'Repository created',
     featured: true,
     outcome: 'Published on Hackster.io with technical schematics and 33 unit tests.',
@@ -631,6 +746,7 @@ vTaskStartScheduler();`,
   {
     title: 'BCA182 Personal MP3 Player & Tone Sequencer',
     date: '2026-10-02',
+    favicon: '/icons/projects/mp3.svg',
     dateLabel: 'Repository created',
     outcome: 'Firmware and RTOS implementation backed by 18 passing unit tests.',
     dateSource: 'https://github.com/Joal0816/BCA182-Lab2-MP3-Player',
@@ -680,8 +796,66 @@ vTaskStartScheduler();`,
     ],
   },
   {
+    title: 'oddJobs — Hyperlocal Student Workforce Marketplace',
+    date: '2026-10-01',
+    dateLabel: 'Repository created',
+    outcome: 'Campus peer-to-peer errand marketplace connecting university students with verified gigs and micro-tasks.',
+    dateSource: 'https://github.com/oddjobs-org/oddjobs',
+    category: 'Web Development',
+    role: 'Lead Full-Stack Engineer & Product Architect',
+    badge: 'Campus Marketplace',
+    description:
+      'Hyperlocal task marketplace connecting university students with peer errands, academic commissions, and on-demand campus gigs.',
+    longDescription:
+      'Architected and developed oddJobs, a localized student workforce marketplace tailored for campus ecosystems. Facilitates peer-to-peer task matchmaking, escrow-protected task agreements, direct task-request chat, profile verifications, and instant skill matching to enable students to monetize micro-tasks and skills within university grounds.',
+    features: [
+      'Hyperlocal marketplace UI with categorized campus micro-tasks and errand routing.',
+      'Real-time task posting, bidding, and status tracking workflow.',
+      'Mobile-first responsive interface optimized for on-the-go student interactions.',
+      'Secure authenticated user profiles with task history and peer reviews.',
+    ],
+    image: '/projects/oddjobs.png',
+    favicon: '/icons/projects/oddjobs.png',
+    tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Marketplace', 'Mobile-First'],
+    demo: 'https://oddjobs.joalvergs.tech',
+    demoLabel: 'Live Platform',
+    repo: 'https://github.com/oddjobs-org/oddjobs',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Next.js Edge Runtime',
+      protocol: 'HTTPS / REST API',
+      latency: '< 40ms Edge Response',
+      clockSpeed: 'Serverless Node Engine',
+      memoryFootprint: 'Optimized Edge Bundle',
+    },
+    codeSnippet: {
+      filename: 'task_matcher.ts',
+      language: 'typescript',
+      code: `export async function matchStudentTasks(skills: string[], campusZone: string) {
+  const tasks = await db.tasks.findMany({
+    where: {
+      zone: campusZone,
+      status: 'OPEN',
+      tags: { hasSome: skills },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+  return tasks;
+}`,
+    },
+    architectureFlow: [
+      'Student Task Request',
+      'Zone & Skill Indexing',
+      'Peer-to-Peer Match Engine',
+      'Escrow Milestone Handler',
+      'Mobile-First Student UI',
+    ],
+  },
+
+  {
     title: 'IoT Human Activity Recognition & Edge Telemetry',
     date: '2026-10-06',
+    favicon: '/icons/projects/kinesis.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
     category: 'Mobile & Edge AI',
@@ -699,8 +873,8 @@ vTaskStartScheduler();`,
     ],
     image: '/projects/activity-recognition.png',
     tags: ['STM32F407', 'TinyML', 'MQTT', 'Edge AI', 'TypeScript', 'IoT Telemetry'],
-    demo: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
-    demoLabel: 'View Repository',
+    demo: 'https://kinesis.joalvergs.tech',
+    demoLabel: 'Live Platform',
     repo: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
@@ -736,6 +910,7 @@ vTaskStartScheduler();`,
   {
     title: 'ARUGA Fall Detection & Inactivity Monitoring',
     date: '2026-10-05',
+    favicon: '/icons/projects/aruga.png',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
     category: 'Mobile & Edge AI',
@@ -788,6 +963,7 @@ vTaskStartScheduler();`,
   {
     title: 'Microcontroller-Based Automated Feedback System',
     date: '2026-08-25',
+    favicon: '/icons/projects/miow.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/MIOW-CODES/MIOW-Learning-Management-System',
     category: 'Full-Stack & Embedded',
@@ -840,6 +1016,7 @@ vTaskStartScheduler();`,
   {
     title: 'Mobile Microplastic Detection App',
     date: '2025-12-01',
+    favicon: '/icons/projects/mp-detect.svg',
     dateLabel: 'Showcased',
     dateSource: 'https://github.com/Joal0816/Mp-Detect',
     category: 'Mobile & Edge AI',
@@ -889,6 +1066,7 @@ updateParticleTelemetryCount(particles.size)`,
   {
     title: 'Barangay Connect Web App',
     date: '2025-12-10',
+    favicon: '/icons/projects/barangay.svg',
     dateLabel: 'Repository created',
     featured: true,
     outcome: 'Won 2nd Best Innovation and 3rd Best Pitch at TechShowcase 2025, MSU-IIT.',
@@ -944,6 +1122,7 @@ WITH CHECK (auth.uid() = resident_id);`,
   {
     title: 'Snake OS: Embedded Interactive HMI Game',
     date: '2026-08-23',
+    favicon: '/icons/projects/snake-os.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
     category: 'Embedded & HMI',
@@ -973,6 +1152,7 @@ WITH CHECK (auth.uid() = resident_id);`,
   },
   {
     title: 'Sustainability in the Cup Web',
+    favicon: '/icons/projects/cup.svg',
     category: 'Web Development',
     role: 'Frontend & Data Visualization Engineer',
     badge: 'Latest release',
@@ -989,7 +1169,7 @@ WITH CHECK (auth.uid() = resident_id);`,
     image: '/projects/sustainability-in-the-cup.png',
     tags: ['React', 'Data Visualization', 'Cloudflare Pages', 'Tailwind CSS', 'Chart.js'],
     demo: 'https://cup.joalvergs.tech',
-    demoLabel: 'Live System (cup.joalvergs.tech)',
+    demoLabel: 'Live Platform',
     repo: 'https://github.com/Joal0816',
     repoLabel: 'Developer GitHub',
     telemetrySpec: {
@@ -1000,6 +1180,7 @@ WITH CHECK (auth.uid() = resident_id);`,
   },
   {
     title: 'Edge AI Glasses Object Detection',
+    favicon: '/icons/projects/object-detection.svg',
     category: 'Full-Stack & Embedded',
     role: 'Edge AI Developer — Roboflow, Edge Impulse',
     badge: 'Wearable TinyML',
@@ -1023,6 +1204,7 @@ WITH CHECK (auth.uid() = resident_id);`,
   {
     title: 'Industrial Oven Simulation & Control',
     date: '2026-08-23',
+    favicon: '/icons/projects/industrial-oven.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
     category: 'Embedded & HMI',
@@ -1080,6 +1262,7 @@ END_IF;`,
   },
   {
     title: 'IoT Vermicomposting Monitor',
+    favicon: '/icons/projects/vermicomposting.svg',
     category: 'Embedded & HMI',
     role: 'IoT Developer — ESP32, MQTT, Sensors',
     badge: 'Smart Agriculture',
@@ -1102,6 +1285,7 @@ END_IF;`,
   },
   {
     title: 'Line Following Robot',
+    favicon: '/icons/projects/line-following-robot.svg',
     category: 'Embedded & HMI',
     role: 'Firmware Developer — Arduino Uno, AVR Assembly',
     badge: 'Bare-Metal AVR',
@@ -1124,6 +1308,7 @@ END_IF;`,
   },
   {
     title: 'K-Bin: Automated Smart Waste Sorting',
+    favicon: '/icons/projects/k-bin.svg',
     category: 'Embedded & HMI',
     role: 'Software & Embedded Developer — Qt C++, CMake, Sensors',
     badge: 'Desktop HMI & Sensors',
@@ -1146,6 +1331,7 @@ END_IF;`,
   },
   {
     title: 'Adjustable DC Power Supply',
+    favicon: '/icons/projects/power-supply.svg',
     category: 'Embedded & HMI',
     role: 'Electronics Engineering',
     badge: 'Hardware Prototyping',
