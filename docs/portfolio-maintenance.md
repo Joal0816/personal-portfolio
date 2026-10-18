@@ -2,9 +2,13 @@
 
 All project and certificate content lives in `lib/portfolio-data.ts`.
 
+## Portfolio icons
+
+`public/icon.svg` is the source for the blue JV chip mark. Its colors match the light and dark primary colors in `app/globals.css`; the SVG follows the browser color scheme. Regenerate the PNG variants and legacy SVG alias with `node scripts/generate-favicons.mjs` (requires ImageMagick with its RSVG renderer). The Apple icon has an opaque background; the maskable PWA icon keeps the chip inside the central safe area. When changing the mark, increment the icon query versions in `app/layout.tsx` and the cache version in `public/sw.js`.
+
 ## Project dates and selected work
 
-Project dates are evidence dates, not claimed completion dates. Eleven projects have a verified repository creation date or a documented showcase date; six have no date and appear last in either sort direction. Each dated project records its ISO date, label, and source. Repository timestamps were checked through GitHub on October 17, 2026. Agap AI uses the IEEE Sumpai event date already recorded on its certificate.
+Project dates are evidence dates, not claimed completion dates. Sixteen projects have a verified repository creation date or a documented showcase date; six have no date and appear last in either sort direction. Each dated project records its ISO date, label, and source. Repository timestamps were checked through GitHub on October 19, 2026. Agap AI uses the IEEE Sumpai event date already recorded on its certificate.
 
 Use `featured: true` for the selected-work shortcuts. These open the project directly without changing the chronological order of the list. `outcome` holds a concise result supported by the existing project description, feature list, or award record. Do not add unsupported metrics.
 

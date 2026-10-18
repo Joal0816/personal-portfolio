@@ -1,51 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <defs>
-    <linearGradient id="cyberGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#06b6d4" />
-      <stop offset="100%" stop-color="#10b981" />
-    </linearGradient>
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0e17" />
-      <stop offset="100%" stop-color="#131b2e" />
-    </linearGradient>
-    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="1.5" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
-
-  <!-- Dark Silicon Base -->
-  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="1.5" />
-  
-  <!-- Outer Tech Chassis Accent -->
-  <rect x="7" y="7" width="50" height="50" rx="10" fill="none" stroke="#06b6d4" stroke-width="1.2" stroke-opacity="0.3" stroke-dasharray="8 4" />
-
-  <!-- IC Chip Pins Top & Bottom -->
-  <line x1="20" y1="2" x2="20" y2="7" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="32" y1="2" x2="32" y2="7" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="44" y1="2" x2="44" y2="7" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-  
-  <line x1="20" y1="57" x2="20" y2="62" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="32" y1="57" x2="32" y2="62" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="44" y1="57" x2="44" y2="62" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-
-  <!-- IC Chip Pins Left & Right -->
-  <line x1="2" y1="20" x2="7" y2="20" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="2" y1="32" x2="7" y2="32" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="2" y1="44" x2="7" y2="44" stroke="#06b6d4" stroke-width="1.8" stroke-linecap="round" />
-
-  <line x1="57" y1="20" x2="62" y2="20" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="57" y1="32" x2="62" y2="32" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-  <line x1="57" y1="44" x2="62" y2="44" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
-
-  <!-- Stylized "JV" Monogram Matrix -->
-  <!-- "J" Segment -->
-  <path d="M 23 18 L 29 18 L 29 36 C 29 42 21 42 19 38" fill="none" stroke="url(#cyberGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)" />
-  
-  <!-- "V" Segment -->
-  <path d="M 33 18 L 41 42 L 49 18" fill="none" stroke="url(#cyberGrad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlow)" />
-
-  <!-- Live Micro Status Pulse Node -->
-  <circle cx="49" cy="18" r="2.2" fill="#10b981" />
-  <circle cx="19" cy="18" r="1.5" fill="#06b6d4" />
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .chip { fill: #2997ff; }
+      .pins { stroke: #2997ff; }
+      .initials { stroke: #1c1c1e; }
+    }
+  </style>
+  <path class="pins" d="M24 2v6M40 2v6M24 56v6M40 56v6M2 24h6M2 40h6M56 24h6M56 40h6" fill="none" stroke="#0071e3" stroke-width="4" stroke-linecap="round"/>
+  <rect class="chip" x="6" y="6" width="52" height="52" rx="12" fill="#0071e3"/>
+  <path class="initials" d="M17 21h11v16c0 5-2 7-6 7s-7-2-7-6M35 21l7 23 8-23" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

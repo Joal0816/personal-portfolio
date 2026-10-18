@@ -1,5 +1,5 @@
 // Joseph Vergara Portfolio - Progressive Web App Service Worker
-const CACHE_NAME = 'jv-portfolio-v1';
+const CACHE_NAME = 'jv-portfolio-v2';
 
 const CORE_ASSETS = [
   '/',

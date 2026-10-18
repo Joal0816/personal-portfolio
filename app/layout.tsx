@@ -76,11 +76,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'Joseph Vergara' }],
   icons: {
     icon: [
-      { url: '/icon.svg?v=3', type: 'image/svg+xml' },
-      { url: '/icon-dark-32x32.png?v=3', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon-light-32x32.png?v=3', media: '(prefers-color-scheme: light)' },
+      { url: '/icon.svg?v=4', type: 'image/svg+xml', sizes: 'any' },
+      { url: '/icon-dark-32x32.png?v=4', type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: dark)' },
+      { url: '/icon-light-32x32.png?v=4', type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: light)' },
     ],
-    apple: '/apple-icon.png?v=3',
+    apple: '/apple-icon.png?v=4',
   },
 }
 

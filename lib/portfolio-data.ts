@@ -25,7 +25,7 @@ export const profile = {
   },
   phone: '+63 947-589-2995',
   website: 'https://joalvergs.tech',
-  resumeUrl: '/resume.pdf?v=e2e47d5e69ee',
+  resumeUrl: '/resume.pdf?v=eb90d9955915',
   status: 'Fourth year · BS Computer Applications (Major in Embedded Systems)',
   tagline: 'I write the software that lives directly on hardware — firmware, real-time systems, and small AI models that run without the cloud.',
   intro:
@@ -397,6 +397,69 @@ export type Project = {
 }
 
 const projectEntries: Project[] = [
+  {
+    title: 'UNICHAT — Anonymous Campus 1-on-1 Chat',
+    date: '2026-10-19',
+    dateLabel: 'Repository created',
+    outcome: 'Installable campus chat platform gated by university email authentication with real-time transactional matchmaking.',
+    dateSource: 'https://github.com/Joal0816/UNICHAT',
+    category: 'Web Development',
+    role: 'Full-Stack & Systems Architect',
+    badge: 'Live Campus PWA',
+    description:
+      'University-exclusive, random one-on-one text chat web app gated by verified student email domains, with real-time transactional matching and strict privacy isolation.',
+    longDescription:
+      'Architected and built UNICHAT, an installable, privacy-centric one-on-one text chat web application designed for university communities (starting with MSU-IIT). Implemented strict institutional email domain gating (@g.msuiit.edu.ph) via Supabase Auth and Google OAuth, transactional PostgreSQL matchmaking RPCs with concurrency-safe advisory locks, incremental state synchronization, and an MFA-protected staff moderation suite with audited evidence handling.',
+    features: [
+      'Campus-exclusive email authentication enforcing verified @g.msuiit.edu.ph domains.',
+      'Transactional PostgreSQL matchmaking RPCs with mutual block exclusion and strict pseudonym isolation.',
+      'Real-time bidirectional message streaming with incremental delta sync and 60-second lease heartbeats.',
+      'Staff moderation dashboard requiring multi-factor authentication (AAL2) with tamper-evident audit trails.',
+    ],
+    image: '/projects/unichat.png',
+    favicon: '/icons/projects/unichat.png',
+    tags: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL', 'Realtime', 'PWA', 'Tailwind CSS'],
+    demo: 'https://unichat.joalvergs.tech',
+    demoLabel: 'Live Platform',
+    repo: 'https://github.com/Joal0816/UNICHAT',
+    repoLabel: 'GitHub Repo',
+    telemetrySpec: {
+      target: 'Vercel Edge + Supabase DB',
+      protocol: 'WSS / PostgreSQL RPCs',
+      latency: '< 45ms Match Latency',
+      clockSpeed: 'Serverless Realtime Node',
+      memoryFootprint: 'Zero-Leak Partner State',
+    },
+    codeSnippet: {
+      filename: 'chat-sync.ts',
+      language: 'typescript',
+      code: `export function mergeChatState(current: ChatState | null, incoming: ChatState, now = Date.now()) {
+  if (!incoming.session) return incoming;
+  const retained = !incoming.messages_reset && current?.session?.id === incoming.session.id
+    ? current.session.messages : [];
+  const messages = new Map([...retained, ...incoming.session.messages]
+    .filter(msg => Date.parse(msg.created_at) > now - 86_400_000)
+    .map(msg => [msg.id, msg]));
+
+  return {
+    ...incoming,
+    session: {
+      ...incoming.session,
+      messages: [...messages.values()]
+        .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1))
+        .slice(-500)
+    }
+  };
+}`,
+    },
+    architectureFlow: [
+      'Institutional Domain Gating (@g.msuiit.edu.ph)',
+      'Transactional Matchmaking Queue (RPCs)',
+      'Realtime Channel Notification Stream',
+      'Pseudonymous Incremental State Sync',
+      'MFA-Protected Staff Moderation Audit',
+    ],
+  },
   {
     title: 'S.L.I.D.E. — Landslide Monitoring & Risk Indication',
     date: '2026-10-17',
@@ -928,8 +991,8 @@ vTaskStartScheduler();`,
     ],
     image: '/projects/aruga.jpg',
     tags: ['Python', 'OpenCV', 'MediaPipe', 'Kinematics', 'Edge AI', 'Computer Vision'],
-    demo: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
-    demoLabel: 'View Repository',
+    demo: 'https://aruga.joalvergs.tech',
+    demoLabel: 'Live Platform',
     repo: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
     repoLabel: 'GitHub Repo',
     telemetrySpec: {
