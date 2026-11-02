@@ -9,10 +9,13 @@ test.describe('project modal', () => {
   test('opens from a project card and Escape closes it', async ({ page }) => {
     await page.goto('/')
 
+    const featured = page.locator('#projects article').first()
+    const triggerLabel = await featured.getByRole('button', { name: /^Open / }).getAttribute('aria-label')
+    const title = triggerLabel?.replace(/^Open /, '')
+    expect(title).toBeTruthy()
     await page.getByRole('button', { name: 'Read the full note' }).click()
 
-    // The featured project modal
-    const dialog = page.getByRole('dialog', { name: /UNICHAT/ })
+    const dialog = page.getByRole('dialog', { name: title!, exact: true })
     await expect(dialog).toBeVisible()
     await expect(dialog.getByText('What it does')).toBeVisible()
 

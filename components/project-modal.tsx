@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Dialog } from '@base-ui/react/dialog'
-import { Check, X, ExternalLink, Code2, GitBranch, Wrench, NotebookText } from 'lucide-react'
+import { Check, X, ExternalLink, Code2, GitBranch, Wrench, NotebookText, PackageCheck } from 'lucide-react'
 import { GithubIcon } from '@/components/brand-icons'
 import { Button } from '@/components/ui/button'
 import { HyphenSafe } from '@/components/text-fixes'
@@ -25,13 +25,23 @@ export function ProjectModal({ project, open, onOpenChange }: ProjectModalProps)
               {/* The photo print at the top of the page */}
               <div className="relative h-48 sm:h-64 w-full shrink-0 overflow-hidden border-b border-border bg-secondary">
                 <div className="thumb-mat relative size-full">
-                  <Image
-                    src={project.image || '/placeholder.svg'}
-                    alt={`${project.title} — project screenshot`}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 42rem"
-                    className="object-cover"
-                  />
+                  {project.image !== '/placeholder.svg' ? (
+                    <Image
+                      src={project.image}
+                      alt={`${project.title} — project screenshot`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 42rem"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div aria-hidden="true" className="flex size-full items-center justify-center bg-secondary text-primary">
+                      {project.favicon ? (
+                        <Image src={project.favicon} alt="" width={96} height={96} className="size-16 object-contain" />
+                      ) : (
+                        <PackageCheck className="size-14" />
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-card via-card/70 to-transparent" />
 

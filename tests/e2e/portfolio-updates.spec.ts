@@ -1,25 +1,68 @@
 import { test, expect } from '@playwright/test'
 
-test('project sorting preserves chronological order and keeps unknown dates last', async ({ page }) => {
+test('project sorting keeps pinned entries first and sorts dated work chronologically', async ({ page }) => {
   await page.goto('/')
   const section = page.locator('#projects')
-  const dates = () => section.locator('[data-project-date]').evaluateAll((nodes) => nodes.map((node) => node.getAttribute('data-project-date') || ''))
+  const dates = () => section.locator('[data-project-date]').evaluateAll((nodes) => nodes.map((node) => ({
+    date: node.getAttribute('data-project-date') || '',
+    pinned: node.getAttribute('data-project-pinned') === 'true',
+  })))
+  const expectOrder = (entries: Awaited<ReturnType<typeof dates>>, order: 'newest' | 'oldest') => {
+    const pinnedCount = entries.filter((entry) => entry.pinned).length
+    expect(entries.slice(0, pinnedCount).every((entry) => entry.pinned)).toBe(true)
+    const unpinned = entries.filter((entry) => !entry.pinned)
+    const known = unpinned.filter((entry) => entry.date).map((entry) => entry.date)
+    const expected = [...known].sort()
+    if (order === 'newest') expected.reverse()
+    expect(known).toEqual(expected)
+    expect(unpinned.slice(known.length).every((entry) => !entry.date)).toBe(true)
+  }
   const newest = await dates()
-  const known = newest.filter(Boolean)
-  expect(known).toEqual([...known].sort().reverse())
-  expect(newest.slice(known.length).every((date) => date === '')).toBe(true)
+  expectOrder(newest, 'newest')
   await section.getByLabel('Sort by').selectOption('oldest')
-  const oldest = await dates()
-  expect(oldest.filter(Boolean)).toEqual([...known].sort())
-  expect(oldest.slice(known.length).every((date) => date === '')).toBe(true)
+  expectOrder(await dates(), 'oldest')
   await section.getByRole('searchbox', { name: 'Search projects' }).fill('FreeRTOS')
-  const filtered = (await dates()).filter(Boolean)
+  const filtered = (await dates()).map((entry) => entry.date).filter(Boolean)
   expect(filtered).toEqual([...filtered].sort())
+})
+
+test('priority projects show evidence-backed status labels and working project links', async ({ page }) => {
+  await page.goto('/')
+  const section = page.locator('#projects')
+
+  const featured = section.locator('article').filter({ hasText: 'ParcelSense AI' })
+  await expect(featured).toContainText('Prototype · Field Desk live')
+  await expect(featured.getByRole('link', { name: 'Open Field Desk', exact: true })).toHaveAttribute(
+    'href',
+    'https://parcelsense.joalvergs.tech/',
+  )
+
+  const entries = [
+    ['LabSentinel', 'Simulator verified · hardware pending', 'https://labsentinel.vercel.app'],
+    ['Monitor — Smart Baby Monitoring System', 'Educational prototype · sample mode', 'https://monitor.joalvergs.tech'],
+    ['CMU Assessment Hub', 'Academic pilot · fictional data', 'https://cmu-assessment-hub.joalvergs.tech'],
+    ['MP-Detect — Microplastic Detection & Quantification GUI', 'Offline desktop application', 'https://github.com/Joal0816/Mp-Detect'],
+    ['UNICHAT — Anonymous Campus 1-on-1 Chat', 'Live Campus PWA', 'https://unichat.studentio.xyz'],
+  ] as const
+
+  for (const [title, badge, href] of entries) {
+    const entry = section.locator('li').filter({ hasText: title })
+    await expect(entry).toContainText(badge)
+    await expect(entry.getByRole('heading', { name: new RegExp(title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')) })).toBeVisible()
+    await expect(entry.locator('h3 a')).toHaveAttribute('href', href)
+  }
+
+  await expect(section.getByText(/CircuitSense|Klaro-CV/i)).toHaveCount(0)
 })
 
 test('selected work opens a project with a documented result and restores focus', async ({ page }) => {
   await page.goto('/')
-  const button = page.locator('#projects').getByRole('button', { name: 'Barangay Connect Web App', exact: true }).first()
+  const section = page.locator('#projects')
+  const title = 'Barangay Connect Web App'
+  const featured = section.locator('article').filter({ hasText: title })
+  const button = await featured.count()
+    ? featured.getByRole('button', { name: 'Read the full note' })
+    : section.locator('li').filter({ hasText: title }).getByRole('button', { name: 'Open note' })
   await button.click()
   const dialog = page.getByRole('dialog', { name: 'Barangay Connect Web App' })
   await expect(dialog.getByRole('heading', { name: 'Result', exact: true })).toBeVisible()

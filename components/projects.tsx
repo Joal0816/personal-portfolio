@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, type ReactNode } from 'react'
 import Image from 'next/image'
 import {
   ArrowUpRight,
@@ -10,6 +10,7 @@ import {
   Copy,
   Check,
   Cpu,
+  PackageCheck,
 } from 'lucide-react'
 import { GithubIcon } from '@/components/brand-icons'
 import { Reveal } from '@/components/reveal'
@@ -20,6 +21,7 @@ import {
   sortProjects,
   projectDateLabel,
   projectCategories,
+  projectPrimaryLink,
   type Project,
   type ProjectCategory,
 } from '@/lib/portfolio-data'
@@ -27,6 +29,28 @@ import { cn } from '@/lib/utils'
 
 type Filter = 'All' | ProjectCategory
 type DrawerTab = 'specs' | 'code' | 'flow'
+
+function ProjectTitleLink({
+  project,
+  className,
+  onOpen,
+  children,
+}: {
+  project: Project
+  className: string
+  onOpen: () => void
+  children: ReactNode
+}) {
+  const primaryLink = projectPrimaryLink(project)
+  if (!primaryLink) {
+    return <button type="button" onClick={onOpen} className={className}>{children}</button>
+  }
+  return (
+    <a href={primaryLink.href} target="_blank" rel="noopener noreferrer" className={className}>
+      {children}<span className="sr-only"> — {primaryLink.label}</span>
+    </a>
+  )
+}
 
 export function Projects() {
   const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest')
@@ -126,7 +150,7 @@ export function Projects() {
               </h2>
               <p className="mt-4 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
                 Firmware, tiny AI models, hardware rigs, and the web apps that
-                make them useful. Every entry links to real code or a live build.
+                make them useful. Every entry points to project evidence: a live build, repository, or documentation.
               </p>
             </div>
             <p className="meta" role="status" aria-live="polite">
@@ -140,9 +164,9 @@ export function Projects() {
           <p className="mt-1 text-sm text-muted-foreground">Start with a live system, a documented firmware build, or an award-winning web app.</p>
           <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
             {projects.filter((project) => project.featured).map((project) => (
-              <button key={project.title} type="button" onClick={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2 text-left text-sm font-medium text-primary underline-offset-4 hover:underline">
+              <ProjectTitleLink key={project.title} project={project} onOpen={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2 text-left text-sm font-medium text-primary underline-offset-4 hover:underline">
                 {project.title}<ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
-              </button>
+              </ProjectTitleLink>
             ))}
           </div>
         </div>
@@ -173,7 +197,7 @@ export function Projects() {
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">Dates show when a repository was created or the work was showcased. Undated work appears last.</p>
+              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">Pinned work appears first. Dates show when a repository was created or the work was showcased; undated entries follow.</p>
               <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
                 Sort by
                 <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value as 'newest' | 'oldest')} className="min-h-11 rounded-md border border-border bg-card px-3 text-foreground">
@@ -268,14 +292,25 @@ export function Projects() {
                     className="thumb-mat block w-full"
                     aria-label={`Open ${featured.title}`}
                   >
-                    <Image
-                      src={featured.image || '/placeholder.svg'}
-                      alt={`${featured.title} — project screenshot`}
-                      width={640}
-                      height={420}
-                      className="aspect-[3/2] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                    />
+                    {featured.image && featured.image !== '/placeholder.svg' ? (
+                      <Image
+                        src={featured.image}
+                        alt={`${featured.title} — project screenshot`}
+                        width={640}
+                        height={420}
+                        className="aspect-[3/2] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                        sizes="(max-width: 1024px) 100vw, 40vw"
+                      />
+                      ) : (
+                        <span aria-hidden="true" className="flex aspect-[3/2] w-full flex-col items-center justify-center gap-3 bg-secondary text-primary">
+                          {featured.favicon ? (
+                            <Image src={featured.favicon} alt="" width={56} height={56} className="size-14 object-contain" />
+                          ) : (
+                            <PackageCheck className="size-10" />
+                          )}
+                          <span className="px-3 text-center text-sm font-semibold">{featured.title}</span>
+                        </span>
+                    )}
                   </button>
                 </div>
               </div>
@@ -288,7 +323,7 @@ export function Projects() {
                 <h3
                   className="mt-2 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl"
                 >
-                  <button type="button" onClick={() => openProject(featured)} className="inline-flex items-center gap-3 text-left transition-colors hover:text-primary">
+                  <ProjectTitleLink project={featured} onOpen={() => openProject(featured)} className="inline-flex items-center gap-3 text-left transition-colors hover:text-primary">
                     {featured.favicon && (
                       <span className="relative inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-md border border-border bg-card p-1 shadow-xs">
                         <Image
@@ -301,10 +336,10 @@ export function Projects() {
                       </span>
                     )}
                     <span>{featured.title}</span>
-                  </button>
+                  </ProjectTitleLink>
                 </h3>
-                <p className="mt-3 text-sm text-muted-foreground" data-project-date={featured.date || ''}>{projectDateLabel(featured)}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{featured.role}</p>
+                <p className="mt-3 text-sm text-muted-foreground" data-project-date={featured.date || ''} data-project-pinned={featured.pinned ? 'true' : 'false'}>{projectDateLabel(featured)}</p>
+                {featured.role && <p className="mt-1 text-sm text-muted-foreground">{featured.role}</p>}
                 <p className="mt-4 max-w-[54ch] text-pretty text-base leading-relaxed text-foreground/85">
                   {featured.description}
                 </p>
@@ -412,13 +447,23 @@ export function Projects() {
                         className="thumb-mat block w-full"
                         aria-label={`Open ${project.title}`}
                       >
-                        <Image
-                          src={project.image || '/placeholder.svg'}
-                          alt={`${project.title} thumbnail`}
-                          width={220}
-                          height={140}
-                          className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
+                        {project.image !== '/placeholder.svg' ? (
+                          <Image
+                            src={project.image}
+                            alt={`${project.title} thumbnail`}
+                            width={220}
+                            height={140}
+                            className="aspect-[3/2] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <span aria-hidden="true" className="flex aspect-[3/2] w-full items-center justify-center bg-secondary text-primary">
+                            {project.favicon ? (
+                              <Image src={project.favicon} alt="" width={40} height={40} className="size-10 object-contain" />
+                            ) : (
+                              <PackageCheck className="size-7" />
+                            )}
+                          </span>
+                        )}
                       </button>
                     </div>
 
@@ -427,7 +472,7 @@ export function Projects() {
                         <h3
                           className="text-xl font-bold leading-snug tracking-tight"
                         >
-                          <button type="button" onClick={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2.5 text-left transition-colors hover:text-primary">
+                          <ProjectTitleLink project={project} onOpen={() => openProject(project)} className="inline-flex min-h-11 items-center gap-2.5 text-left transition-colors hover:text-primary">
                             {project.favicon && (
                               <span className="relative inline-flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-[5px] border border-border bg-card p-0.5 shadow-xs">
                                 <Image
@@ -440,14 +485,19 @@ export function Projects() {
                               </span>
                             )}
                             <span>{project.title}</span>
-                          </button>
+                          </ProjectTitleLink>
                         </h3>
                         <span className="text-xs text-muted-foreground">
                           {project.category}
                         </span>
+                        {project.badge && (
+                          <span className="rounded-sm border border-border bg-card px-2 py-0.5 text-xs text-muted-foreground">
+                            {project.badge}
+                          </span>
+                        )}
                       </div>
-                      <p className="mt-1 text-sm text-muted-foreground" data-project-date={project.date || ''}>{projectDateLabel(project)}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">My contribution: {project.role}</p>
+                      <p className="mt-1 text-sm text-muted-foreground" data-project-date={project.date || ''} data-project-pinned={project.pinned ? 'true' : 'false'}>{projectDateLabel(project)}</p>
+                      {project.role && <p className="mt-1 text-sm text-muted-foreground">My contribution: {project.role}</p>}
                       <p className="mt-2.5 max-w-[62ch] text-pretty text-sm leading-relaxed text-foreground/85">
                         {project.description}
                       </p>

@@ -348,16 +348,16 @@ export const skillGroups = [
 ]
 
 export type ProjectCategory =
-  | 'Full-Stack & Embedded'
-  | 'Mobile & Edge AI'
-  | 'Embedded & HMI'
+  | 'Artificial Intelligence / Machine Learning'
+  | 'Embedded Systems / IoT'
+  | 'Research & Academic'
   | 'Web Development'
 
 export const projectCategories: ProjectCategory[] = [
-  'Full-Stack & Embedded',
-  'Mobile & Edge AI',
-  'Embedded & HMI',
   'Web Development',
+  'Artificial Intelligence / Machine Learning',
+  'Embedded Systems / IoT',
+  'Research & Academic',
 ]
 
 export type Project = {
@@ -366,10 +366,11 @@ export type Project = {
   dateLabel?: 'Repository created' | 'Showcased'
   dateSource?: string
   featured?: boolean
+  pinned?: boolean
   outcome?: string
   sourceNote?: string
   category: ProjectCategory
-  role: string
+  role?: string
   description: string
   longDescription: string
   features: string[]
@@ -396,7 +397,114 @@ export type Project = {
   architectureFlow?: string[]
 }
 
+const repositoryFirstProjectTitles = new Set([
+  'Microcontroller-Based Automated Feedback System',
+  'MP-Detect — Microplastic Detection & Quantification GUI',
+  'BCA182 Multisensor Room Monitor',
+  'Snake OS: Embedded Interactive HMI Game',
+])
+
+export function projectPrimaryLink(project: Project): { href: string; label: string } | null {
+  const hasProjectRepository = project.repo && project.repo !== '#' && project.repo !== 'https://github.com/Joal0816'
+  if (repositoryFirstProjectTitles.has(project.title) && project.repo && project.repo !== '#') {
+    return { href: project.repo, label: project.repoLabel || 'GitHub repository' }
+  }
+  if (project.demo && project.demo !== '#') {
+    return { href: project.demo, label: project.demoLabel || 'Project page' }
+  }
+  if (hasProjectRepository) {
+    return { href: project.repo, label: project.repoLabel || 'GitHub repository' }
+  }
+  return null
+}
+
 const projectEntries: Project[] = [
+  {
+    title: 'ParcelSense AI',
+    featured: true,
+    pinned: true,
+    category: 'Artificial Intelligence / Machine Learning',
+    badge: 'Prototype · Field Desk live',
+    description: 'An offline package-motion classifier for an intended STM32/RT-Thread target, with a separate web desk for reviewing and evaluating CSV data.',
+    longDescription: 'ParcelSense AI classifies package motion as Stable, Normal Handling, or Rough Handling. Its embedded inference path targets the RT-Spark STM32F407ZGT6 with RT-Thread. The separately hosted Field Desk is a Vite/React/TypeScript app for reviewing and evaluating CSV data; it does not demonstrate connected embedded inference. Hardware execution and classifier performance on physical devices have not been verified.',
+    features: [
+      'Three documented package-motion classes: Stable, Normal Handling, and Rough Handling.',
+      'Embedded inference path intended for an RT-Spark STM32F407ZGT6 target.',
+      'Python data-processing, training, and model-export workflow.',
+      'Separate Field Desk PWA for CSV review and evaluation.',
+    ],
+    image: '/placeholder.svg',
+    favicon: '/icons/projects/parcelsense-ai.png',
+    tags: ['Python', 'RT-Thread', 'STM32F407', 'Embedded ML', 'Vite', 'React', 'TypeScript'],
+    demo: 'https://parcelsense.joalvergs.tech/',
+    demoLabel: 'Open Field Desk',
+    repo: 'https://github.com/Joal0816/parcelsense-ai',
+    repoLabel: 'GitHub Repo',
+  },
+  {
+    title: 'LabSentinel — BCA182 Project 2',
+    featured: true,
+    pinned: true,
+    category: 'Embedded Systems / IoT',
+    badge: 'Simulator verified · hardware pending',
+    description: 'A lab-station monitoring and indicator-control prototype designed for an STM32F407, with a FreeRTOS firmware plan, MQTT gateway, and browser dashboard.',
+    longDescription: 'LabSentinel combines an intended RT-Spark STM32F407 station, sensor monitoring, indicator control, an MQTT gateway, and a browser dashboard. The simulator path and dashboard are documented and the public demo uses fixture data. Physical board operation, sensor readings, firmware Wi-Fi/MQTT, GPIO, and hardware control have not been verified.',
+    features: [
+      'Dashboard and simulator path for lab-station status and indicator control.',
+      'Planned sensor set includes AHT10, AP3216C, and ICM20608 devices.',
+      'Documented stack includes STM32Cube HAL/LL, FreeRTOS, FastAPI, MQTT, InfluxDB, Grafana, and a React/Vite dashboard.',
+      'Public demo is fixture-only and is not connected to physical hardware.',
+    ],
+    image: '/projects/labsentinel-simulated.png',
+    tags: ['STM32F407', 'FreeRTOS', 'MQTT', 'FastAPI', 'InfluxDB', 'Grafana', 'React', 'Vite'],
+    demo: 'https://labsentinel.vercel.app',
+    demoLabel: 'Open Simulator Demo',
+    repo: 'https://github.com/Joal0816/labsentinel-bca182-project2',
+    repoLabel: 'GitHub Repo',
+    sourceNote: 'The screenshot and hosted demo show simulated data; physical hardware validation is pending.',
+  },
+  {
+    title: 'Monitor — Smart Baby Monitoring System',
+    pinned: true,
+    category: 'Embedded Systems / IoT',
+    badge: 'Educational prototype · sample mode',
+    description: 'An educational monitoring prototype with a sample browser dashboard, an optional audio-classification path, and a native Android interface.',
+    longDescription: 'The project documents an STM32F407/FreeRTOS firmware foundation, a Python FastAPI and SQLite backend, an optional YAMNet audio-classification path, and a Kotlin/Jetpack Compose Android app. The public dashboard runs in sample mode and the backend is not hosted. Firmware peripherals are pending board verification.',
+    features: [
+      'Browser dashboard with sample readings, history, trends, and event acknowledgements.',
+      'Documented FastAPI/SQLite service and optional YAMNet audio classification.',
+      'Native Android screens built with Kotlin and Jetpack Compose.',
+      'Prototype status is explicit; no live backend or verified hardware path is presented.',
+    ],
+    image: '/placeholder.svg',
+    favicon: '/icons/projects/monitor.svg',
+    tags: ['STM32F407', 'FreeRTOS', 'FastAPI', 'SQLite', 'YAMNet', 'Kotlin', 'Jetpack Compose'],
+    demo: 'https://monitor.joalvergs.tech',
+    demoLabel: 'Open Sample Dashboard',
+    repo: 'https://github.com/Joal0816/Project-1-smart-baby-monitoring-system',
+    repoLabel: 'GitHub Repo',
+    sourceNote: 'This is an educational prototype, not a medical or safety-certified device and not a replacement for adult supervision.',
+  },
+  {
+    title: 'CMU Assessment Hub',
+    pinned: true,
+    category: 'Research & Academic',
+    badge: 'Academic pilot · fictional data',
+    description: 'A single-course instructor pilot for importing objective scores, reviewing rubric-based essay feedback, and calculating and exporting grades with transparent weighting.',
+    longDescription: 'The Vite/React/TypeScript pilot supports CSV score import, rubric-based essay review, weighted grade calculation, approval, and CSV export. It uses fictional sample records and versioned browser-local storage. It has no backend or accounts, does not automatically grade essays or submit grades, and has no verified ZipGrade compatibility.',
+    features: [
+      'Imports objective assessment scores from CSV.',
+      'Supports rubric-scored essay feedback and instructor review.',
+      'Shows weighted grade calculations before approval and CSV export.',
+      'Uses fictional records in browser-local storage for the pilot.',
+    ],
+    image: '/projects/cmu-assessment-hub.png',
+    tags: ['Vite', 'React', 'TypeScript', 'CSV', 'Assessment workflow'],
+    demo: 'https://cmu-assessment-hub.joalvergs.tech',
+    demoLabel: 'Open Academic Pilot',
+    repo: '',
+    sourceNote: 'No GitHub repository was found during discovery. The pilot uses fictional sample data.',
+  },
   {
     title: 'UNICHAT — Anonymous Campus 1-on-1 Chat',
     date: '2026-10-19',
@@ -419,7 +527,7 @@ const projectEntries: Project[] = [
     image: '/projects/unichat.png',
     favicon: '/icons/projects/unichat.png',
     tags: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL', 'Realtime', 'PWA', 'Tailwind CSS'],
-    demo: 'https://unichat.joalvergs.tech',
+    demo: 'https://unichat.studentio.xyz',
     demoLabel: 'Live Platform',
     repo: 'https://github.com/Joal0816/UNICHAT',
     repoLabel: 'GitHub Repo',
@@ -466,7 +574,7 @@ const projectEntries: Project[] = [
     dateLabel: 'Repository created',
     outcome: 'Field-ready PWA dashboard tracking real-time ground tilt, soil moisture, and rainfall with offline resilience.',
     dateSource: 'https://github.com/SLIDE-full-soure-codes/SLIDE-dashboard',
-    category: 'Full-Stack & Embedded',
+    category: 'Embedded Systems / IoT',
     role: 'Lead Frontend & Telemetry Dashboard Engineer',
     badge: 'Live Telemetry PWA',
     description:
@@ -536,7 +644,7 @@ self.addEventListener('fetch', (event) => {
     dateLabel: 'Repository created',
     outcome: 'Offline-first financial analytics PWA with automated SMS parsing and client-side encryption.',
     dateSource: 'https://github.com/Joal0816/vault-expense',
-    category: 'Full-Stack & Embedded',
+    category: 'Web Development',
     role: 'Lead Full-Stack & PWA Architect',
     badge: 'In Progress',
     description:
@@ -589,7 +697,7 @@ self.addEventListener('fetch', (event) => {
     dateLabel: 'Repository created',
     outcome: 'Unified real-time observability telemetry network tracking live visitors, lifetime impressions, and deployment health across all web applications.',
     dateSource: 'https://github.com/Joal0816/pulse',
-    category: 'Full-Stack & Embedded',
+    category: 'Web Development',
     role: 'Lead Full-Stack & Telemetry Systems Architect',
     badge: 'Live Telemetry Platform',
     description:
@@ -647,7 +755,7 @@ self.addEventListener('fetch', (event) => {
     featured: true,
     outcome: 'Thermal readings stream from an ESP32 to an OpenCV pipeline and Flutter dashboard.',
     dateSource: 'https://github.com/Joal0816/oink',
-    category: 'Full-Stack & Embedded',
+    category: 'Embedded Systems / IoT',
     role: 'Lead Firmware & Edge CV Developer',
     badge: 'Live Telemetry System',
     description:
@@ -706,7 +814,7 @@ self.addEventListener('fetch', (event) => {
     dateLabel: 'Showcased',
     outcome: 'Developed during IEEE Sumpai Hackathon 2026 to turn emergency calls into structured dispatch information.',
     dateSource: '/certificates/TECH/ieee-sumpai-hackathon-2026.jpg',
-    category: 'Web Development',
+    category: 'Artificial Intelligence / Machine Learning',
     role: 'Lead Full-Stack & AI Systems Architect — IEEE Sumpai Hackathon 2026',
     badge: 'IEEE Hackathon 2026',
     description:
@@ -761,7 +869,7 @@ self.addEventListener('fetch', (event) => {
     featured: true,
     outcome: 'Published on Hackster.io with technical schematics and 33 unit tests.',
     dateSource: 'https://github.com/Joal0816/BCA182-RoomMonitor',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Firmware & Systems Engineer',
     badge: 'Hackster.io Published',
     description:
@@ -813,7 +921,7 @@ vTaskStartScheduler();`,
     dateLabel: 'Repository created',
     outcome: 'Firmware and RTOS implementation backed by 18 passing unit tests.',
     dateSource: 'https://github.com/Joal0816/BCA182-Lab2-MP3-Player',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Firmware & RTOS Engineer',
     badge: '18 Passing Unit Tests',
     description:
@@ -921,7 +1029,7 @@ vTaskStartScheduler();`,
     favicon: '/icons/projects/kinesis.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/BCA182-Lab3-Activity-Recognition',
-    category: 'Mobile & Edge AI',
+    category: 'Artificial Intelligence / Machine Learning',
     role: 'Edge ML & IoT Systems Engineer',
     badge: '99.98% ML Benchmark',
     description:
@@ -976,7 +1084,7 @@ vTaskStartScheduler();`,
     favicon: '/icons/projects/aruga.png',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
-    category: 'Mobile & Edge AI',
+    category: 'Artificial Intelligence / Machine Learning',
     role: 'Computer Vision & Edge AI Engineer',
     badge: 'Biomechanical Kinematics',
     description:
@@ -1029,7 +1137,7 @@ vTaskStartScheduler();`,
     favicon: '/icons/projects/miow.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/MIOW-CODES/MIOW-Learning-Management-System',
-    category: 'Full-Stack & Embedded',
+    category: 'Research & Academic',
     role: 'Co-Author & Web App Developer — PhD Publication',
     badge: 'PhD Publication',
     description:
@@ -1077,54 +1185,28 @@ vTaskStartScheduler();`,
     ],
   },
   {
-    title: 'Mobile Microplastic Detection App',
+    title: 'MP-Detect — Microplastic Detection & Quantification GUI',
     date: '2025-12-01',
     favicon: '/icons/projects/mp-detect.svg',
     dateLabel: 'Showcased',
     dateSource: 'https://github.com/Joal0816/Mp-Detect',
-    category: 'Mobile & Edge AI',
-    role: 'PWA & Mobile Developer (Cross-Platform PWA & APK Generation)',
-    badge: 'Cross-Platform PWA & APK',
+    category: 'Artificial Intelligence / Machine Learning',
+    badge: 'Offline desktop application',
     description:
-      'Cross-platform Progressive Web Application (PWA) compatible across all devices with automated Android APK generation for on-device microplastic detection.',
+      'A Python desktop GUI for detecting and quantifying microplastics in images and video with ONNX Runtime and OpenCV.',
     longDescription:
-      'Engineered the cross-platform Progressive Web Application (PWA) compatible across all mobile and desktop devices, alongside automated Android SDK release toolchains for native APK generation. Integrated responsive camera lifecycles, real-time particle bounding-box overlays, and on-device quantized YOLOv8n inference with zero cloud latency.',
+      'The public MP-Detect repository documents a Kivy desktop application using ONNX Runtime, OpenCV, and NumPy to process images and video, visualize detections, and export counts and annotated media. The repository documents bright-light and UV illumination workflows. No mobile app, Android APK, TFLite pipeline, or inference benchmark is claimed here.',
     features: [
-      'Universal device compatibility through responsive Progressive Web App (PWA) design.',
-      'Native Android APK generation with automated build toolchains.',
-      'On-device quantized YOLOv8n microplastic particle detection pipeline.',
-      'Camera lifecycle management with live bounding-box rendering and report generation.',
+      'Processes image and video input in a Kivy desktop interface.',
+      'Runs ONNX Runtime inference with OpenCV and NumPy image processing.',
+      'Supports bright-light and UV illumination workflows.',
+      'Exports detection counts, bounding boxes, and annotated media.',
     ],
     image: '/projects/mp-detect.jpg',
-    tags: ['PWA', 'Android APK', 'YOLOv8n', 'Edge AI', 'TFLite', 'Computer Vision'],
-    demo: 'https://drive.google.com/drive/folders/1GQxtqUJavVlL_n6gHiRzwvTUOWCLO-tB?usp=sharing',
-    demoLabel: 'View Documentation',
+    tags: ['Python', 'Kivy', 'ONNX Runtime', 'OpenCV', 'NumPy', 'Computer Vision'],
+    demo: '',
     repo: 'https://github.com/Joal0816/Mp-Detect',
     repoLabel: 'GitHub Repo',
-    telemetrySpec: {
-      target: 'Mobile Neural Engine (NPU/GPU)',
-      protocol: 'TFLite Model Runner',
-      latency: '22ms per frame',
-      clockSpeed: 'On-Device Mobile GPU',
-      memoryFootprint: '4.2 MB INT8 Model',
-    },
-    codeSnippet: {
-      filename: 'tflite_runner.kt',
-      language: 'kotlin',
-      code: `val inputTensor = preprocessMicroscopeBitmap(frameBitmap)
-val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 84, 8400), DataType.FLOAT32)
-tfliteInterpreter.run(inputTensor.buffer, outputBuffer.buffer)
-
-val particles = postprocessNms(outputBuffer, confidenceThreshold = 0.65f)
-updateParticleTelemetryCount(particles.size)`,
-    },
-    architectureFlow: [
-      'Microscope Video Feed',
-      'OpenCV Filter & Crop',
-      'TFLite INT8 Quantized YOLO',
-      'Non-Max Suppression (NMS)',
-      'Real-Time Particle Count',
-    ],
   },
   {
     title: 'Barangay Connect Web App',
@@ -1188,7 +1270,7 @@ WITH CHECK (auth.uid() = resident_id);`,
     favicon: '/icons/projects/snake-os.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/Snake-OS-RT-Thread-HMI',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Embedded Developer — Renesas RA6M3, RT-Thread OS, LVGL',
     badge: 'Hackster.io Showcase',
     description:
@@ -1244,7 +1326,7 @@ WITH CHECK (auth.uid() = resident_id);`,
   {
     title: 'Edge AI Glasses Object Detection',
     favicon: '/icons/projects/object-detection.svg',
-    category: 'Full-Stack & Embedded',
+    category: 'Artificial Intelligence / Machine Learning',
     role: 'Edge AI Developer — Roboflow, Edge Impulse',
     badge: 'Wearable TinyML',
     description:
@@ -1270,7 +1352,7 @@ WITH CHECK (auth.uid() = resident_id);`,
     favicon: '/icons/projects/industrial-oven.svg',
     dateLabel: 'Repository created',
     dateSource: 'https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'PLC & Automation Developer — CODESYS V3, PLC, HMI',
     badge: 'Industrial Automation',
     description:
@@ -1326,7 +1408,7 @@ END_IF;`,
   {
     title: 'IoT Vermicomposting Monitor',
     favicon: '/icons/projects/vermicomposting.svg',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'IoT Developer — ESP32, MQTT, Sensors',
     badge: 'Smart Agriculture',
     description:
@@ -1349,7 +1431,7 @@ END_IF;`,
   {
     title: 'Line Following Robot',
     favicon: '/icons/projects/line-following-robot.svg',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Firmware Developer — Arduino Uno, AVR Assembly',
     badge: 'Bare-Metal AVR',
     description:
@@ -1372,7 +1454,7 @@ END_IF;`,
   {
     title: 'K-Bin: Automated Smart Waste Sorting',
     favicon: '/icons/projects/k-bin.svg',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Software & Embedded Developer — Qt C++, CMake, Sensors',
     badge: 'Desktop HMI & Sensors',
     description:
@@ -1395,7 +1477,7 @@ END_IF;`,
   {
     title: 'Adjustable DC Power Supply',
     favicon: '/icons/projects/power-supply.svg',
-    category: 'Embedded & HMI',
+    category: 'Embedded Systems / IoT',
     role: 'Electronics Engineering',
     badge: 'Hardware Prototyping',
     description:
@@ -1425,9 +1507,10 @@ export const navLinks = [
 ]
 
 
-/** Undated work stays last in either direction. Dates are ISO, with provenance above. */
+/** Pinned projects stay first; dated work is sorted by ISO date, with undated work last. */
 export function sortProjects(entries: readonly Project[], order: 'newest' | 'oldest' = 'newest'): Project[] {
   return [...entries].sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1
     if (!a.date) return b.date ? 1 : 0
     if (!b.date) return -1
     return order === 'newest' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date)

@@ -16,14 +16,16 @@ const EXPECTED_NAV_HREFS = [
 ] as const
 
 test.describe('lib/portfolio-data invariants', () => {
-  test('every project has non-empty title, category, role, description, image and tags', () => {
+  test('every project has non-empty title, category, description, image and tags', () => {
     expect(projects.length, 'at least one project').toBeGreaterThan(0)
 
     for (const project of projects) {
       const label = project.title || '(untitled project)'
       expect(project.title.trim(), `title of ${label}`).not.toBe('')
       expect(project.category.trim(), `category of ${label}`).not.toBe('')
-      expect(project.role.trim(), `role of ${label}`).not.toBe('')
+      if (project.role !== undefined) {
+        expect(project.role.trim(), `role of ${label}`).not.toBe('')
+      }
       expect(project.description.trim(), `description of ${label}`).not.toBe('')
       expect(project.image.trim(), `image of ${label}`).not.toBe('')
       expect(project.tags.length, `tags of ${label}`).toBeGreaterThan(0)
@@ -64,7 +66,7 @@ test.describe('lib/portfolio-data invariants', () => {
     }
   })
 
-  test('project dates have evidence and unknown dates stay last in either direction', () => {
+  test('project dates have evidence and undated unpinned work stays last in either direction', () => {
     for (const project of projects.filter((project) => project.date)) {
       expect(project.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
       expect(project.dateLabel).toBeTruthy()
@@ -72,11 +74,14 @@ test.describe('lib/portfolio-data invariants', () => {
     }
     for (const order of ['newest', 'oldest'] as const) {
       const sorted = sortProjects(projects, order)
-      const known = sorted.filter((project) => project.date).map((project) => project.date!)
+      const pinnedCount = projects.filter((project) => project.pinned).length
+      expect(sorted.slice(0, pinnedCount).every((project) => project.pinned)).toBe(true)
+      const unpinned = sorted.filter((project) => !project.pinned)
+      const known = unpinned.filter((project) => project.date).map((project) => project.date!)
       const expected = [...known].sort()
       if (order === 'newest') expected.reverse()
       expect(known).toEqual(expected)
-      expect(sorted.slice(known.length).every((project) => !project.date)).toBe(true)
+      expect(unpinned.slice(known.length).every((project) => !project.date)).toBe(true)
     }
   })
 
