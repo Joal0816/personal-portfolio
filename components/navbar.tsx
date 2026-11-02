@@ -150,7 +150,7 @@ export function Navbar() {
         {/* Action Controls Island */}
         <div className="pointer-events-auto flex items-center gap-2">
           <a
-            href={profile.resumeUrl}
+            href={profile.cvUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 spatial-island px-3.5 py-1.5 text-xs font-medium text-foreground hover:border-primary/40 transition-all active:scale-95"
@@ -213,10 +213,19 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href={profile.resumeUrl}
+            href={profile.cvUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-2 ios-btn-primary py-3 text-sm font-semibold ai-halo"
+          >
+            <FileDown className="size-4" />
+            <span>Download CV</span>
+          </a>
+          <a
+            href={profile.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ios-btn-secondary py-3 text-sm font-semibold"
           >
             <FileDown className="size-4" />
             <span>Download Résumé</span>

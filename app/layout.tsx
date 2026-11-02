@@ -37,12 +37,12 @@ const splineMono = Spline_Sans_Mono({
 export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   metadataBase: new URL('https://joalvergs.tech'),
-  title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
+  title: 'Joseph Alan B. Vergara — OJT Intern | Software, AI/ML & Embedded Systems',
   description:
-    'Portfolio of Joseph Vergara, embedded systems and edge AI engineer specializing in microcontroller firmware (C/C++, FreeRTOS), TinyML, and full-stack sensor telemetry. MSU-IIT.',
+    'Portfolio of Joseph Alan B. Vergara, a fourth-year MSU-IIT BS Computer Applications student seeking a 700-hour OJT placement in software development, applied AI/ML, or software-hardware integration.',
   openGraph: {
-    title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
-    description: 'Hardware firmware, real-time operating systems, and edge computer vision without the cloud.',
+    title: 'Joseph Alan B. Vergara — OJT Intern | Software, AI/ML & Embedded Systems',
+    description: 'Fourth-year MSU-IIT student seeking OJT in software development, applied AI/ML, or software-hardware integration.',
     url: 'https://joalvergs.tech',
     siteName: 'Joseph Vergara Portfolio',
     images: [
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
         url: '/profile.jpg',
         width: 800,
         height: 800,
-        alt: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
+        alt: 'Joseph Alan B. Vergara — OJT Intern Candidate',
       },
     ],
     locale: 'en_US',
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Joseph Vergara — Embedded Systems & Edge AI Engineer',
-    description: 'Hardware firmware, real-time operating systems, and edge computer vision without the cloud.',
+    title: 'Joseph Alan B. Vergara — OJT Intern | Software, AI/ML & Embedded Systems',
+    description: 'Fourth-year MSU-IIT student seeking OJT in software development, applied AI/ML, or software-hardware integration.',
     images: ['/profile.jpg'],
   },
   keywords: [
@@ -72,6 +72,8 @@ export const metadata: Metadata = {
     'React',
     'Next.js',
     'Joseph Vergara',
+    'OJT internship',
+    'software-hardware integration',
   ],
   authors: [{ name: 'Joseph Vergara' }],
   icons: {

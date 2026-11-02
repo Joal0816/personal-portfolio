@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Joseph Alan B. Vergara — Academic and Technical CV</title>
+  <style>
+    @page { size: A4; margin: 13mm 15mm 13mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: #202124; font: 9.3pt/1.16 Arial, Helvetica, sans-serif; }
+    h1 { margin: 0; color: #321e27; font-size: 22pt; line-height: 1.05; letter-spacing: .01em; }
+    h2 { margin: 6pt 0 2pt; padding-bottom: 2pt; border-bottom: .8pt solid #9a6b36; color: #321e27; font-size: 10.2pt; line-height: 1.1; break-after: avoid; }
+    h3 { margin: 4pt 0 1pt; color: #292328; font-size: 9.7pt; line-height: 1.15; break-after: avoid; }
+    p { margin: 0 0 1.5pt; }
+    a { color: #234b63; text-decoration: underline; }
+    header { padding-bottom: 6pt; border-bottom: 1.2pt solid #321e27; }
+    .headline { margin: 3pt 0; color: #6f4d2b; font-size: 10pt; font-weight: bold; }
+    .contact, .links { font-size: 9pt; }
+    .links { margin-top: 2pt; }
+    .section { margin-top: 3pt; }
+    ul { margin: 2pt 0 4pt; padding-left: 14pt; }
+    li { margin: 0 0 4pt; padding-left: 1pt; }
+    .skills p { margin-bottom: 2pt; }
+    .meta { color: #534b4e; font-size: 9pt; }
+    .status { color: #654c31; font-weight: bold; }
+    .project { break-inside: avoid; margin-bottom: 2.5pt; }
+    .project p { margin-left: 0; }
+    .award, .training { margin-bottom: 3pt; }
+    .page-break { break-before: page; page-break-before: always; }
+    .subheading { margin-top: 8pt; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Joseph Alan B. Vergara</h1>
+    <p class="headline">Academic &amp; Technical CV · Software · AI/ML · Embedded Systems</p>
+    <p class="contact">Iligan City, Philippines · <a href="tel:+639475892995">+63 947 589 2995</a> · <a href="mailto:josephalan.vergara@g.msuiit.edu.ph">josephalan.vergara@g.msuiit.edu.ph</a> · <a href="mailto:hpesojnalab.aragrev@gmail.com">hpesojnalab.aragrev@gmail.com</a></p>
+    <p class="links"><a href="https://joalvergs.tech">Portfolio</a> · <a href="https://github.com/Joal0816">GitHub</a> · <a href="https://www.linkedin.com/in/joseph-alan-vergara-638803348/">LinkedIn</a></p>
+  </header>
+
+  <section class="section">
+    <h2>Profile</h2>
+    <p>Fourth-year BS Computer Applications student majoring in Embedded Systems at Mindanao State University – Iligan Institute of Technology (MSU-IIT), seeking a 700-hour OJT placement at 40 hours per week. Academic and independent work covers web application development, computer vision, microcontroller firmware, real-time systems, and IoT dashboards. Project status and validation limits are stated with each entry.</p>
+  </section>
+
+  <section class="section">
+    <h2>Education</h2>
+    <h3>BS Computer Applications, Major in Embedded Systems</h3>
+    <p class="meta">Mindanao State University – Iligan Institute of Technology · Iligan City, Philippines · Aug 2023–Present · Fourth year</p>
+    <p>CGPA: 1.96. Relevant study areas: microcontroller programming, FreeRTOS, edge AI and computer vision, industrial PLC automation, IoT telemetry, and digital logic.</p>
+    <h3>Senior High School Diploma, Accountancy, Business &amp; Management</h3>
+    <p class="meta">MSU-IIT Integrated Developmental School · 2021–2023 · Academic Honors</p>
+  </section>
+
+  <section class="section skills">
+    <h2>Technical Competencies</h2>
+    <p><strong>Programming:</strong> C, C++, Python, JavaScript, TypeScript, SQL, Bash, AVR Assembly, PLC ladder logic.</p>
+    <p><strong>Web and data:</strong> React, Next.js, Vite, Node.js, PostgreSQL, Supabase, SQLite, REST APIs, WebSockets, CSV workflows.</p>
+    <p><strong>AI and computer vision:</strong> Kivy, ONNX Runtime, OpenCV, NumPy, YOLOv8n, MediaPipe, Edge Impulse, Roboflow.</p>
+    <p><strong>Embedded and real-time systems:</strong> STM32F407, STM32F103, ESP32/ESP32-P4, Renesas RA6M3, FreeRTOS, RT-Thread, CODESYS.</p>
+    <p><strong>Interfaces and connectivity:</strong> I2C, SPI, UART, CAN, MQTT, HTTP/REST, WebSockets.</p>
+    <p><strong>Languages:</strong> English, Filipino, Cebuano.</p>
+  </section>
+
+  <section class="section">
+    <h2>Research &amp; Academic Project Work</h2>
+    <div class="project">
+      <h3>MIOW — MSU-IIT IDS Online Workspace <span class="status">· Ongoing development</span></h3>
+      <p class="meta">Full-Stack Developer · 2026–Present</p>
+      <p>Learning management system for Junior and Senior High School, built with TanStack Start, Vite, React, TypeScript, Tailwind CSS, and PostgreSQL/Supabase. Includes administrator, teacher, and student workflows for courses, worksheets, grades, attendance, announcements, and Google Docs import.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://cmu-assessment-hub.joalvergs.tech">CMU Assessment Hub</a> <span class="status">· Academic pilot</span></h3>
+      <p>Vite/React/TypeScript instructor workflow for importing objective scores from CSV, reviewing rubric-based essay feedback, calculating weighted grades, and exporting approved results. Uses fictional sample records and versioned browser-local storage; it has no backend or accounts and does not submit grades automatically.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://labsentinel.vercel.app">LabSentinel — BCA182 Project 2</a> <span class="status">· Simulator verified; hardware pending</span></h3>
+      <p>Lab-station monitoring and indicator-control prototype documented for an STM32F407/FreeRTOS station, MQTT gateway, and browser dashboard. The simulator and public demo use fixture data; physical board, sensor, Wi-Fi/MQTT, and GPIO operation remain unverified.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://monitor.joalvergs.tech">Monitor — Smart Baby Monitoring System</a> <span class="status">· Educational prototype; sample mode</span></h3>
+      <p>Academic prototype with a sample browser dashboard and documented FastAPI/SQLite backend, optional YAMNet audio-classification path, Kotlin/Jetpack Compose Android app, and STM32/FreeRTOS firmware foundation. Backend hosting and board/peripheral verification remain pending. It is not a medical or safety-certified monitor.</p>
+    </div>
+  </section>
+
+  <section class="section page-break">
+    <h2>Selected Software, AI/ML &amp; Embedded Projects</h2>
+    <div class="project">
+      <h3><a href="https://unichat.studentio.xyz">UNICHAT — Anonymous Campus 1-on-1 Chat</a> <span class="status">· Live campus PWA</span></h3>
+      <p>Campus PWA with student-email access, matchmaking, real-time chat, and moderation (Next.js, Supabase).</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://github.com/Joal0816/Mp-Detect">MP-Detect — Microplastic Detection &amp; Quantification GUI</a> <span class="status">· Offline desktop application</span></h3>
+      <p>Python/Kivy desktop interface using ONNX Runtime, OpenCV, and NumPy to process images and video, visualize detections, and export counts and annotated media under bright-light and UV workflows.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://parcelsense.joalvergs.tech/">ParcelSense AI</a> <span class="status">· Prototype; Field Desk live</span></h3>
+      <p>Vite/React/TypeScript Field Desk for CSV review and evaluation, alongside an intended STM32F407/RT-Thread package-motion classifier. Physical inference and device performance have not been verified.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://github.com/Joal0816/BCA182-RoomMonitor">BCA182 Multisensor Room Monitor</a> <span class="status">· Academic project; technical write-up published</span></h3>
+      <p>STM32F103C8T6/FreeRTOS environmental monitor with five tasks, an SSD1306 OLED, rotary-encoder interface, serial logging, and sleep-state management. Validated with 33 unit tests; technical write-up published on Hackster.io.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://agapai.joalvergs.tech">Agap AI — Emergency Triage Platform</a> <span class="status">· IEEE Sumpai Hackathon project</span></h3>
+      <p>Hackathon project for structuring emergency voice reports into incident information for responder review; Top 5 finalist at IEEE Sumpai Hackathon 2026.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://github.com/Joal0816/Barangay-Connect">Barangay Connect</a> <span class="status">· TechShowcase 2025 project</span></h3>
+      <p>React/Supabase community portal for incident reports, document requests, polls, and notifications; 2nd Best Innovation and 3rd Best Pitch at MSU-IIT TechShowcase 2025.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://github.com/Joal0816/Snake-OS-RT-Thread-HMI">Snake OS — Embedded Interactive HMI</a></h3>
+      <p>Renesas RA6M3 academic project using RT-Thread and LVGL for a small graphical game interface.</p>
+    </div>
+    <div class="project">
+      <h3><a href="https://github.com/Joal0816/CODESYS-Industrial-Oven-HMI">Industrial Oven Simulation &amp; Control</a></h3>
+      <p>CODESYS ladder-logic simulation and HMI with heating control, safety interlocks, and threshold alarms.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Awards &amp; Recognition</h2>
+    <p class="award"><strong>Top 5 Finalist</strong> — IEEE Sumpai Hackathon 2026; Agap AI project · September 14, 2026.</p>
+    <p class="award"><strong>2nd Best Innovation and 3rd Best Pitch</strong> — MSU-IIT TechShowcase 2025; Barangay Connect · December 17, 2025.</p>
+    <p class="award"><strong>Academic Honors</strong> — MSU-IIT Integrated Developmental School · 2022–2023.</p>
+  </section>
+
+  <section class="section">
+    <h2>Leadership</h2>
+    <p class="training"><strong>Undersecretary, Sports &amp; Development Affairs</strong> — College of Computer Studies Executive Council, MSU-IIT · Aug 2025–May 2026; <strong>Team Captain, Mobile Legends: Bang Bang</strong> — Titans Esports · 2021–2023.</p>
+  </section>
+
+  <section class="section">
+    <h2>Training &amp; Professional Development</h2>
+    <p class="training"><strong>2026:</strong> AI Career Readiness Training, MSU-IIT; Startup Basics 101, iDEYA MSU-IIT; Quantum Circuits as Pictures: An Introduction to ZX Calculus webinar.</p>
+    <p class="training"><strong>2025:</strong> my.ComApps RT-Thread Technology Symposium, MSU-IIT; Seize Your Opportunity: Internships and OJTs Workshop, MSU-IIT; Permaculture webinar, “From Code to Crops.”</p>
+    <p class="training"><strong>2023:</strong> Software Freedom Day, MSU-IIT; TUKISayod Research &amp; Academic Symposium; DMS National Statistics Month webinar; Statistics: Bridging Gaps for Every Juan in the Digital Age, MSU-IIT.</p>
+    <p class="training"><strong>2021:</strong> TEENPRENEUR Business &amp; Innovation Bootcamp.</p>
+  </section>
+</body>
+</html>

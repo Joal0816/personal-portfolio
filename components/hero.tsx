@@ -33,6 +33,9 @@ export function Hero() {
               <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-foreground underline-offset-4 hover:underline">
                 <FileDown className="size-4" /><span>Résumé</span>
               </a>
+              <a href={profile.cvUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-medium text-foreground underline-offset-4 hover:underline">
+                <FileDown className="size-4" /><span>Academic CV</span>
+              </a>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-border pt-5">

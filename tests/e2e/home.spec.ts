@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test'
+import { profile } from '../../lib/portfolio-data'
 
 test.describe('home page', () => {
   test('loads with a title mentioning Joseph Vergara', async ({ page }) => {
     await page.goto('/')
-    await expect(page).toHaveTitle(/Joseph Vergara/)
+    expect(await page.title()).toContain(profile.fullName)
   })
 
   test('hero shows the name and the tagline', async ({ page }) => {
@@ -13,9 +14,19 @@ test.describe('home page', () => {
     await expect(heading).toBeVisible()
     await expect(heading).toContainText('Joseph Vergara')
 
-    // First clause of profile.tagline from lib/portfolio-data.ts.
-    await expect(
-      page.locator('#top').getByText('I write the software that lives directly on hardware'),
-    ).toBeVisible()
+    await expect(page.locator('#top').getByText(profile.tagline, { exact: true })).toBeVisible()
+  })
+
+  test('hero résumé and CV links serve PDFs', async ({ page, request }) => {
+    await page.goto('/')
+    const hero = page.locator('#top')
+    await expect(hero.getByRole('link', { name: 'Résumé' })).toHaveAttribute('href', profile.resumeUrl)
+    await expect(hero.getByRole('link', { name: 'Academic CV' })).toHaveAttribute('href', profile.cvUrl)
+
+    for (const url of [profile.resumeUrl, profile.cvUrl]) {
+      const response = await request.get(url)
+      expect(response.ok()).toBe(true)
+      expect(response.headers()['content-type']).toContain('application/pdf')
+    }
   })
 })

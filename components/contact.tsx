@@ -28,7 +28,7 @@ export function Contact() {
   const [values, setValues] = useState({
     name: '',
     email: '',
-    subject: 'Hardware / firmware / edge AI project',
+    subject: 'OJT internship opportunity',
     message: '',
   })
   const [errors, setErrors] = useState<Errors>({})
@@ -105,10 +105,10 @@ export function Contact() {
             Let&apos;s build something.
           </h2>
           <p className="mt-4 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
-            If you need firmware, an edge-AI model, or a web app that talks to
-            hardware — or you just want to say hello — write below. Your mail app
-            opens with the message ready to send, and I read everything that
-            arrives.
+            I&apos;m seeking a 700-hour OJT placement in software development,
+            applied AI/ML, or software-hardware integration. Use the form to
+            discuss an opportunity or say hello; your mail app
+            opens with the message ready to send.
           </p>
         </Reveal>
 

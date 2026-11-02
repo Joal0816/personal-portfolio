@@ -154,7 +154,7 @@ export function Projects() {
               </p>
             </div>
             <p className="meta" role="status" aria-live="polite">
-              showing {visible.length} of {projects.length}
+              showing {visible.length} of {projects.length} · pinned first · {sortOrder === 'newest' ? 'Newest' : 'Oldest'} first
             </p>
           </div>
         </Reveal>
@@ -197,13 +197,14 @@ export function Projects() {
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">Pinned work appears first. Dates show when a repository was created or the work was showcased; undated entries follow.</p>
+              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">Pinned work stays first; this control changes the order of dated projects. Dates show when a repository was created or the work was showcased.</p>
               <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
                 Sort by
-                <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value as 'newest' | 'oldest')} className="min-h-11 rounded-md border border-border bg-card px-3 text-foreground">
+                <select aria-describedby="project-sort-help" value={sortOrder} onChange={(event) => setSortOrder(event.target.value as 'newest' | 'oldest')} className="min-h-11 cursor-pointer rounded-md border border-border bg-card px-3 text-foreground">
                   <option value="newest">Newest first</option>
                   <option value="oldest">Oldest first</option>
                 </select>
+                <span id="project-sort-help" className="sr-only">Pinned projects stay at the top; this selection sorts dated projects.</span>
               </label>
             </div>
 

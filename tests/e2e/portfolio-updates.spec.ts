@@ -19,8 +19,12 @@ test('project sorting keeps pinned entries first and sorts dated work chronologi
   }
   const newest = await dates()
   expectOrder(newest, 'newest')
+  await expect(section.getByRole('status')).toContainText('Newest first')
   await section.getByLabel('Sort by').selectOption('oldest')
-  expectOrder(await dates(), 'oldest')
+  const oldest = await dates()
+  expectOrder(oldest, 'oldest')
+  expect(oldest.map((entry) => entry.date).filter(Boolean)).not.toEqual(newest.map((entry) => entry.date).filter(Boolean))
+  await expect(section.getByRole('status')).toContainText('Oldest first')
   await section.getByRole('searchbox', { name: 'Search projects' }).fill('FreeRTOS')
   const filtered = (await dates()).map((entry) => entry.date).filter(Boolean)
   expect(filtered).toEqual([...filtered].sort())

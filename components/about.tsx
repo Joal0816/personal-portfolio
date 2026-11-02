@@ -28,12 +28,11 @@ export function About() {
             <div className="mt-8 max-w-[68ch] space-y-5 text-lg leading-relaxed text-foreground/85">
               <p>{profile.bio}</p>
               <p>
-                Most of my work sits where hardware meets software: writing the
-                firmware that runs on a chip, teaching it to read sensors
-                reliably, and then getting that data somewhere a person can act
-                on it. Lately that has meant tiny AI models that run on the
-                device itself, so nothing has to travel to a server to make a
-                decision.
+                My project work ranges from learning and chat applications to
+                computer vision, embedded firmware, and sensor dashboards.
+                Some projects are live; others are academic pilots, sample
+                dashboards, or simulations awaiting hardware validation. Each
+                project is labeled with its current status.
               </p>
             </div>
           </Reveal>
@@ -84,7 +83,7 @@ export function About() {
             <div>
               <h3 className="flex items-center gap-2.5 text-xl font-bold tracking-tight">
                 <Briefcase className="size-5 text-primary" />
-                Research I&apos;m part of
+                Project &amp; research work
               </h3>
               <ul className="mt-5 border-t border-border">
                 {experiences.map((exp) => (

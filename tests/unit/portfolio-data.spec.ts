@@ -70,7 +70,8 @@ test.describe('lib/portfolio-data invariants', () => {
     for (const project of projects.filter((project) => project.date)) {
       expect(project.date).toMatch(/^\d{4}-\d{2}-\d{2}$/)
       expect(project.dateLabel).toBeTruthy()
-      expect(project.dateSource).toBeTruthy()
+      expect(project.dateSource || project.dateEvidence).toBeTruthy()
+      if (project.dateEvidence) expect(project.dateEvidence.trim()).not.toBe('')
     }
     for (const order of ['newest', 'oldest'] as const) {
       const sorted = sortProjects(projects, order)

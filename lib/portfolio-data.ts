@@ -11,8 +11,8 @@ export const profile = {
   name: 'Joseph Vergara',
   callsign: 'JOAL',
   fullName: 'Joseph Alan B. Vergara',
-  role: 'Embedded Systems & Edge AI Engineer',
-  subRole: 'Firmware · TinyML · Full-stack telemetry',
+  role: 'OJT Intern Candidate',
+  subRole: 'Software development · AI/ML · Embedded hardware integration',
   institution: 'Mindanao State University – Iligan Institute of Technology',
   department: 'College of Computer Studies • Dept. of Computer Applications',
   location: 'Iligan City, Philippines',
@@ -25,12 +25,13 @@ export const profile = {
   },
   phone: '+63 947-589-2995',
   website: 'https://joalvergs.tech',
-  resumeUrl: '/resume.pdf?v=eb90d9955915',
-  status: 'Fourth year · BS Computer Applications (Major in Embedded Systems)',
-  tagline: 'I write the software that lives directly on hardware — firmware, real-time systems, and small AI models that run without the cloud.',
+  resumeUrl: '/resume.pdf?v=4293b059027b',
+  cvUrl: '/cv.pdf?v=ae80635d4189',
+  status: 'Seeking a 700-hour OJT placement · 40 hours per week',
+  tagline: 'I build full-stack web and mobile apps, applied AI/ML workflows, firmware, and systems that connect software with hardware.',
   intro:
-    '4th-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT (CGPA: 1.96269). Architecting deterministic firmware in C/C++, FreeRTOS multitasking pipelines, TinyML edge inference (YOLOv8n / MediaPipe), and full-stack sensor telemetry.',
-  bio: "I'm Joseph Alan B. Vergara — 'Joal' — an embedded systems developer and edge AI researcher based in Iligan City, Philippines. I'm finishing my BS Computer Applications (Major in Embedded Systems) at MSU-IIT. Most of my work lives close to the hardware: firmware for small chips like the STM32, ESP32, AVR, and Renesas RA6M3, real-time scheduling with FreeRTOS and RT-Thread, computer vision that runs on the device itself instead of the cloud, and full-stack telemetry dashboards that make the readings easy to follow.",
+    'Fourth-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT (CGPA: 1.96), seeking OJT in software development, applied AI/ML, or software-hardware integration.',
+  bio: "I'm Joseph Alan B. Vergara — 'Joal' — a fourth-year BS Computer Applications student majoring in Embedded Systems at MSU-IIT in Iligan City. I'm seeking a 700-hour OJT placement in software development, applied AI/ML, or software-hardware integration. My project work includes web and mobile apps, computer-vision workflows, embedded firmware, and sensor telemetry.",
   socials: {
     github: 'https://github.com/Joal0816',
     linkedin: 'https://www.linkedin.com/in/joseph-alan-vergara-638803348/',
@@ -40,7 +41,7 @@ export const profile = {
     gmailPersonal: 'https://mail.google.com/mail/?view=cm&fs=1&to=hpesojnalab.aragrev@gmail.com',
   },
   telemetry: {
-    cgpa: '1.96269',
+    cgpa: '1.96',
     yearLevel: '4th Year (Senior)',
     targetArchs: ['ARM Cortex-M', 'ESP32-P4 / Xtensa', 'AVR 8-bit', 'Renesas RA6M3', 'Intel 8051'],
     rtos: ['FreeRTOS', 'RT-Thread OS'],
@@ -56,13 +57,12 @@ export const education = [
     school: 'Mindanao State University – Iligan Institute of Technology (MSU-IIT)',
     period: 'Aug 2023 – Present',
     location: 'Iligan City, Philippines',
-    gpa: 'CGPA: 1.96269',
+    gpa: 'CGPA: 1.96',
     status: 'In progress · 4th year',
     description:
       'Specialized curriculum in Microcontroller Programming, FreeRTOS & Real-Time Kernels, Edge AI & Computer Vision, Industrial PLC Automation (CODESYS), IoT Telemetry, and Digital Logic Design.',
     highlights: [
       'Focus: Deterministic RTOS task architectures, low-power state machines, and bare-metal register manipulation.',
-      'Active researcher on multi-author PhD dissertation and Master’s research publications.',
     ],
   },
   {
@@ -79,24 +79,14 @@ export const education = [
 
 export const experiences = [
   {
-    role: 'Co-Author & Web App Developer',
-    organization: 'PhD Dissertation Research Publication',
-    period: '2024 – Present',
+    role: 'Full-Stack Developer',
+    organization: 'MIOW — MSU-IIT IDS Online Workspace',
+    period: '2026 – Present',
     status: 'In progress',
-    badge: 'PhD Publication',
+    badge: 'Learning management system',
     description:
-      'Designed and developed the full-stack Learning Management System web application (React.js, Node.js, Supabase/PostgreSQL) for a PhD dissertation publication, capturing live microcontroller hardware telemetry and automating laboratory scoring logic with zero manual intervention. Benchmarked standard cloud server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller.',
-    tags: ['ESP32-P4', 'Microcontroller Telemetry', 'React', 'Node.js', 'PostgreSQL', 'Edge Benchmarking'],
-  },
-  {
-    role: 'PWA & Mobile Developer',
-    organization: "Master's & Undergraduate Research Project",
-    period: '2025 – Present',
-    status: 'In progress',
-    badge: 'Cross-Platform PWA & APK',
-    description:
-      'Developed the cross-platform Progressive Web Application (PWA) compatible across all devices and established release toolchains for Android APK generation, integrating an on-device quantized YOLOv8n microplastic particle detection pipeline.',
-    tags: ['PWA', 'Android APK', 'YOLOv8n', 'TFLite', 'Android SDK', 'Computer Vision'],
+      'Developing a role-based learning management system for Junior and Senior High School, with administrator, teacher, and student workflows using TanStack Start, React, TypeScript, Tailwind CSS, and PostgreSQL/Supabase.',
+    tags: ['TanStack Start', 'React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Supabase'],
   },
 ]
 
@@ -266,84 +256,34 @@ export const leadership = [
 
 export const skillGroups = [
   {
-    category: 'Embedded Systems & RTOS',
-    tag: 'Firmware core',
-    skills: [
-      'C',
-      'C++',
-      'FreeRTOS',
-      'RT-Thread RTOS',
-      'STM32 (Blue Pill / Cortex-M3)',
-      'ESP32 / ESP32-P4',
-      'Renesas RA6M3',
-      'ATmega328P / AVR',
-      'Intel 8051',
-      'Bare-Metal Firmware',
-      'Task Synchronization & Queues',
-      'Hardware Timers & Interrupts (ISR)',
-    ],
+    category: 'Programming & automation',
+    tag: 'Languages',
+    skills: ['C', 'C++', 'Python', 'JavaScript', 'TypeScript', 'SQL', 'Bash', 'AVR Assembly', 'PLC ladder logic'],
   },
   {
-    category: 'Edge AI & Computer Vision',
-    tag: 'On-device AI',
-    skills: [
-      'YOLOv8n / Ultralytics',
-      'MediaPipe Pose Kinematics',
-      'OpenCV',
-      'Edge Impulse',
-      'Roboflow',
-      'TensorFlow Lite / Micro',
-      'MLX90640 Thermal Radiometry',
-      'Model Quantization (INT8/FP16)',
-      'Zero-Latency Mobile Inference',
-    ],
+    category: 'Web & development tools',
+    tag: 'Application development',
+    skills: ['React', 'Next.js', 'Node.js', 'Flutter', 'PostgreSQL / Supabase', 'SQLite', 'Git', 'Linux', 'Android SDK'],
   },
   {
-    category: 'Protocols & Hardware Design',
-    tag: 'Wires & circuits',
-    skills: [
-      'I2C',
-      'SPI',
-      'UART / USART',
-      'CAN Bus',
-      'MQTT / Mosquitto',
-      'PLC Ladder Logic (CODESYS V3)',
-      'PCB Layout & Soldering',
-      'Oscilloscope & Logic Analyzers',
-      'Rotary Encoders & OLEDs (SSD1306)',
-      'Sensor Fusion (IR, Inductive, Ultrasonic)',
-    ],
+    category: 'AI & computer vision',
+    tag: 'Applied AI',
+    skills: ['YOLOv8n', 'OpenCV', 'MediaPipe', 'Edge Impulse', 'Roboflow', 'Model quantization'],
   },
   {
-    category: 'Web & Telemetry Architecture',
-    tag: 'Web & telemetry',
-    skills: [
-      'TypeScript',
-      'Next.js 15/16',
-      'React 19',
-      'Node.js',
-      'Tailwind CSS v4',
-      'Supabase',
-      'PostgreSQL',
-      'SQLite',
-      'REST APIs & WebSockets',
-      'Flutter (Web & Android)',
-    ],
+    category: 'Embedded systems & RTOS',
+    tag: 'Firmware & hardware',
+    skills: ['STM32', 'ESP32 / ESP32-P4', 'AVR', 'Renesas RA6M3', 'FreeRTOS', 'RT-Thread', 'PCB layout', 'Soldering', 'Hardware debugging'],
   },
   {
-    category: 'Toolchains, DevOps & OS',
-    tag: 'Tools & systems',
-    skills: [
-      'Linux (Arch Linux, CachyOS)',
-      'Git & GitHub CI/CD',
-      'CMake / Makefiles',
-      'Microchip (ATMEL) Studio',
-      'RT-Thread Studio',
-      'SquareLine Studio / LVGL',
-      'VS Code / Neovim',
-      'Cloudflare Pages / Vercel',
-      'Bash & Zsh Scripting',
-    ],
+    category: 'Interfaces & protocols',
+    tag: 'Connectivity',
+    skills: ['I2C', 'SPI', 'UART', 'CAN', 'MQTT', 'HTTP / REST', 'WebSockets'],
+  },
+  {
+    category: 'Languages',
+    tag: 'Spoken',
+    skills: ['English', 'Filipino', 'Cebuano'],
   },
 ]
 
@@ -363,8 +303,9 @@ export const projectCategories: ProjectCategory[] = [
 export type Project = {
   title: string
   date?: string
-  dateLabel?: 'Repository created' | 'Showcased'
+  dateLabel?: 'Repository created' | 'Showcased' | 'Repository history begins'
   dateSource?: string
+  dateEvidence?: string
   featured?: boolean
   pinned?: boolean
   outcome?: string
@@ -507,10 +448,10 @@ const projectEntries: Project[] = [
   },
   {
     title: 'UNICHAT — Anonymous Campus 1-on-1 Chat',
-    date: '2026-10-19',
-    dateLabel: 'Repository created',
+    date: '2026-10-30',
+    dateLabel: 'Repository history begins',
+    dateEvidence: 'Earliest commit in local repository history.',
     outcome: 'Installable campus chat platform gated by university email authentication with real-time transactional matchmaking.',
-    dateSource: 'https://github.com/Joal0816/UNICHAT',
     category: 'Web Development',
     role: 'Full-Stack & Systems Architect',
     badge: 'Live Campus PWA',
@@ -529,8 +470,7 @@ const projectEntries: Project[] = [
     tags: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL', 'Realtime', 'PWA', 'Tailwind CSS'],
     demo: 'https://unichat.studentio.xyz',
     demoLabel: 'Live Platform',
-    repo: 'https://github.com/Joal0816/UNICHAT',
-    repoLabel: 'GitHub Repo',
+    repo: '',
     telemetrySpec: {
       target: 'Vercel Edge + Supabase DB',
       protocol: 'WSS / PostgreSQL RPCs',
@@ -640,10 +580,10 @@ self.addEventListener('fetch', (event) => {
   },
   {
     title: 'Vault — Personal Expense & Family Sanctuary PWA',
-    date: '2026-10-08',
-    dateLabel: 'Repository created',
+    date: '2026-10-09',
+    dateLabel: 'Repository history begins',
+    dateEvidence: 'Earliest commit in local repository history.',
     outcome: 'Offline-first financial analytics PWA with automated SMS parsing and client-side encryption.',
-    dateSource: 'https://github.com/Joal0816/vault-expense',
     category: 'Web Development',
     role: 'Lead Full-Stack & PWA Architect',
     badge: 'In Progress',
@@ -662,8 +602,7 @@ self.addEventListener('fetch', (event) => {
     tags: ['PWA', 'TypeScript', 'React', 'Vite', 'Tailwind CSS', 'Offline-First'],
     demo: 'https://vault.joalvergs.tech',
     demoLabel: 'Live Platform (In Progress)',
-    repo: 'https://github.com/Joal0816/vault-expense',
-    repoLabel: 'GitHub Repo',
+    repo: '',
     telemetrySpec: {
       target: 'PWA / Vite + LocalStorage',
       protocol: 'Service Worker / CacheAPI',
@@ -1080,10 +1019,10 @@ vTaskStartScheduler();`,
   },
   {
     title: 'ARUGA Fall Detection & Inactivity Monitoring',
-    date: '2026-10-05',
+    date: '2026-10-14',
     favicon: '/icons/projects/aruga.png',
-    dateLabel: 'Repository created',
-    dateSource: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
+    dateLabel: 'Repository history begins',
+    dateEvidence: 'Earliest commit in local repository history.',
     category: 'Artificial Intelligence / Machine Learning',
     role: 'Computer Vision & Edge AI Engineer',
     badge: 'Biomechanical Kinematics',
@@ -1101,8 +1040,7 @@ vTaskStartScheduler();`,
     tags: ['Python', 'OpenCV', 'MediaPipe', 'Kinematics', 'Edge AI', 'Computer Vision'],
     demo: 'https://aruga.joalvergs.tech',
     demoLabel: 'Live Platform',
-    repo: 'https://github.com/aruga-systems/ARUGA-fall-detection-and-inactivity-monitoring-system',
-    repoLabel: 'GitHub Repo',
+    repo: '',
     telemetrySpec: {
       target: 'Edge Compute (Python/CV)',
       protocol: 'Real-Time Video Stream',
@@ -1132,57 +1070,25 @@ vTaskStartScheduler();`,
     ],
   },
   {
-    title: 'Microcontroller-Based Automated Feedback System',
-    date: '2026-08-25',
+    title: 'MIOW — MSU-IIT IDS Online Workspace',
     favicon: '/icons/projects/miow.svg',
-    dateLabel: 'Repository created',
-    dateSource: 'https://github.com/MIOW-CODES/MIOW-Learning-Management-System',
     category: 'Research & Academic',
-    role: 'Co-Author & Web App Developer — PhD Publication',
-    badge: 'PhD Publication',
+    role: 'Full-Stack Developer',
+    badge: 'Learning management system · in development',
     description:
-      'Full-stack LMS paired with live sensor telemetry and edge hosting on ESP32-P4 for automated laboratory assessment.',
+      'A learning management system for Junior and Senior High School with student, teacher, and administrator workflows.',
     longDescription:
-      'Designed and developed the full-stack Learning Management System web application (React.js, Node.js, Supabase/PostgreSQL) for a PhD dissertation publication to capture live microcontroller telemetry and automate laboratory scoring logic. Reduced evaluation latency and eliminated manual record-keeping errors by engineering deterministic evaluation pipelines paired with interactive instructor dashboards for instant feedback. Benchmarked standard web server deployments against an edge-hosted architecture on the ESP32-P4 microcontroller to evaluate low-power, localized server reliability.',
+      'MIOW (MSU-IIT IDS Online Workspace) is a learning management system for Junior and Senior High School. It includes administrator, teacher, and student workflows and uses TanStack Start, Vite, React, TypeScript, Tailwind CSS, and PostgreSQL/Supabase.',
     features: [
-      'Full-stack LMS web application architecture (React.js, Node.js, Supabase/PostgreSQL).',
-      'Real-time microcontroller telemetry capture and automated scoring logic.',
-      'Deterministic evaluation pipelines with interactive dashboards.',
-      'Benchmarked edge deployment on ESP32-P4 vs standard cloud servers.',
+      'Administrator workflows for student, teacher, course, announcement, and gradebook management.',
+      'Teacher workflows for worksheets, submissions, grading, and attendance.',
+      'Student workflows for courses, activities, assignments, grades, and attendance.',
+      'Google Docs import for worksheet source material.',
     ],
     image: '/projects/miow-landing.png',
-    tags: ['React.js', 'Node.js', 'Supabase', 'PostgreSQL', 'ESP32-P4', 'IoT Telemetry'],
-    demo: 'https://miow-lms.ter-ids.online/auth',
-    demoLabel: 'Live Platform',
-    repo: 'https://github.com/MIOW-CODES/lms',
-    repoLabel: 'GitHub Repo',
-    telemetrySpec: {
-      target: 'ESP32-P4 Dual Core RISC-V',
-      protocol: 'HTTP / REST Telemetry',
-      latency: '< 50ms Edge Scoring',
-      clockSpeed: '400 MHz RISC-V / Xtensa',
-      memoryFootprint: '768 KB L2 Cache',
-    },
-    codeSnippet: {
-      filename: 'edge_lms_sync.c',
-      language: 'c',
-      code: `void handle_lab_telemetry_packet(telemetry_pkt_t *pkt) {
-  bool passed = verify_pin_waveform(pkt->pin, pkt->expected_hz);
-  grade_record_t record = {
-    .student_uid = pkt->student_uid,
-    .score = passed ? 100 : 0,
-    .timestamp = esp_timer_get_time()
-  };
-  sqlite3_insert_lab_grade(&record);
-}`,
-    },
-    architectureFlow: [
-      'Microcontroller Lab Bench',
-      'Hardware Waveform Monitor',
-      'ESP32-P4 Edge Ingest',
-      'Automated Scoring Logic',
-      'Full-Stack LMS Telemetry',
-    ],
+    tags: ['TanStack Start', 'Vite', 'React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Supabase'],
+    repo: '',
+    demo: '',
   },
   {
     title: 'MP-Detect — Microplastic Detection & Quantification GUI',
