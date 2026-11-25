@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { certifications } from '../../lib/portfolio-data'
 
 test('project sorting keeps pinned entries first and sorts dated work chronologically', async ({ page }) => {
   await page.goto('/')
@@ -76,17 +77,20 @@ test('selected work opens a project with a documented result and restores focus'
   await expect(button).toBeFocused()
 })
 
-test('latest certificate is visible, opens the original PDF, and works with filters', async ({ page, request }) => {
+test('latest certificate is visible, opens the original document, and works with filters', async ({ page, request }) => {
+  const latest = certifications[0]
   await page.goto('/')
   const section = page.locator('#certifications')
-  await expect(section.getByRole('heading', { name: 'Latest certificate: Startup Basics 101' })).toBeVisible()
-  const trigger = section.getByRole('button', { name: 'Preview latest certificate: Startup Basics 101' })
+  await expect(section.getByRole('heading', { name: `Latest certificate: ${latest.name}` })).toBeVisible()
+  const trigger = section.getByRole('button', { name: `Preview latest certificate: ${latest.name}` })
   await trigger.click()
-  const dialog = page.getByRole('dialog', { name: 'Startup Basics 101' })
+  const dialog = page.getByRole('dialog', { name: latest.name })
   await expect(dialog).toBeVisible()
-  const pdf = dialog.getByRole('link', { name: 'Open the full PDF' })
-  expect((await request.get((await pdf.getAttribute('href'))!)).ok()).toBe(true)
-  await expect(dialog.getByRole('img', { name: 'Startup Basics 101 certificate scan' })).toBeVisible()
+  const original = dialog.getByRole('link', {
+    name: latest.image.endsWith('.pdf') ? 'Open the full PDF' : 'Open original image',
+  })
+  expect((await request.get((await original.getAttribute('href'))!)).ok()).toBe(true)
+  await expect(dialog.getByRole('img', { name: `${latest.name} certificate scan` })).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(trigger).toBeFocused()
   await section.getByRole('button', { name: 'Data & entrepreneurship', exact: true }).click()

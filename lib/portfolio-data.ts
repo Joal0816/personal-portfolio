@@ -92,6 +92,24 @@ export const experiences = [
 
 const certificateEntries = [
   {
+    name: 'NASA Space Apps Challenge Iligan City 2026 — Certificate of Recognition',
+    issuer: 'NASA Space Apps Challenge Iligan City',
+    date: 'November 14-15, 2026',
+    image: '/certificates/TECH/nasa-space-apps-2026.jpg',
+    preview: '/certificates/TECH/nasa-space-apps-2026.jpg',
+    sortDate: '2026-11-15',
+    category: 'Hackathon & AI',
+  },
+  {
+    name: 'Show Your U: Interview Workshop',
+    issuer: 'OJT Connect',
+    date: 'October 24, 2026',
+    image: '/certificates/TECH/show-your-u-interview-workshop.pdf',
+    preview: '/certificates/previews/show-your-u-interview-workshop.jpg',
+    sortDate: '2026-10-24',
+    category: 'Professional Dev',
+  },
+  {
     name: 'MSU-IIT Official Certificate of Registration & Enrolment',
     issuer: 'Office of the Institute Registrar, MSU-IIT',
     date: '2023 – Present',
@@ -360,6 +378,42 @@ export function projectPrimaryLink(project: Project): { href: string; label: str
 }
 
 const projectEntries: Project[] = [
+  {
+    title: 'TerraImpact — NASA Space Apps 2026',
+    date: '2026-11-14',
+    dateLabel: 'Showcased',
+    dateSource: '/certificates/TECH/nasa-space-apps-2026.jpg',
+    featured: true,
+    outcome:
+      'Built for the NASA Space Apps Challenge Iligan City 2026 and recognized with a Certificate of Recognition for active participation.',
+    category: 'Research & Academic',
+    role: 'Full-Stack & Geospatial Data Developer',
+    badge: 'NASA Space Apps 2026',
+    description:
+      'A satellite-observation dashboard for exploring vegetation greenness and land surface temperature around a developing data-center park in Kulai, Johor, Malaysia.',
+    longDescription:
+      'TerraImpact is a static Next.js research dashboard built for the NASA Space Apps Challenge Iligan City 2026. It presents matched 2018–2025 NASA satellite observations for three mapped areas, using AppEEARS HLS Landsat NDVI for vegetation greenness and Landsat 8/9 Collection 2 Level 2 exports for land surface temperature. A separate scenario planner explores hypothetical development footprints; the dashboard labels those scenarios as assumptions rather than observations or forecasts.',
+    features: [
+      'Matched 2018–2025 NASA satellite observations for vegetation greenness and land surface temperature across three mapped areas.',
+      'Interactive Leaflet map, observation charts, and a hypothetical development-scenario planner.',
+      'Separate CSV/JSON import tool for annual records, with imported values labeled unverified.',
+      'Methodology and source documentation distinguish measured observations from hypothetical scenarios.',
+    ],
+    image: '/projects/nasa-space-apps.png',
+    favicon: '/icons/projects/nasa-space-apps.png',
+    tags: ['Next.js', 'React', 'TypeScript', 'Leaflet', 'NASA Earth Data', 'Geospatial', 'Recharts'],
+    demo: 'https://terraimpact.joalvergs.tech',
+    demoLabel: 'Live Dashboard',
+    repo: 'https://github.com/Joal0816/nasa-space-competition',
+    repoLabel: 'GitHub Repo',
+    architectureFlow: [
+      'NASA AppEEARS & Landsat observations',
+      'Committed CSV and metadata',
+      'Next.js static dashboard',
+      'Leaflet map and charts',
+      'Hypothetical scenario planner',
+    ],
+  },
   {
     title: 'ParcelSense AI',
     featured: true,

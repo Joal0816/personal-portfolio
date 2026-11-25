@@ -87,7 +87,7 @@ test.describe('lib/portfolio-data invariants', () => {
   })
 
   test('certificates sort newest first and include previews', () => {
-    expect(certifications[0].name).toBe('Startup Basics 101')
+    expect(certifications[0].name).toBe('NASA Space Apps Challenge Iligan City 2026 — Certificate of Recognition')
     const dates = certifications.map((certificate) => certificate.sortDate)
     expect(dates).toEqual([...dates].sort().reverse())
     for (const certificate of certifications) expect(certificate.preview).toBeTruthy()

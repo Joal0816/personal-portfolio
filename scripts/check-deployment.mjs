@@ -3,8 +3,9 @@ import { readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
 import { certifications, projects, profile } from '../lib/portfolio-data.ts'
 
-const raw = process.argv[2] || process.env.DEPLOYMENT_URL
-assert(raw, 'Usage: npm run check:deployment -- https://your-deployment.example')
+const args = process.argv.slice(2).filter((arg) => arg !== '--')
+const raw = args[0] || process.env.DEPLOYMENT_URL
+assert(raw, 'Usage: pnpm run check:deployment -- https://your-deployment.example')
 const base = new URL(raw)
 assert(['http:', 'https:'].includes(base.protocol), 'Expected an HTTP(S) deployment URL')
 const response = await fetch(base, { cache: 'no-store', signal: AbortSignal.timeout(30000) })

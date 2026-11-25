@@ -8,7 +8,7 @@ All project and certificate content lives in `lib/portfolio-data.ts`.
 
 ## Project dates and selected work
 
-Project dates are evidence dates, not claimed completion dates. Sixteen projects have a verified repository creation date or a documented showcase date; six have no date and appear last in either sort direction. Each dated project records its ISO date, label, and source. Repository timestamps were checked through GitHub on October 19, 2026. Agap AI uses the IEEE Sumpai event date already recorded on its certificate.
+Project dates are evidence dates, not claimed completion dates. Sixteen projects have a verified repository creation date or a documented showcase date; eleven have no date and appear last in either sort direction. Each dated project records its ISO date, label, and source. Repository timestamps were checked through GitHub on October 19, 2026. Agap AI uses the IEEE Sumpai event date already recorded on its certificate; TerraImpact uses the NASA Space Apps Challenge Iligan City event date recorded on its certificate.
 
 Use `featured: true` for the selected-work shortcuts. These open the project directly without changing the chronological order of the list. `outcome` holds a concise result supported by the existing project description, feature list, or award record. Do not add unsupported metrics.
 
@@ -16,9 +16,9 @@ O.I.N.K.'s source repository is private; its public demo remains available. Agap
 
 ## Certificates and preview provenance
 
-Startup Basics 101 is the latest certificate. The displayed September 24, 2026 date is the event date printed on the certificate; the document was issued September 25. It appears under Everything and Data & entrepreneurship, with a persistent latest-certificate spotlight.
+The NASA Space Apps Challenge Iligan City 2026 Certificate of Recognition is the latest certificate. Startup Basics 101 remains the latest technopreneurship certificate: its displayed September 24, 2026 date is the event date printed on the certificate, and the document was issued September 25. It appears under Everything and Data & entrepreneurship, while the latest-certificate spotlight follows the newest entry.
 
-Every JPEG under `public/certificates/previews/` is a first-page rasterization of the corresponding local PDF in `certifications`. No images were generated or invented. Image certificates use their existing scans. Regenerate PDF previews with Poppler installed:
+Every JPEG under `public/certificates/previews/` is a first-page rasterization of the corresponding local PDF in `certifications`. No images were generated or invented. Image certificates use their existing scans. The NASA Space Apps certificate was cropped and rotated from the supplied photograph. Regenerate PDF previews with Poppler installed:
 
 ```sh
 node --experimental-strip-types scripts/generate-certificate-previews.mjs

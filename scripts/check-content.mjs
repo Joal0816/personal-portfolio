@@ -14,7 +14,7 @@ function asset(path) {
   assert(insidePublic && existsSync(file), `Missing public asset: ${path}`)
 }
 assert.equal(new Set(projects.map((p) => p.title)).size, projects.length, 'Duplicate project titles')
-assert.equal(projects.length, 26, 'Expected all 26 portfolio projects')
+assert.equal(projects.length, 27, 'Expected all 27 portfolio projects')
 assert.equal(new Set(certifications.map((c) => c.name)).size, certifications.length, 'Duplicate certificates')
 for (const project of projects) {
   asset(project.image)
@@ -43,5 +43,5 @@ for (const link of navLinks) {
   assert(pages.includes(`id="${link.href.slice(1)}"`), `Missing navigation target: ${link.href}`)
 }
 assert.deepEqual(projects, sortProjects(projects), 'Projects must default to newest first')
-assert.equal(certifications[0].name, 'Startup Basics 101', 'Latest certificate is missing or out of order')
+assert.equal(certifications[0].name, 'NASA Space Apps Challenge Iligan City 2026 — Certificate of Recognition', 'Latest certificate is missing or out of order')
 console.log(`Content checks passed: ${projects.length} projects, ${certifications.length} certificates, local assets, dates, and navigation.`)
