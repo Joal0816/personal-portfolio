@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { createHash } from 'node:crypto'
-import { resolve } from 'node:path'
+import { isAbsolute, relative, resolve, sep } from 'node:path'
 import { certifications, projects, navLinks, profile, sortProjects } from '../lib/portfolio-data.ts'
 
 const root = resolve(import.meta.dirname, '..')
@@ -9,7 +9,9 @@ const publicRoot = resolve(root, 'public')
 function asset(path) {
   assert(path.startsWith('/'), `Asset must have a local absolute path: ${path}`)
   const file = resolve(publicRoot, `.${decodeURIComponent(path)}`)
-  assert(file.startsWith(`${publicRoot}/`) && existsSync(file), `Missing public asset: ${path}`)
+  const rel = relative(publicRoot, file)
+  const insidePublic = rel !== '' && rel !== '..' && !rel.startsWith(`..${sep}`) && !isAbsolute(rel)
+  assert(insidePublic && existsSync(file), `Missing public asset: ${path}`)
 }
 assert.equal(new Set(projects.map((p) => p.title)).size, projects.length, 'Duplicate project titles')
 assert.equal(projects.length, 26, 'Expected all 26 portfolio projects')

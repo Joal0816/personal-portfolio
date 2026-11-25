@@ -9,6 +9,13 @@ import { defineConfig, devices } from '@playwright/test'
  * Starts the local development server unless PORTFOLIO_BASE_URL points to
  * an already running preview, production build, or public deployment.
  */
+/**
+ * Use Playwright's bundled Chromium by default on every platform. Set
+ * PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH only to target a system browser.
+ */
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
+const launchOptions = executablePath ? { executablePath } : undefined
+
 export default defineConfig({
   testDir: 'tests',
   projects: [
@@ -17,9 +24,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 900 },
-        launchOptions: {
-          executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (process.env.PLAYWRIGHT_USE_BUNDLED_CHROMIUM ? undefined : '/usr/bin/chromium'),
-        },
+        launchOptions,
       },
     },
     {
@@ -27,9 +32,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 390, height: 844 },
-        launchOptions: {
-          executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || (process.env.PLAYWRIGHT_USE_BUNDLED_CHROMIUM ? undefined : '/usr/bin/chromium'),
-        },
+        launchOptions,
       },
     },
   ],
